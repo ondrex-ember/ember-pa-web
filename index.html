@@ -47,6 +47,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   padding: 0; 
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+.gold-icon {
+  font-size: 14px;
+  animation: goldShine 3s ease-in-out infinite;
+}
+
+@keyframes goldShine {
+  0%, 100% { 
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+  }
+  50% { 
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9));
+  }
+}
 
 html {
   -webkit-text-size-adjust: 100%;
@@ -609,7 +622,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="logo-icon">🔥</span>
       <span class="logo-text">Ember PA</span>
     </div>
-    <div class="tagline">PERFORMANCE ADVERTISING</div>
+    <div class="tagline"><span class="gold-icon">PERFORMANCE ADVERTISING</span></div>
   </div>
 
   <!-- HERO SECTION -->
