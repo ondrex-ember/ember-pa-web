@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ember-pa.cz/sitemap.xml
