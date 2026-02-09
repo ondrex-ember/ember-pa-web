@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="description" content="Ember PA - Performance Advertising agentura zaměřená na Web & Data Analytics, PPC/SEA a SEO/UX pro maximalizaci ROI.">
+<meta name="description" content="Ember PA - Performance Advertising, Web & Data Analytics, PPC/SEA a SEO/UX, maximalizace ROI.">
   <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -49,6 +49,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 }
 .gold-icon {
   font-size: 32px;
+  animation: goldShine 3s ease-in-out infinite;
+}
+
+@keyframes goldShine {
+  0%, 100% { 
+    filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.6));
+  }
+  40% { 
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9));
+  }
+}
+
+  .gold-shining {
+  font-size: 18px;
   animation: goldShine 3s ease-in-out infinite;
 }
 
@@ -622,7 +636,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <span class="logo-icon"><span class="gold-icon">🔥</span></span>
       <span class="logo-text">Ember PA</span>
     </div>
-    <div class="tagline"><span class="gold-icon">PERFORMANCE ADVERTISING</span></div>
+    <div class="tagline"><span class="gold-shining">PERFORMANCE ADVERTISING</span></div>
   </div>
 
   <!-- HERO SECTION -->
