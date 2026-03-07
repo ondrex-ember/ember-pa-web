@@ -13,6 +13,24 @@
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WTB3ZDZN');</script>
 
+<!-- Google tag (gtag.js) — GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K1CK86V4PE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K1CK86V4PE', { page_title: document.title, page_location: window.location.href });
+</script>
+
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window,document,"clarity","script","ve6zmcb7ue");
+</script>
+
 <style>
 /* ════════════════════════════════════════════════
    ROOT — EMBER PA COLOR SYSTEM
@@ -499,12 +517,12 @@ tr:hover td { background: rgba(255,255,255,.02); }
 <!-- FOOTER -->
 <footer id="footer">
   <span>🔥 Ember PA Tools Hub © 2026</span>
-  <span><a href="/" class="footer-link">ember-pa.cz</a> | <a href="mailto:ember.pan@gmail.com" class="footer-link">ember.pan@gmail.com</a></span>
+  <span><a href="/" class="footer-link">ember-pa.cz</a> | <a href="/cdn-cgi/l/email-protection#4421292621366a34252a042329252d286a272b29" class="footer-link"><span class="__cf_email__" data-cfemail="94f1f9f6f1e6bae4f5fad4f3f9f5fdf8baf7fbf9">[email&#160;protected]</span></a></span>
 </footer>
 
 </div><!-- /main-container -->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ═══════════════════════════════════════════════════════════
 // TOOLS REGISTRY
 // ═══════════════════════════════════════════════════════════
@@ -2080,10 +2098,400 @@ function cal_calc() {
     </div>`;
 }
 
-// ═══════════════════════════════════════════════════════════
-// START
-// ═══════════════════════════════════════════════════════════
+
 renderDashboard();
+
+// ═══════════════════════════════════════════════════════════
+// EMBER PA TOOLS HUB — GA4 EVENT TRACKING
+// Každý nástroj má vlastní eventy mapované na jeho akce.
+// Všechny eventy jdou do dataLayer (GTM) + gtag() fallback.
+// ═══════════════════════════════════════════════════════════
+(function() {
+  'use strict';
+
+  // ── Utility ───────────────────────────────────────────────
+  function track(name, params) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'ember_' + name,
+      ember_event_name: name,
+      ember_params: params || {}
+    });
+    if (typeof gtag === 'function') gtag('event', name, params || {});
+  }
+
+  // Output field → tool mapping pro copyText patch
+  var OUTPUT_MAP = {
+    'utm_out':   { id: 'utmbuilder',  name: 'UTM Builder' },
+    'sl_out':    { id: 'slugify',     name: 'URL Slug' },
+    'cc_out':    { id: 'caseconvert', name: 'Konverze textu' },
+    'fr_out':    { id: 'findreplace', name: 'Najít a nahradit' },
+    'li_out':    { id: 'loremipsum',  name: 'Lorem Ipsum' },
+    'cm_col':    { id: 'charmap',     name: 'Speciální znaky' },
+    'enc_out':   { id: 'encoding',    name: 'Kódování textu' },
+    'mo_out':    { id: 'morse',       name: 'Morseova abeceda' },
+    'mo_mout':   { id: 'morse',       name: 'Morseova abeceda' },
+    'cv_css':    { id: 'colorconvert',name: 'Převod barev' },
+    'kw_output': { id: 'ppc',         name: 'KW Permutace' }
+  };
+
+  var _openTimes = {};   // { tool_id: timestamp }
+  var _currentTool = null;
+
+  // ── 1. openTool patch ─────────────────────────────────────
+  var _origOpenTool = window.openTool;
+  window.openTool = function(id) {
+    var t = (window.TOOLS || []).find(function(x) { return x.id === id; });
+    _currentTool = id;
+    _openTimes[id] = Date.now();
+
+    track('tool_open', {
+      tool_id:        id,
+      tool_name:      t ? t.name : id,
+      tool_category:  t ? t.cat  : 'unknown',
+      event_category: 'tool_engagement'
+    });
+
+    if (_origOpenTool) _origOpenTool.call(this, id);
+  };
+
+  // ── 2. showDashboard patch — time_spent_sec ───────────────
+  var _origShowDashboard = window.showDashboard;
+  window.showDashboard = function() {
+    if (_currentTool && _openTimes[_currentTool]) {
+      var elapsed = Math.round((Date.now() - _openTimes[_currentTool]) / 1000);
+      var t = (window.TOOLS || []).find(function(x) { return x.id === _currentTool; });
+      track('tool_close', {
+        tool_id:          _currentTool,
+        tool_name:        t ? t.name : _currentTool,
+        tool_category:    t ? t.cat  : 'unknown',
+        time_spent_sec:   elapsed,
+        event_category:   'tool_engagement'
+      });
+    }
+    _currentTool = null;
+    if (_origShowDashboard) _origShowDashboard.call(this);
+  };
+
+  // ── 3. copyText patch — mapuje field na konkrétní tool ────
+  var _origCopyText = window.copyText;
+  window.copyText = function(fieldId) {
+    var toolInfo = OUTPUT_MAP[fieldId];
+    var tid  = toolInfo ? toolInfo.id   : (_currentTool || 'unknown');
+    var tnam = toolInfo ? toolInfo.name : tid;
+    var t = (window.TOOLS || []).find(function(x) { return x.id === tid; });
+
+    track('tool_copy', {
+      tool_id:        tid,
+      tool_name:      tnam,
+      tool_category:  t ? t.cat : 'unknown',
+      output_field:   fieldId,
+      event_category: 'tool_engagement'
+    });
+
+    if (_origCopyText) _origCopyText.call(this, fieldId);
+  };
+
+  // ── 4. filterCat patch ────────────────────────────────────
+  var _origFilterCat = window.filterCat;
+  window.filterCat = function(cat, btn) {
+    track('tools_filter_category', {
+      category:       cat,
+      event_category: 'navigation'
+    });
+    if (_origFilterCat) _origFilterCat.call(this, cat, btn);
+  };
+
+  // ── 5. searchTools patch (debounced, min 2 znaky) ─────────
+  var _origSearchTools = window.searchTools;
+  var _searchTimer, _lastQ = '';
+  window.searchTools = function(q) {
+    if (_origSearchTools) _origSearchTools.call(this, q);
+    clearTimeout(_searchTimer);
+    _searchTimer = setTimeout(function() {
+      if (q && q.length >= 2 && q !== _lastQ) {
+        _lastQ = q;
+        track('tools_search', {
+          search_query:   q,
+          event_category: 'navigation'
+        });
+      }
+    }, 800);
+  };
+
+  // ────────────────────────────────────────────────────────────
+  // TOOL-SPECIFIC PATCHES
+  // ────────────────────────────────────────────────────────────
+
+  // ── PPC: KW Permutace ─────────────────────────────────────
+  var _origKwGenerate = window.kwGenerate;
+  window.kwGenerate = function() {
+    if (_origKwGenerate) _origKwGenerate.call(this);
+    setTimeout(function() {
+      var out = document.getElementById('kw_output');
+      var lines = out ? out.value.split('\n').filter(function(l) { return l.trim(); }) : [];
+      var matchTypes = [];
+      ['kwOpExact','kwOpPhrase','kwOpBroad','kwOpModBroad','kwOpCapitalize',
+       'kwOpNegExact','kwOpNegPhrase','kwOpNegBroad'].forEach(function(opId) {
+        var el = document.getElementById(opId);
+        if (el && el.checked) matchTypes.push(opId.replace('kwOp',''));
+      });
+      var boxCount = document.querySelectorAll('.kw-box').length;
+      track('kw_generate', {
+        tool_id:         'ppc',
+        tool_name:       'KW Permutace',
+        keywords_count:  lines.length,
+        box_count:       boxCount,
+        match_types:     matchTypes.join(','),
+        event_category:  'tool_engagement'
+      });
+    }, 80);
+  };
+
+  var _origKwCopyOutput = window.kwCopyOutput;
+  window.kwCopyOutput = function() {
+    var out = document.getElementById('kw_output');
+    var count = out ? out.value.split('\n').filter(function(l){return l.trim();}).length : 0;
+    track('kw_copy_output', {
+      tool_id:        'ppc',
+      tool_name:      'KW Permutace',
+      keywords_count: count,
+      event_category: 'tool_engagement'
+    });
+    if (_origKwCopyOutput) _origKwCopyOutput.call(this);
+  };
+
+  var _origKwDownloadTXT = window.kwDownloadTXT;
+  window.kwDownloadTXT = function() {
+    var out = document.getElementById('kw_output');
+    var count = out ? out.value.split('\n').filter(function(l){return l.trim();}).length : 0;
+    track('kw_download', {
+      tool_id:        'ppc',
+      tool_name:      'KW Permutace',
+      format:         'txt',
+      keywords_count: count,
+      event_category: 'tool_engagement'
+    });
+    if (_origKwDownloadTXT) _origKwDownloadTXT.call(this);
+  };
+
+  var _origKwDownloadCSV = window.kwDownloadCSV;
+  window.kwDownloadCSV = function() {
+    var out = document.getElementById('kw_output');
+    var count = out ? out.value.split('\n').filter(function(l){return l.trim();}).length : 0;
+    track('kw_download', {
+      tool_id:        'ppc',
+      tool_name:      'KW Permutace',
+      format:         'csv',
+      keywords_count: count,
+      event_category: 'tool_engagement'
+    });
+    if (_origKwDownloadCSV) _origKwDownloadCSV.call(this);
+  };
+
+  var _origKwAddBox = window.kwAddBox;
+  window.kwAddBox = function(label) {
+    track('kw_add_box', {
+      tool_id: 'ppc', tool_name: 'KW Permutace',
+      event_category: 'tool_engagement'
+    });
+    if (_origKwAddBox) _origKwAddBox.call(this, label);
+  };
+
+  // ── UTM Builder ───────────────────────────────────────────
+  // utm_build je voláno při každé změně inputu — trackujeme kopírování
+  // (copyText patch výše to pokryje přes OUTPUT_MAP utm_out)
+
+  // ── Najít a nahradit ──────────────────────────────────────
+  var _origFrRun = window.fr_run;
+  window.fr_run = function() {
+    if (_origFrRun) _origFrRun.call(this);
+    setTimeout(function() {
+      var cnt = document.getElementById('fr_cnt');
+      var count = cnt ? parseInt(cnt.textContent) || 0 : 0;
+      track('findreplace_run', {
+        tool_id:          'findreplace',
+        tool_name:        'Najít a nahradit',
+        replacements:     count,
+        event_category:   'tool_engagement'
+      });
+    }, 50);
+  };
+
+  // ── Lorem Ipsum ───────────────────────────────────────────
+  var _origLiGen = window.li_gen;
+  window.li_gen = function() {
+    var typeEl = document.getElementById('li_type');
+    var countEl = document.getElementById('li_count');
+    track('lorem_generate', {
+      tool_id:        'loremipsum',
+      tool_name:      'Lorem Ipsum',
+      generate_type:  typeEl ? typeEl.value : 'unknown',
+      count:          countEl ? parseInt(countEl.value) : 0,
+      event_category: 'tool_engagement'
+    });
+    if (_origLiGen) _origLiGen.call(this);
+  };
+
+  // ── Kódování textu ────────────────────────────────────────
+  var _origEncRun = window.enc_run;
+  window.enc_run = function(mode) {
+    track('encoding_run', {
+      tool_id:        'encoding',
+      tool_name:      'Kódování textu',
+      mode:           mode,
+      event_category: 'tool_engagement'
+    });
+    if (_origEncRun) _origEncRun.call(this, mode);
+  };
+
+  // ── ROI Kalkulačka ────────────────────────────────────────
+  var _origRoiCalc = window.roi_calc;
+  window.roi_calc = function() {
+    if (_origRoiCalc) _origRoiCalc.call(this);
+    setTimeout(function() {
+      var roiEl = document.getElementById('roi_roi');
+      track('roi_calculate', {
+        tool_id:        'roi',
+        tool_name:      'ROI Kalkulačka',
+        roi_value:      roiEl ? roiEl.textContent : '',
+        event_category: 'tool_engagement'
+      });
+    }, 50);
+  };
+
+  // ── DPH ───────────────────────────────────────────────────
+  var _origVatNet = window.vatFromNet;
+  window.vatFromNet = function() {
+    track('vat_calculate', {
+      tool_id: 'vat', tool_name: 'DPH Kalkulačka',
+      direction: 'from_net', event_category: 'tool_engagement'
+    });
+    if (_origVatNet) _origVatNet.call(this);
+  };
+
+  var _origVatGross = window.vatFromGross;
+  window.vatFromGross = function() {
+    track('vat_calculate', {
+      tool_id: 'vat', tool_name: 'DPH Kalkulačka',
+      direction: 'from_gross', event_category: 'tool_engagement'
+    });
+    if (_origVatGross) _origVatGross.call(this);
+  };
+
+  // ── Splátková kalkulačka ──────────────────────────────────
+  var _origLnCalc = window.ln_calc;
+  window.ln_calc = function() {
+    if (_origLnCalc) _origLnCalc.call(this);
+    track('loan_calculate', {
+      tool_id: 'loan', tool_name: 'Splátková kalkulačka',
+      event_category: 'tool_engagement'
+    });
+  };
+
+  // ── BMI ───────────────────────────────────────────────────
+  var _origBmiCalc = window.bmi_calc;
+  window.bmi_calc = function() {
+    if (_origBmiCalc) _origBmiCalc.call(this);
+    setTimeout(function() {
+      var bmiEl = document.getElementById('bmi_val');
+      track('bmi_calculate', {
+        tool_id: 'bmi', tool_name: 'BMI Kalkulačka',
+        bmi_value: bmiEl ? bmiEl.textContent : '',
+        event_category: 'tool_engagement'
+      });
+    }, 50);
+  };
+
+  // ── Kalorická kalkulačka ──────────────────────────────────
+  var _origCalCalc = window.cal_calc;
+  window.cal_calc = function() {
+    if (_origCalCalc) _origCalCalc.call(this);
+    track('calories_calculate', {
+      tool_id: 'calories', tool_name: 'Kalorická kalkulačka',
+      event_category: 'tool_engagement'
+    });
+  };
+
+  // ── Převodník jednotek ────────────────────────────────────
+  var _origUnCalc = window.un_calc;
+  window.un_calc = function() {
+    var catEl = document.getElementById('un_cat');
+    track('units_convert', {
+      tool_id:  'units', tool_name: 'Převodník jednotek',
+      category: catEl ? catEl.value : 'unknown',
+      event_category: 'tool_engagement'
+    });
+    if (_origUnCalc) _origUnCalc.call(this);
+  };
+
+  // ── Morseova abeceda ──────────────────────────────────────
+  var _origMoToMorse = window.mo_toMorse;
+  window.mo_toMorse = function() {
+    track('morse_encode', {
+      tool_id: 'morse', tool_name: 'Morseova abeceda',
+      direction: 'text_to_morse', event_category: 'tool_engagement'
+    });
+    if (_origMoToMorse) _origMoToMorse.call(this);
+  };
+
+  var _origMoFromMorse = window.mo_fromMorse;
+  window.mo_fromMorse = function() {
+    track('morse_decode', {
+      tool_id: 'morse', tool_name: 'Morseova abeceda',
+      direction: 'morse_to_text', event_category: 'tool_engagement'
+    });
+    if (_origMoFromMorse) _origMoFromMorse.call(this);
+  };
+
+  // ── Kontrast WCAG ─────────────────────────────────────────
+  var _origWcagCalc = window.wcag_calc;
+  window.wcag_calc = function() {
+    if (_origWcagCalc) _origWcagCalc.call(this);
+    setTimeout(function() {
+      var ratioEl = document.getElementById('wcag_ratio');
+      track('contrast_check', {
+        tool_id: 'contrast', tool_name: 'Kontrast WCAG',
+        ratio: ratioEl ? ratioEl.textContent : '',
+        event_category: 'tool_engagement'
+      });
+    }, 50);
+  };
+
+  // ── Stopky (start/stop) ───────────────────────────────────
+  var _origSwToggle = window.sw_toggle;
+  window.sw_toggle = function() {
+    var wasRunning = window.swRunning;
+    track('stopwatch_toggle', {
+      tool_id: 'stopwatch', tool_name: 'Stopky & Odpočet',
+      action: wasRunning ? 'stop' : 'start',
+      event_category: 'tool_engagement'
+    });
+    if (_origSwToggle) _origSwToggle.call(this);
+  };
+
+  // ── Číselné soustavy ──────────────────────────────────────
+  var _origNbSet = window.nbSet;
+  window.nbSet = function(from) {
+    track('numbase_convert', {
+      tool_id: 'numbase', tool_name: 'Číselné soustavy',
+      from_base: from, event_category: 'tool_engagement'
+    });
+    if (_origNbSet) _origNbSet.call(this, from);
+  };
+
+  // ── Session time milníky (1min, 3min, 5min) ───────────────
+  [60, 180, 300].forEach(function(sec) {
+    setTimeout(function() {
+      track('tools_hub_time', {
+        seconds: sec, event_category: 'engagement'
+      });
+    }, sec * 1000);
+  });
+
+  console.log('[Ember PA] Tools tracking initialized — ' + Object.keys(OUTPUT_MAP).length + ' output fields mapped.');
+
+})();
 </script>
 </body>
 </html>
