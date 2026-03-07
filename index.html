@@ -154,11 +154,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
 
-.footer-sep {
-  color: #475569;
-  margin: 0 6px;
-}
-  
 * { 
   box-sizing: border-box; 
   margin: 0; 
@@ -763,6 +758,27 @@ body::before {
     transform: translateY(0);
   }
 }
+
+  #footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 32px;
+  border-top: 2px solid rgba(59, 130, 246, 0.2);
+  background: rgba(17, 24, 39, 0.5);
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-sep {
+  color: #475569;
+  margin: 0 6px;
+}
+  
 </style>
 </head>
 <body>
@@ -919,12 +935,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="footer-brand">
     🔥 Ember PA © 2026
   </div>
-  <span class="footer-sep">|</span>
-  <a href="/tools/" class="footer-link">Tools Hub</a>
-  <div class="footer-info">
-    Vytvořeno s 🔥 v Novém Boru
+  <div class="footer-links">
+    <a href="/tools/" class="footer-link">Tools Hub</a>
     <span class="footer-sep">|</span>
     <a href="mailto:ember.pan@gmail.com" class="footer-link">Kontakt</a>
+  </div>
+  <div class="footer-info">
+    Vytvořeno s 🔥 v Novém Boru
   </div>
 </footer>
 
