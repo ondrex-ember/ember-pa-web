@@ -532,12 +532,13 @@ const TOOLS = [
   {id:'utmbuilder', icon:'📊', name:'UTM Builder',         desc:'Generátor UTM parametrů pro GA4 kampaně.', cat:'seo',     color:'#3b82f6'},
   {id:'slugify',    icon:'🔗', name:'URL Slug',            desc:'Převede nadpis na SEO-friendly URL slug okamžitě.', cat:'seo',     color:'#3b82f6'},
   {id:'curljson',   icon:'🔄', name:'cURL → JSON',         desc:'Převede cURL příkaz na strukturovaný JSON — metoda, URL, hlavičky, body.', cat:'seo',     color:'#3b82f6', badge:'new'},
+  {id:'htmllint',   icon:'🔍', name:'HTML Syntax Check',   desc:'Kontrola syntaxe HTML/CSS/JS souboru — chyby, varování, statistiky.', cat:'seo',     color:'#3b82f6', badge:'new'},
   {id:'wordcount',  icon:'📝', name:'Počítadlo slov',      desc:'Slova, znaky, věty, odstavce, doba čtení a frekvence slov.', cat:'text',    color:'#60a5fa'},
   {id:'caseconvert',icon:'🔡', name:'Konverze textu',      desc:'UPPER, lower, Title, camelCase, snake_case, kebab-case…', cat:'text',    color:'#60a5fa'},
   {id:'findreplace',icon:'🔄', name:'Najít a nahradit',    desc:'Hromadné nahrazení s podporou regulárních výrazů.', cat:'text',    color:'#60a5fa'},
   {id:'loremipsum', icon:'📄', name:'Lorem Ipsum',         desc:'Generátor zástupného textu – odstavce, věty nebo slova.', cat:'text',    color:'#60a5fa'},
   {id:'charmap',    icon:'🔣', name:'Speciální znaky',     desc:'Tabulka symbolů, diakritiky a emoji ke kliknutí.', cat:'text',    color:'#60a5fa'},
-  {id:'roi',        icon:'💹', name:'ROI Kalkulačka',      desc:'Návratnost investice, čistý zisk, roční ROI a break-even.', cat:'finance', color:'#f97316'},
+  {id:'roi',        icon:'💹', name:'ROI Kalkulačka',      desc:'Návratnost investice, čistý zisk, roční ROI, ROAS a PNO.', cat:'finance', color:'#f97316'},
   {id:'vat',        icon:'🧾', name:'DPH Kalkulačka',      desc:'Přidej/odeber DPH 10 %, 15 %, 21 % – obousměrně.', cat:'finance', color:'#f97316'},
   {id:'loan',       icon:'🏦', name:'Splátková kalkulačka', desc:'Měsíční splátka, celkový přeplatek a amortizační tabulka.', cat:'finance', color:'#f97316'},
   {id:'currency',   icon:'💱', name:'Orientační převod měn', desc:'Rychlý přepočet CZK, EUR, USD, GBP, JPY a dalších.', cat:'finance', color:'#f97316'},
@@ -735,7 +736,10 @@ slugify: () => `
 curljson: () => `
 <div class="tool-panel">
   <h3>🔄 Vstupní cURL příkaz</h3>
-  <textarea id="curl_in" placeholder="curl 'https://api.example.com/data' \\\n  -H 'Authorization: Bearer TOKEN' \\\n  -H 'Content-Type: application/json' \\\n  --data-raw '{\"key\":\"value\"}'" style="min-height:160px;font-family:var(--mono);font-size:0.85rem;" oninput="curl_parse()"></textarea>
+  <textarea id="curl_in" placeholder="curl 'https://api.example.com/data' \\
+  -H 'Authorization: Bearer TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  --data-raw '{&quot;key&quot;:&quot;value&quot;}'" style="min-height:160px;font-family:var(--mono);font-size:0.85rem;" oninput="curl_parse()"></textarea>
   <div class="btn-row">
     <button class="btn btn-secondary" onclick="document.getElementById('curl_in').value='';document.getElementById('curl_out').textContent='—';document.getElementById('curl_summary').innerHTML=''">🗑️ Vymazat</button>
     <button class="btn btn-primary" onclick="curl_parse()">⚙️ Převést</button>
@@ -747,6 +751,36 @@ curljson: () => `
   <pre id="curl_out" style="background:var(--bg1);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:0.82rem;font-family:var(--mono);color:var(--text1);overflow-x:auto;white-space:pre-wrap;min-height:80px;">—</pre>
   <div class="btn-row"><button class="btn btn-success" onclick="copyEl('curl_out')">📋 Kopírovat JSON</button></div>
 </div>`,
+
+// ─── HTML SYNTAX CHECK ────────────────────────────────────
+htmllint: () => `
+<div class="tool-panel">
+  <h3>🔍 Nahrát nebo vložit soubor</h3>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+    <label style="cursor:pointer;padding:8px 18px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:8px;font-size:0.85rem;font-weight:600;color:#fff;" for="hl_file">📂 Nahrát HTML soubor</label>
+    <input type="file" id="hl_file" accept=".html,.htm" style="display:none" onchange="hl_loadFile(this)">
+    <span id="hl_filename" style="color:var(--text3);font-size:0.82rem;font-family:var(--mono);">žádný soubor</span>
+  </div>
+  <textarea id="hl_in" placeholder="...nebo sem vlož HTML kód přímo" style="min-height:180px;font-family:var(--mono);font-size:0.8rem;" oninput="hl_run()"></textarea>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="hl_run()">🔍 Zkontrolovat</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('hl_in').value='';document.getElementById('hl_filename').textContent='žádný soubor';hl_reset()">🗑️ Vymazat</button>
+  </div>
+</div>
+<div class="tool-panel" id="hl_stats_panel" style="display:none">
+  <h3>📊 Přehled</h3>
+  <div class="stats-row" id="hl_stats"></div>
+</div>
+<div class="tool-panel" id="hl_errors_panel" style="display:none">
+  <h3>🚨 Problémy</h3>
+  <div id="hl_errors"></div>
+</div>
+<div class="tool-panel" id="hl_ok_panel" style="display:none">
+  <h3>✅ Struktura</h3>
+  <div id="hl_ok"></div>
+</div>`,
+
+// ─── WORD COUNT ───────────────────────────────────────────
 wordcount: () => `
 <div class="tool-panel">
   <h3>📝 Vstup</h3>
@@ -1706,67 +1740,6 @@ function sl_run() {
   document.getElementById('sl_out').textContent = t || '—';
 }
 
-function curl_parse() {
-  const raw = document.getElementById('curl_in').value.trim();
-  if (!raw) return;
-  // Normalize multiline (backslash line continuation)
-  const line = raw.replace(/\\\n\s*/g, ' ').replace(/\s+/g, ' ');
-  const result = { method: 'GET', url: '', headers: {}, body: null, queryParams: {} };
-
-  // URL – first quoted or unquoted token after curl
-  const urlMatch = line.match(/curl\s+(?:-[^\s'"]+ )*['"]?([^'">\s]+)['"]?/);
-  if (urlMatch) {
-    try {
-      const u = new URL(urlMatch[1]);
-      result.url = u.origin + u.pathname;
-      u.searchParams.forEach((v, k) => result.queryParams[k] = v);
-      if (!Object.keys(result.queryParams).length) delete result.queryParams;
-    } catch { result.url = urlMatch[1]; }
-  }
-
-  // Method
-  const mMatch = line.match(/-X\s+['"]?([A-Z]+)['"]?/);
-  if (mMatch) result.method = mMatch[1];
-
-  // Headers
-  const hRe = /-H\s+['"]([^'"]+)['"]/g;
-  let hm;
-  while ((hm = hRe.exec(line)) !== null) {
-    const idx = hm[1].indexOf(':');
-    if (idx > -1) result.headers[hm[1].slice(0, idx).trim()] = hm[1].slice(idx + 1).trim();
-  }
-  if (!Object.keys(result.headers).length) delete result.headers;
-
-  // Body
-  const bodyMatch = line.match(/(?:--data(?:-raw|-binary|-urlencode)?|--json|-d)\s+['"](.+?)['"]/);
-  if (bodyMatch) {
-    result.method = result.method === 'GET' ? 'POST' : result.method;
-    try { result.body = JSON.parse(bodyMatch[1]); }
-    catch { result.body = bodyMatch[1]; }
-  } else { delete result.body; }
-
-  const json = JSON.stringify(result, null, 2);
-  document.getElementById('curl_out').textContent = json;
-
-  // Summary badges
-  const methodColor = { GET:'#3b82f6', POST:'#22c55e', PUT:'#f59e0b', DELETE:'#ef4444', PATCH:'#a855f7' };
-  const col = methodColor[result.method] || '#94a3b8';
-  const hCount = result.headers ? Object.keys(result.headers).length : 0;
-  document.getElementById('curl_summary').innerHTML =
-    `<span class="stat-chip" style="color:${col};border-color:${col}40">${result.method}</span>` +
-    (hCount ? `<span class="stat-chip">${hCount} hlavičk${hCount === 1 ? 'a' : hCount < 5 ? 'y' : ''}</span>` : '') +
-    (result.body ? `<span class="stat-chip" style="color:var(--green)">body ✓</span>` : '') +
-    (result.queryParams ? `<span class="stat-chip">${Object.keys(result.queryParams).length} query params</span>` : '');
-}
-
-function copyEl(id) {
-  const el = document.getElementById(id);
-  navigator.clipboard.writeText(el.textContent).then(() => {
-    const btn = document.querySelector(`[onclick="copyEl('${id}')"]`);
-    if (btn) { const orig = btn.textContent; btn.textContent = '✅ Zkopírováno'; setTimeout(() => btn.textContent = orig, 1500); }
-  });
-}
-
 function mt_check() {
   const title = document.getElementById('mt_title').value;
   const desc = document.getElementById('mt_desc').value;
@@ -1881,13 +1854,153 @@ function roi_calc() {
   const profit = ret - inv - cost;
   const roi = inv > 0 ? profit / inv * 100 : 0;
   const roas = inv > 0 ? ret / inv : 0;
-  const pno = ret > 0 ? inv / ret * 100 : 0;
+  const pno  = ret > 0 ? inv / ret * 100 : 0;
   document.getElementById('roi_profit').innerHTML = `<span style="color:${profit >= 0 ? 'var(--green)' : 'var(--red)'}">${fmt(profit)} Kč</span>`;
-  document.getElementById('roi_pct').innerHTML = `<span style="color:${roi >= 0 ? 'var(--amber)' : 'var(--red)'}">${fmt(roi)} %</span>`;
-  document.getElementById('roi_ann').textContent = fmt(roi / (months / 12)) + ' % / rok';
-  document.getElementById('roi_be').textContent = fmt(inv + cost) + ' Kč';
-  document.getElementById('roi_roas').innerHTML = `<span style="color:${roas >= 1 ? 'var(--green)' : 'var(--red)'}">${roas.toFixed(2)}×</span>`;
-  document.getElementById('roi_pno').innerHTML = `<span style="color:${pno <= 30 ? 'var(--green)' : pno <= 50 ? 'var(--amber)' : 'var(--red)'}">${fmt(pno)} %</span>`;
+  document.getElementById('roi_pct').innerHTML    = `<span style="color:${roi  >= 0 ? 'var(--amber)' : 'var(--red)'}">${fmt(roi)} %</span>`;
+  document.getElementById('roi_ann').textContent  = fmt(roi / (months / 12)) + ' % / rok';
+  document.getElementById('roi_be').textContent   = fmt(inv + cost) + ' Kč';
+  document.getElementById('roi_roas').innerHTML   = `<span style="color:${roas >= 1 ? 'var(--green)' : 'var(--red)'}">${roas.toFixed(2)}×</span>`;
+  document.getElementById('roi_pno').innerHTML    = `<span style="color:${pno <= 30 ? 'var(--green)' : pno <= 50 ? 'var(--amber)' : 'var(--red)'}">${fmt(pno)} %</span>`;
+}
+
+function copyEl(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = document.querySelector('[onclick="copyEl(\'' + id + '\')"]');
+    if (btn) { const orig = btn.textContent; btn.textContent = '✅ Zkopírováno'; setTimeout(() => btn.textContent = orig, 1500); }
+  });
+}
+
+function curl_parse() {
+  const raw = document.getElementById('curl_in').value.trim();
+  if (!raw) return;
+  const line = raw.replace(/\\\n\s*/g, ' ').replace(/\s+/g, ' ');
+  const result = { method: 'GET', url: '', headers: {}, body: null, queryParams: {} };
+  const urlMatch = line.match(/curl\s+(?:-[^\s'"]+\s+)*['"]?([^'"<>\s]+)['"]?/);
+  if (urlMatch) {
+    try {
+      const u = new URL(urlMatch[1]);
+      result.url = u.origin + u.pathname;
+      u.searchParams.forEach((v, k) => result.queryParams[k] = v);
+      if (!Object.keys(result.queryParams).length) delete result.queryParams;
+    } catch { result.url = urlMatch[1]; }
+  }
+  const mMatch = line.match(/-X\s+['"]?([A-Z]+)['"]?/);
+  if (mMatch) result.method = mMatch[1];
+  const hRe = /-H\s+['"]([^'"]+)['"]/g;
+  let hm;
+  while ((hm = hRe.exec(line)) !== null) {
+    const idx = hm[1].indexOf(':');
+    if (idx > -1) result.headers[hm[1].slice(0, idx).trim()] = hm[1].slice(idx + 1).trim();
+  }
+  if (!Object.keys(result.headers).length) delete result.headers;
+  const bodyMatch = line.match(/(?:--data(?:-raw|-binary|-urlencode)?|--json|-d)\s+['"](.+?)['"]/);
+  if (bodyMatch) {
+    result.method = result.method === 'GET' ? 'POST' : result.method;
+    try { result.body = JSON.parse(bodyMatch[1]); } catch { result.body = bodyMatch[1]; }
+  } else { delete result.body; }
+  const json = JSON.stringify(result, null, 2);
+  document.getElementById('curl_out').textContent = json;
+  const methodColor = { GET:'#3b82f6', POST:'#22c55e', PUT:'#f59e0b', DELETE:'#ef4444', PATCH:'#a855f7' };
+  const col = methodColor[result.method] || '#94a3b8';
+  const hCount = result.headers ? Object.keys(result.headers).length : 0;
+  document.getElementById('curl_summary').innerHTML =
+    '<span class="stat-chip" style="color:' + col + ';border-color:' + col + '40">' + result.method + '</span>' +
+    (hCount ? '<span class="stat-chip">' + hCount + ' hlaviček</span>' : '') +
+    (result.body ? '<span class="stat-chip" style="color:var(--green)">body ✓</span>' : '') +
+    (result.queryParams ? '<span class="stat-chip">' + Object.keys(result.queryParams).length + ' query params</span>' : '');
+}
+
+function hl_loadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('hl_filename').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+  const reader = new FileReader();
+  reader.onload = function(e) { document.getElementById('hl_in').value = e.target.result; hl_run(); };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function hl_reset() {
+  ['hl_stats_panel','hl_errors_panel','hl_ok_panel'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+}
+
+function hl_run() {
+  var src = document.getElementById('hl_in').value;
+  if (!src.trim()) { hl_reset(); return; }
+  var issues = [], infos = [], lines = src.split('\n');
+  var charCount = src.length, lineCount = lines.length;
+  var scriptTags = (src.match(/<script[\s>]/gi)||[]).length;
+  var styleTags  = (src.match(/<style[\s>]/gi)||[]).length;
+  var imgTags    = (src.match(/<img\s/gi)||[]).length;
+  var aTags      = (src.match(/<a\s/gi)||[]).length;
+  if (!/<html[\s>]/i.test(src)) issues.push({sev:'warn', msg:'Chybí tag &lt;html&gt;'});
+  if (!/<head[\s>]/i.test(src)) issues.push({sev:'warn', msg:'Chybí tag &lt;head&gt;'});
+  if (!/<body[\s>]/i.test(src)) issues.push({sev:'warn', msg:'Chybí tag &lt;body&gt;'});
+  if (!/<title>/i.test(src))     issues.push({sev:'warn', msg:'Chybí &lt;title&gt;'});
+  if (!/<meta\s[^>]*charset/i.test(src)) issues.push({sev:'warn', msg:'Chybí charset meta tag'});
+  if (!/<meta\s[^>]*viewport/i.test(src)) issues.push({sev:'info', msg:'Chybí viewport meta'});
+  var pairedTags = ['div','span','p','a','ul','ol','li','table','tr','td','thead','tbody','form','section','article','header','footer','nav','main','h1','h2','h3','h4','h5','h6','script','style','head','body','html','button','select','textarea'];
+  pairedTags.forEach(function(tag) {
+    var opens  = (src.match(new RegExp('<' + tag + '[\\s>]', 'gi'))||[]).length;
+    var closes = (src.match(new RegExp('</' + tag + '>', 'gi'))||[]).length;
+    if (opens !== closes) {
+      var diff = opens - closes;
+      issues.push({sev: diff > 0 ? 'error' : 'warn', msg: '&lt;' + tag + '&gt;: ' + opens + '× otevřeno, ' + closes + '× zavřeno' + (diff > 0 ? ' — chybí ' + diff + '× &lt;/' + tag + '&gt;' : ' — přebývá ' + Math.abs(diff) + '× &lt;/' + tag + '&gt;')});
+    }
+  });
+  var imgNoAlt = (src.match(/<img(?![^>]*\balt\s*=)[^>]*>/gi)||[]).length;
+  if (imgNoAlt) issues.push({sev:'warn', msg: imgNoAlt + ' obrázek/ů bez atributu alt'});
+  var inlineStyles = (src.match(/\bstyle\s*=/gi)||[]).length;
+  if (inlineStyles > 20) issues.push({sev:'info', msg: inlineStyles + '× inline style=""'});
+  var ids = Array.from(src.matchAll(/\bid\s*=\s*["']([^"']+)["']/gi)).map(function(m){return m[1];});
+  var dupIds = ids.filter(function(id,i){return ids.indexOf(id) !== i;});
+  if (dupIds.length) issues.push({sev:'error', msg:'Duplicitní id: ' + [...new Set(dupIds)].join(', ')});
+  var consoleLogs = (src.match(/console\.log\s*\(/g)||[]).length;
+  if (consoleLogs) issues.push({sev:'info', msg: consoleLogs + '× console.log()'});
+  var varCount = (src.match(/\bvar\s+/g)||[]).length;
+  if (varCount) issues.push({sev:'info', msg: varCount + '× var — preferuj let/const'});
+  var importantCount = (src.match(/!important/g)||[]).length;
+  if (importantCount > 3) issues.push({sev:'info', msg: importantCount + '× !important v CSS'});
+  var emptyHref = (src.match(/href\s*=\s*["']\s*["']/gi)||[]).length;
+  var emptySrc  = (src.match(/src\s*=\s*["']\s*["']/gi)||[]).length;
+  if (emptyHref) issues.push({sev:'warn', msg: emptyHref + '× prázdné href=""'});
+  if (emptySrc)  issues.push({sev:'warn', msg: emptySrc  + '× prázdné src=""'});
+  if (/<meta\s[^>]*description/i.test(src))  infos.push('✅ Meta description přítomna');
+  if (/<meta\s[^>]*og:title/i.test(src))     infos.push('✅ Open Graph title');
+  if (/<link\s[^>]*canonical/i.test(src))    infos.push('✅ Canonical URL');
+  if (/<script[^>]*type="application\/ld\+json"/i.test(src)) infos.push('✅ Structured data (JSON-LD)');
+  if (/loading\s*=\s*["']lazy["']/i.test(src)) infos.push('✅ Lazy loading obrázků');
+  if (/async|defer/i.test(src))               infos.push('✅ async/defer na scriptech');
+  if (/rel\s*=\s*["']noopener/i.test(src))   infos.push('✅ rel="noopener"');
+  var errors   = issues.filter(function(i){return i.sev==='error';});
+  var warnings = issues.filter(function(i){return i.sev==='warn';});
+  var infoList = issues.filter(function(i){return i.sev==='info';});
+  var scoreColor = errors.length ? 'var(--red)' : warnings.length > 3 ? 'var(--amber)' : 'var(--green)';
+  var scoreLabel = errors.length ? 'Chyby nalezeny' : warnings.length > 3 ? 'Varování' : 'OK';
+  document.getElementById('hl_stats').innerHTML =
+    '<div class="stat-chip" style="color:' + scoreColor + '">' + scoreLabel + '</div>' +
+    '<div class="stat-chip">' + lineCount + ' řádků</div>' +
+    '<div class="stat-chip">' + (charCount/1024).toFixed(1) + ' KB</div>' +
+    '<div class="stat-chip">' + scriptTags + ' &lt;script&gt;</div>' +
+    '<div class="stat-chip">' + styleTags  + ' &lt;style&gt;</div>' +
+    '<div class="stat-chip">' + imgTags    + ' &lt;img&gt;</div>' +
+    '<div class="stat-chip">' + aTags      + ' &lt;a&gt;</div>' +
+    (errors.length   ? '<div class="stat-chip" style="color:var(--red)">🚨 ' + errors.length   + ' chyb</div>' : '') +
+    (warnings.length ? '<div class="stat-chip" style="color:var(--amber)">⚠️ ' + warnings.length + ' varování</div>' : '') +
+    (infoList.length ? '<div class="stat-chip" style="color:var(--blue)">💡 ' + infoList.length  + ' info</div>' : '');
+  var sevIcon = {error:'🚨', warn:'⚠️', info:'💡'};
+  var sevCol  = {error:'var(--red)', warn:'var(--amber)', info:'var(--blue)'};
+  document.getElementById('hl_errors').innerHTML = issues.length
+    ? issues.map(function(i){return '<div style="padding:8px 12px;margin-bottom:6px;border-radius:8px;border-left:3px solid ' + sevCol[i.sev] + ';background:rgba(0,0,0,0.2);font-size:0.85rem;font-family:var(--mono)">' + sevIcon[i.sev] + ' <span style="color:' + sevCol[i.sev] + '">[' + i.sev.toUpperCase() + ']</span> ' + i.msg + '</div>';}).join('')
+    : '<div style="color:var(--green);padding:8px;">✅ Žádné problémy</div>';
+  document.getElementById('hl_ok').innerHTML = infos.length
+    ? infos.map(function(i){return '<div style="padding:6px 12px;margin-bottom:4px;border-radius:8px;background:rgba(34,197,94,0.08);font-size:0.85rem;color:var(--green)">' + i + '</div>';}).join('')
+    : '<div style="color:var(--text3);font-size:0.85rem;">— žádné pozitivní nálezy</div>';
+  document.getElementById('hl_stats_panel').style.display = '';
+  document.getElementById('hl_errors_panel').style.display = '';
+  document.getElementById('hl_ok_panel').style.display = '';
 }
 
 function vatFromNet() {
