@@ -531,6 +531,7 @@ const TOOLS = [
   {id:'metatags',   icon:'🏷️', name:'Meta Tags & SERP',    desc:'Kontrola délky title/description a živý náhled ve výsledcích hledání.', cat:'seo',     color:'#3b82f6'},
   {id:'utmbuilder', icon:'📊', name:'UTM Builder',         desc:'Generátor UTM parametrů pro GA4 kampaně.', cat:'seo',     color:'#3b82f6'},
   {id:'slugify',    icon:'🔗', name:'URL Slug',            desc:'Převede nadpis na SEO-friendly URL slug okamžitě.', cat:'seo',     color:'#3b82f6'},
+  {id:'curljson',   icon:'🔄', name:'cURL → JSON',         desc:'Převede cURL příkaz na strukturovaný JSON — metoda, URL, hlavičky, body.', cat:'seo',     color:'#3b82f6', badge:'new'},
   {id:'wordcount',  icon:'📝', name:'Počítadlo slov',      desc:'Slova, znaky, věty, odstavce, doba čtení a frekvence slov.', cat:'text',    color:'#60a5fa'},
   {id:'caseconvert',icon:'🔡', name:'Konverze textu',      desc:'UPPER, lower, Title, camelCase, snake_case, kebab-case…', cat:'text',    color:'#60a5fa'},
   {id:'findreplace',icon:'🔄', name:'Najít a nahradit',    desc:'Hromadné nahrazení s podporou regulárních výrazů.', cat:'text',    color:'#60a5fa'},
@@ -730,7 +731,22 @@ slugify: () => `
   <div class="btn-row"><button class="btn btn-success" onclick="copyText('sl_out')">📋 Kopírovat</button></div>
 </div>`,
 
-// ─── WORD COUNT ───────────────────────────────────────────
+// ─── CURL → JSON ──────────────────────────────────────────
+curljson: () => `
+<div class="tool-panel">
+  <h3>🔄 Vstupní cURL příkaz</h3>
+  <textarea id="curl_in" placeholder="curl 'https://api.example.com/data' \\\n  -H 'Authorization: Bearer TOKEN' \\\n  -H 'Content-Type: application/json' \\\n  --data-raw '{\"key\":\"value\"}'" style="min-height:160px;font-family:var(--mono);font-size:0.85rem;" oninput="curl_parse()"></textarea>
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="document.getElementById('curl_in').value='';document.getElementById('curl_out').textContent='—';document.getElementById('curl_summary').innerHTML=''">🗑️ Vymazat</button>
+    <button class="btn btn-primary" onclick="curl_parse()">⚙️ Převést</button>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>📋 Strukturovaný JSON výstup</h3>
+  <div id="curl_summary" style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;"></div>
+  <pre id="curl_out" style="background:var(--bg1);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:0.82rem;font-family:var(--mono);color:var(--text1);overflow-x:auto;white-space:pre-wrap;min-height:80px;">—</pre>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyEl('curl_out')">📋 Kopírovat JSON</button></div>
+</div>`,
 wordcount: () => `
 <div class="tool-panel">
   <h3>📝 Vstup</h3>
@@ -837,8 +853,8 @@ roi: () => `
 <div class="tool-panel">
   <h3>💹 Vstupní hodnoty</h3>
   <div class="grid-2">
-    <div><label>Celková investice (Kč)</label><input type="number" id="roi_i" placeholder="10000" oninput="roi_calc()"></div>
-    <div><label>Celkový výnos / příjem (Kč)</label><input type="number" id="roi_r" placeholder="15000" oninput="roi_calc()"></div>
+    <div><label>Náklady na reklamu / investice (Kč)</label><input type="number" id="roi_i" placeholder="10000" oninput="roi_calc()"></div>
+    <div><label>Celkový výnos / obrat z reklamy (Kč)</label><input type="number" id="roi_r" placeholder="50000" oninput="roi_calc()"></div>
     <div><label>Další náklady (Kč)</label><input type="number" id="roi_c" placeholder="0" oninput="roi_calc()"></div>
     <div><label>Doba trvání (měsíce)</label><input type="number" id="roi_m" placeholder="12" oninput="roi_calc()"></div>
   </div>
@@ -850,6 +866,8 @@ roi: () => `
     <div class="stat-chip">ROI: <strong id="roi_pct">—</strong></div>
     <div class="stat-chip">Roční ROI: <strong id="roi_ann">—</strong></div>
     <div class="stat-chip">Break-even: <strong id="roi_be">—</strong></div>
+    <div class="stat-chip" title="Return on Ad Spend = Výnos / Náklady na reklamu">ROAS: <strong id="roi_roas">—</strong></div>
+    <div class="stat-chip" title="Podíl nákladů na obratu = Náklady / Výnos × 100">PNO: <strong id="roi_pno">—</strong></div>
   </div>
 </div>`,
 
@@ -1688,6 +1706,67 @@ function sl_run() {
   document.getElementById('sl_out').textContent = t || '—';
 }
 
+function curl_parse() {
+  const raw = document.getElementById('curl_in').value.trim();
+  if (!raw) return;
+  // Normalize multiline (backslash line continuation)
+  const line = raw.replace(/\\\n\s*/g, ' ').replace(/\s+/g, ' ');
+  const result = { method: 'GET', url: '', headers: {}, body: null, queryParams: {} };
+
+  // URL – first quoted or unquoted token after curl
+  const urlMatch = line.match(/curl\s+(?:-[^\s'"]+ )*['"]?([^'">\s]+)['"]?/);
+  if (urlMatch) {
+    try {
+      const u = new URL(urlMatch[1]);
+      result.url = u.origin + u.pathname;
+      u.searchParams.forEach((v, k) => result.queryParams[k] = v);
+      if (!Object.keys(result.queryParams).length) delete result.queryParams;
+    } catch { result.url = urlMatch[1]; }
+  }
+
+  // Method
+  const mMatch = line.match(/-X\s+['"]?([A-Z]+)['"]?/);
+  if (mMatch) result.method = mMatch[1];
+
+  // Headers
+  const hRe = /-H\s+['"]([^'"]+)['"]/g;
+  let hm;
+  while ((hm = hRe.exec(line)) !== null) {
+    const idx = hm[1].indexOf(':');
+    if (idx > -1) result.headers[hm[1].slice(0, idx).trim()] = hm[1].slice(idx + 1).trim();
+  }
+  if (!Object.keys(result.headers).length) delete result.headers;
+
+  // Body
+  const bodyMatch = line.match(/(?:--data(?:-raw|-binary|-urlencode)?|--json|-d)\s+['"](.+?)['"]/);
+  if (bodyMatch) {
+    result.method = result.method === 'GET' ? 'POST' : result.method;
+    try { result.body = JSON.parse(bodyMatch[1]); }
+    catch { result.body = bodyMatch[1]; }
+  } else { delete result.body; }
+
+  const json = JSON.stringify(result, null, 2);
+  document.getElementById('curl_out').textContent = json;
+
+  // Summary badges
+  const methodColor = { GET:'#3b82f6', POST:'#22c55e', PUT:'#f59e0b', DELETE:'#ef4444', PATCH:'#a855f7' };
+  const col = methodColor[result.method] || '#94a3b8';
+  const hCount = result.headers ? Object.keys(result.headers).length : 0;
+  document.getElementById('curl_summary').innerHTML =
+    `<span class="stat-chip" style="color:${col};border-color:${col}40">${result.method}</span>` +
+    (hCount ? `<span class="stat-chip">${hCount} hlavičk${hCount === 1 ? 'a' : hCount < 5 ? 'y' : ''}</span>` : '') +
+    (result.body ? `<span class="stat-chip" style="color:var(--green)">body ✓</span>` : '') +
+    (result.queryParams ? `<span class="stat-chip">${Object.keys(result.queryParams).length} query params</span>` : '');
+}
+
+function copyEl(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = document.querySelector(`[onclick="copyEl('${id}')"]`);
+    if (btn) { const orig = btn.textContent; btn.textContent = '✅ Zkopírováno'; setTimeout(() => btn.textContent = orig, 1500); }
+  });
+}
+
 function mt_check() {
   const title = document.getElementById('mt_title').value;
   const desc = document.getElementById('mt_desc').value;
@@ -1801,10 +1880,14 @@ function roi_calc() {
   const months = parseFloat(document.getElementById('roi_m').value) || 12;
   const profit = ret - inv - cost;
   const roi = inv > 0 ? profit / inv * 100 : 0;
+  const roas = inv > 0 ? ret / inv : 0;
+  const pno = ret > 0 ? inv / ret * 100 : 0;
   document.getElementById('roi_profit').innerHTML = `<span style="color:${profit >= 0 ? 'var(--green)' : 'var(--red)'}">${fmt(profit)} Kč</span>`;
   document.getElementById('roi_pct').innerHTML = `<span style="color:${roi >= 0 ? 'var(--amber)' : 'var(--red)'}">${fmt(roi)} %</span>`;
   document.getElementById('roi_ann').textContent = fmt(roi / (months / 12)) + ' % / rok';
   document.getElementById('roi_be').textContent = fmt(inv + cost) + ' Kč';
+  document.getElementById('roi_roas').innerHTML = `<span style="color:${roas >= 1 ? 'var(--green)' : 'var(--red)'}">${roas.toFixed(2)}×</span>`;
+  document.getElementById('roi_pno').innerHTML = `<span style="color:${pno <= 30 ? 'var(--green)' : pno <= 50 ? 'var(--amber)' : 'var(--red)'}">${fmt(pno)} %</span>`;
 }
 
 function vatFromNet() {
