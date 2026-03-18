@@ -792,7 +792,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   
   <!-- HEADER -->
   <header id="header">
-    <div class="logo">
+    <div class="logo" id="logo-trigger">
       <span class="logo-icon"><span class="gold-icon">🔥</span></span>
       <span class="logo-text">Ember</span>
     </div>
@@ -946,6 +946,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 </div>
+  <script>
+(function() {
+  var clicks = 0, timer;
+  document.getElementById('logo-trigger').addEventListener('click', function() {
+    clicks++;
+    clearTimeout(timer);
+    timer = setTimeout(function(){ clicks = 0; }, 2000); // reset po 2s nečinnosti
+    if (clicks >= 5) {
+      clicks = 0;
+      window.location.href = '/admin/';
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
