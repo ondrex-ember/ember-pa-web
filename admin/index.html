@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Ember PA</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔐</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg-dark:   #0a0e27;
+  --bg-mid:    #111827;
+  --bg-card:   #1e2940;
+  --bg-input:  #0d1629;
+  --blue:      #3b82f6;
+  --blue-dim:  rgba(59,130,246,0.15);
+  --orange:    #f97316;
+  --accent:    #60a5fa;
+  --amber:     #f59e0b;
+  --green:     #22c55e;
+  --red:       #ef4444;
+  --text:      #e8edf4;
+  --text2:     #94a3b8;
+  --text3:     #64748b;
+  --border:    rgba(59,130,246,0.2);
+  --border-hi: rgba(59,130,246,0.5);
+  --radius:    10px;
+}
+
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { height:100%; font-family:'Inter',sans-serif; background:var(--bg-dark); color:var(--text); }
+
+/* ════ LOGIN OVERLAY ════ */
+#login-overlay {
+  position:fixed; inset:0; z-index:1000;
+  background: linear-gradient(135deg,#0a0e27,#1a1f3a);
+  display:flex; align-items:center; justify-content:center;
+}
+.login-box {
+  background: rgba(17,24,39,0.95);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:40px;
+  width:360px;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,0.7);
+}
+.login-icon { font-size:48px; margin-bottom:16px; }
+.login-title { font-size:22px; font-weight:700; margin-bottom:6px; }
+.login-sub { font-size:13px; color:var(--text3); margin-bottom:28px; }
+.login-input {
+  width:100%; padding:12px 16px;
+  background:var(--bg-input); border:1px solid var(--border);
+  border-radius:var(--radius); color:var(--text); font-size:15px;
+  outline:none; transition:border-color .2s;
+  margin-bottom:12px;
+  font-family:'JetBrains Mono',monospace; letter-spacing:2px;
+}
+.login-input:focus { border-color:var(--blue); }
+.login-input.error { border-color:var(--red); animation:shake .3s; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
+}
+.btn-login {
+  width:100%; padding:13px;
+  background:linear-gradient(135deg,var(--blue),var(--orange));
+  color:#fff; font-size:15px; font-weight:600;
+  border:none; border-radius:var(--radius); cursor:pointer;
+  transition:opacity .2s;
+}
+.btn-login:hover { opacity:.9; }
+.btn-login:disabled { opacity:.5; cursor:not-allowed; }
+.login-error { color:var(--red); font-size:13px; margin-top:10px; min-height:18px; }
+
+/* ════ APP LAYOUT ════ */
+#admin-app {
+  display:none; height:100vh;
+  flex-direction:row;
+}
+
+/* ── SIDEBAR ── */
+#sidebar {
+  width:220px; flex-shrink:0;
+  background: rgba(17,24,39,0.97);
+  border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  overflow-y:auto;
+}
+.sidebar-header {
+  padding:20px 16px 16px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar-brand {
+  font-size:16px; font-weight:800;
+  background:linear-gradient(135deg,var(--blue),var(--orange));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.sidebar-sub { font-size:11px; color:var(--text3); margin-top:2px; font-family:'JetBrains Mono',monospace; }
+
+.sidebar-section { padding:12px 10px 4px; }
+.sidebar-section-label {
+  font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:1px;
+  padding:0 6px; margin-bottom:4px;
+}
+.sidebar-item {
+  display:flex; align-items:center; gap:8px;
+  padding:9px 10px; border-radius:8px;
+  font-size:14px; color:var(--text2); cursor:pointer;
+  transition:all .2s; user-select:none;
+}
+.sidebar-item:hover { background:var(--blue-dim); color:var(--text); }
+.sidebar-item.active { background:var(--blue-dim); color:var(--accent); font-weight:600; }
+.sidebar-item .s-icon { font-size:16px; }
+
+.sidebar-footer {
+  margin-top:auto; padding:16px;
+  border-top:1px solid var(--border);
+}
+.btn-logout {
+  width:100%; padding:9px;
+  background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.25);
+  color:var(--red); font-size:13px; font-weight:600;
+  border-radius:8px; cursor:pointer; transition:all .2s;
+}
+.btn-logout:hover { background:rgba(239,68,68,0.2); }
+
+/* ── MAIN CONTENT ── */
+#module-container {
+  flex:1; overflow-y:auto;
+  background: linear-gradient(135deg,#0a0e1f,#111827);
+  padding:32px;
+}
+@media(max-width:768px){
+  #admin-app { flex-direction:column; }
+  #sidebar { width:100%; height:auto; flex-direction:row; flex-wrap:wrap; }
+  #module-container { padding:20px 16px; }
+}
+
+/* ════ MODULE STYLES ════ */
+.module-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:28px; flex-wrap:wrap; gap:12px;
+}
+.module-title { font-size:22px; font-weight:700; }
+.module-sub { font-size:13px; color:var(--text2); margin-top:2px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:9px 18px; border-radius:8px;
+  font-size:13px; font-weight:600; cursor:pointer;
+  border:none; transition:all .2s;
+}
+.btn-primary { background:linear-gradient(135deg,var(--blue),#2563eb); color:#fff; }
+.btn-primary:hover { opacity:.9; transform:translateY(-1px); }
+.btn-danger { background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); color:var(--red); }
+.btn-danger:hover { background:rgba(239,68,68,0.25); }
+.btn-ghost { background:var(--blue-dim); border:1px solid var(--border); color:var(--accent); }
+.btn-ghost:hover { border-color:var(--border-hi); }
+.btn:disabled { opacity:.4; cursor:not-allowed; }
+
+/* ── FORM ── */
+.form-card {
+  background:rgba(17,24,39,0.8);
+  border:1px solid var(--border);
+  border-radius:14px; padding:24px;
+  margin-bottom:28px;
+}
+.form-title { font-size:16px; font-weight:700; margin-bottom:20px; color:var(--accent); }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:700px){ .form-grid{grid-template-columns:1fr} }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group.full { grid-column:1/-1; }
+label { font-size:12px; color:var(--text2); font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+input[type=text], input[type=url], textarea, input[type=number] {
+  background:var(--bg-input); border:1px solid var(--border);
+  border-radius:8px; color:var(--text);
+  padding:10px 12px; font-size:14px; font-family:'Inter',sans-serif;
+  outline:none; transition:border-color .2s; width:100%;
+}
+input:focus, textarea:focus { border-color:var(--blue); }
+textarea { resize:vertical; min-height:90px; line-height:1.5; }
+.char-count { font-size:11px; color:var(--text3); text-align:right; margin-top:2px; }
+.char-count.warn { color:var(--amber); }
+.char-count.over { color:var(--red); }
+.input-hint { font-size:11px; color:var(--text3); margin-top:2px; }
+
+/* image tabs */
+.img-tabs { display:flex; gap:8px; margin-bottom:10px; }
+.img-tab {
+  padding:5px 14px; border-radius:6px; font-size:12px; font-weight:600;
+  cursor:pointer; border:1px solid var(--border); color:var(--text2);
+  transition:all .2s;
+}
+.img-tab.active { background:var(--blue-dim); border-color:var(--blue); color:var(--accent); }
+.img-preview {
+  width:100%; aspect-ratio:16/9; object-fit:cover;
+  border-radius:8px; border:1px solid var(--border);
+  background:var(--bg-input); display:none; margin-top:8px;
+}
+.img-preview.show { display:block; }
+
+/* ── ITEMS TABLE ── */
+.items-list { display:flex; flex-direction:column; gap:12px; }
+.item-row {
+  background:rgba(17,24,39,0.8);
+  border:1px solid var(--border);
+  border-radius:12px; padding:16px;
+  display:flex; align-items:center; gap:16px;
+  transition:border-color .2s;
+}
+.item-row:hover { border-color:var(--border-hi); }
+.item-thumb {
+  width:80px; height:45px; object-fit:cover;
+  border-radius:6px; background:var(--bg-input);
+  flex-shrink:0; border:1px solid var(--border);
+}
+.item-thumb-placeholder {
+  width:80px; height:45px; border-radius:6px;
+  background:var(--bg-input); border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px; flex-shrink:0;
+}
+.item-info { flex:1; min-width:0; }
+.item-row-title { font-size:14px; font-weight:700; margin-bottom:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.item-row-meta { font-size:12px; color:var(--text3); font-family:'JetBrains Mono',monospace; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.item-actions { display:flex; gap:8px; flex-shrink:0; }
+.order-ctrl { display:flex; flex-direction:column; gap:2px; flex-shrink:0; }
+.order-btn {
+  background:var(--blue-dim); border:1px solid var(--border);
+  color:var(--text2); font-size:12px; cursor:pointer;
+  border-radius:4px; padding:2px 7px; transition:all .15s;
+}
+.order-btn:hover { border-color:var(--border-hi); color:var(--text); }
+.order-btn:disabled { opacity:.3; cursor:not-allowed; }
+
+/* ── STATUS TOAST ── */
+#toast {
+  position:fixed; bottom:28px; right:28px; z-index:9999;
+  background:rgba(17,24,39,0.95); border:1px solid var(--border);
+  border-radius:10px; padding:14px 20px;
+  font-size:14px; color:var(--text);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+  transform:translateY(80px); opacity:0;
+  transition:all .3s; pointer-events:none;
+  display:flex; align-items:center; gap:10px;
+}
+#toast.show { transform:translateY(0); opacity:1; }
+#toast.success { border-color:rgba(34,197,94,0.4); }
+#toast.error   { border-color:rgba(239,68,68,0.4); }
+#toast.loading { border-color:rgba(59,130,246,0.4); }
+
+.spinner-sm {
+  width:16px; height:16px; border-radius:50%;
+  border:2px solid var(--border); border-top-color:var(--blue);
+  animation:spin .6s linear infinite; flex-shrink:0;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── EMPTY ── */
+.empty-list {
+  text-align:center; padding:60px 20px;
+  color:var(--text3);
+}
+.empty-list .icon { font-size:48px; margin-bottom:12px; }
+</style>
+</head>
+<body>
+
+<!-- ════════════════ LOGIN OVERLAY ════════════════ -->
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="login-icon">🔐</div>
+    <div class="login-title">Admin Panel</div>
+    <div class="login-sub">ember-pa.cz</div>
+    <input type="password" id="pw-input" class="login-input" placeholder="Heslo" autocomplete="current-password">
+    <button class="btn-login" id="pw-submit">Přihlásit</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ════════════════ ADMIN APP ════════════════ -->
+<div id="admin-app">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">🔥 Ember Admin</div>
+      <div class="sidebar-sub">ember-pa.cz</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Obsah</div>
+      <div class="sidebar-item active" data-module="funhub">
+        <span class="s-icon">🎉</span> Fun Hub
+      </div>
+      <!-- Future modules will be added here -->
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout" id="btn-logout">Odhlásit</button>
+    </div>
+  </aside>
+
+  <!-- MODULE CONTAINER -->
+  <main id="module-container">
+    <div id="loading-module" style="text-align:center;padding:80px 20px;color:#64748b">
+      <div class="spinner-sm" style="width:32px;height:32px;border-width:3px;margin:0 auto 16px"></div>
+      <p>Načítám…</p>
+    </div>
+  </main>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════
+   CONSTANTS — security blobs
+════════════════════════════════════════════════ */
+const PW_HASH = "cc95600dadcde04140a8f5f04b4078bf21e42342607cc7198449bd7fecb9e164";
+
+const TOKEN_BLOB = {
+  "salt": "/CuQcXjrBBjjlFz5GH358w==",
+  "iv":   "98G7eNr98vXskWur",
+  "ct":   "AcL9PPLlhwN2JxXs/eo8xjQsgnkNltPgpV1klM5ww6tiWe4fAWysNJhxjFP34whrI44CQMe14uT9+BureVxtBmRUTIOJfPB1AF1TLMas+e/K3tWtK6MbupDZMRHaPOznmaGM1oWua/wqDvoW6g=="
+};
+
+const REPO = "ondrex-ember/ember-pa-web";
+const ITEMS_PATH = "fun/items.json";
+
+/* ════════════════════════════════════════════════
+   STATE
+════════════════════════════════════════════════ */
+let githubToken = null; // in memory only — never persisted
+
+/* ════════════════════════════════════════════════
+   CRYPTO HELPERS
+════════════════════════════════════════════════ */
+function b64ToBuffer(b64) {
+  const bin = atob(b64);
+  return Uint8Array.from(bin, c => c.charCodeAt(0)).buffer;
+}
+
+async function sha256hex(str) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function decryptToken(password) {
+  const keyMaterial = await crypto.subtle.importKey(
+    "raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveKey"]
+  );
+  const salt = b64ToBuffer(TOKEN_BLOB.salt);
+  const key = await crypto.subtle.deriveKey(
+    { name:"PBKDF2", salt, iterations:100000, hash:"SHA-256" },
+    keyMaterial,
+    { name:"AES-GCM", length:256 },
+    false, ["decrypt"]
+  );
+  const iv = b64ToBuffer(TOKEN_BLOB.iv);
+  const ct = b64ToBuffer(TOKEN_BLOB.ct);
+  const decrypted = await crypto.subtle.decrypt({ name:"AES-GCM", iv }, key, ct);
+  return new TextDecoder().decode(decrypted);
+}
+
+/* ════════════════════════════════════════════════
+   LOGIN
+════════════════════════════════════════════════ */
+const pwInput  = document.getElementById('pw-input');
+const pwSubmit = document.getElementById('pw-submit');
+const loginErr = document.getElementById('login-error');
+
+async function doLogin() {
+  const pw = pwInput.value;
+  if (!pw) return;
+
+  pwSubmit.disabled = true;
+  pwSubmit.textContent = 'Přihlašuji…';
+  loginErr.textContent = '';
+
+  try {
+    const hash = await sha256hex(pw);
+    if (hash !== PW_HASH) throw new Error('wrong password');
+
+    githubToken = await decryptToken(pw);
+    sessionStorage.setItem('adminAuth', '1');
+
+    document.getElementById('login-overlay').style.display = 'none';
+    const app = document.getElementById('admin-app');
+    app.style.display = 'flex';
+    loadModule('funhub');
+
+  } catch(e) {
+    loginErr.textContent = 'Nesprávné heslo.';
+    pwInput.classList.add('error');
+    setTimeout(() => pwInput.classList.remove('error'), 600);
+    pwSubmit.disabled = false;
+    pwSubmit.textContent = 'Přihlásit';
+    githubToken = null;
+  }
+}
+
+pwSubmit.addEventListener('click', doLogin);
+pwInput.addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+  githubToken = null;
+  sessionStorage.removeItem('adminAuth');
+  location.reload();
+});
+
+/* ════════════════════════════════════════════════
+   SIDEBAR NAVIGATION
+════════════════════════════════════════════════ */
+document.querySelectorAll('.sidebar-item[data-module]').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.sidebar-item').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+    loadModule(el.dataset.module);
+  });
+});
+
+function loadModule(name) {
+  if (name === 'funhub') initFunhub();
+}
+
+/* ════════════════════════════════════════════════
+   GITHUB API
+════════════════════════════════════════════════ */
+async function ghGet(path) {
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    headers: { Authorization: `Bearer ${githubToken}`, Accept: 'application/vnd.github+json' }
+  });
+  if (!r.ok) throw new Error(`GitHub GET failed: ${r.status}`);
+  return r.json();
+}
+
+async function ghPut(path, content, sha, message) {
+  const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${path}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${githubToken}`,
+      Accept: 'application/vnd.github+json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      message,
+      content: btoa(unescape(encodeURIComponent(content))),
+      sha
+    })
+  });
+  if (!r.ok) {
+    const err = await r.json().catch(()=>({}));
+    throw new Error(err.message || `GitHub PUT failed: ${r.status}`);
+  }
+  return r.json();
+}
+
+async function loadItems() {
+  const data = await ghGet(ITEMS_PATH);
+  const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+  return { items: JSON.parse(content), sha: data.sha };
+}
+
+async function saveItems(items, sha, message) {
+  const content = JSON.stringify(items, null, 2);
+  return ghPut(ITEMS_PATH, content, sha, message);
+}
+
+/* ════════════════════════════════════════════════
+   TOAST
+════════════════════════════════════════════════ */
+let toastTimer;
+function toast(msg, type = 'success', duration = 3500) {
+  const el = document.getElementById('toast');
+  el.className = 'show ' + type;
+  const icon = type==='success'?'✅':type==='error'?'❌':'⏳';
+  const spinner = type==='loading'?`<div class="spinner-sm"></div>`:'';
+  el.innerHTML = `${spinner}<span>${icon} ${msg}</span>`;
+  clearTimeout(toastTimer);
+  if (duration > 0) toastTimer = setTimeout(() => el.className='', duration);
+}
+
+/* ════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════ */
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+}
+
+/* ════════════════════════════════════════════════
+   MODULE: FUN HUB
+════════════════════════════════════════════════ */
+let fhItems = [];
+let fhSha   = null;
+let fhEditId = null; // null = new item, string = editing existing
+
+async function initFunhub() {
+  const mc = document.getElementById('module-container');
+  mc.innerHTML = `
+    <div class="module-header">
+      <div>
+        <div class="module-title">🎉 Fun Hub</div>
+        <div class="module-sub">Správa obsahu stránky /fun/</div>
+      </div>
+      <button class="btn btn-primary" id="btn-new-item">+ Přidat kartu</button>
+    </div>
+    <div id="fh-form-wrap" style="display:none"></div>
+    <div id="fh-list-wrap">
+      <div style="text-align:center;padding:60px;color:#64748b">
+        <div class="spinner-sm" style="width:28px;height:28px;border-width:2.5px;margin:0 auto 12px"></div>
+        <p>Načítám karty z GitHubu…</p>
+      </div>
+    </div>`;
+
+  document.getElementById('btn-new-item').addEventListener('click', () => openForm(null));
+
+  try {
+    const { items, sha } = await loadItems();
+    fhItems = items.sort((a,b) => (a.order||0)-(b.order||0));
+    fhSha = sha;
+    renderList();
+  } catch(e) {
+    document.getElementById('fh-list-wrap').innerHTML =
+      `<p style="color:var(--red);text-align:center;padding:40px">Chyba při načítání: ${esc(e.message)}</p>`;
+  }
+}
+
+/* ── RENDER LIST ── */
+function renderList() {
+  const wrap = document.getElementById('fh-list-wrap');
+  if (!fhItems.length) {
+    wrap.innerHTML = `
+      <div class="empty-list">
+        <div class="icon">🎉</div>
+        <p>Zatím žádné karty. Přidej první pomocí tlačítka výše.</p>
+      </div>`;
+    return;
+  }
+
+  wrap.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:13px;color:var(--text3)">${fhItems.length} kart${fhItems.length===1?'a':fhItems.length<5?'y':''}  •  změna pořadí tlačítky ↑ ↓</div>
+    </div>
+    <div class="items-list" id="items-list"></div>`;
+
+  const list = document.getElementById('items-list');
+  fhItems.forEach((item, idx) => {
+    const imgSrc = item.imageBase64 || item.imageUrl;
+    const thumb = imgSrc
+      ? `<img class="item-thumb" src="${esc(imgSrc)}" alt="" onerror="this.style.display='none'">`
+      : `<div class="item-thumb-placeholder">🔗</div>`;
+
+    const div = document.createElement('div');
+    div.className = 'item-row';
+    div.innerHTML = `
+      ${thumb}
+      <div class="item-info">
+        <div class="item-row-title">${esc(item.title)}</div>
+        <div class="item-row-meta">${esc(item.linkUrl)}</div>
+      </div>
+      <div class="order-ctrl">
+        <button class="order-btn" data-dir="up"  data-idx="${idx}" ${idx===0?'disabled':''}>▲</button>
+        <button class="order-btn" data-dir="down" data-idx="${idx}" ${idx===fhItems.length-1?'disabled':''}>▼</button>
+      </div>
+      <div class="item-actions">
+        <button class="btn btn-ghost" data-edit="${item.id}">✏️ Upravit</button>
+        <button class="btn btn-danger" data-del="${item.id}">🗑️</button>
+      </div>`;
+    list.appendChild(div);
+  });
+
+  // Events
+  list.querySelectorAll('.order-btn').forEach(btn => {
+    btn.addEventListener('click', () => reorder(parseInt(btn.dataset.idx), btn.dataset.dir));
+  });
+  list.querySelectorAll('[data-edit]').forEach(btn => {
+    btn.addEventListener('click', () => openForm(btn.dataset.edit));
+  });
+  list.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', () => deleteItem(btn.dataset.del));
+  });
+}
+
+/* ── REORDER ── */
+async function reorder(idx, dir) {
+  const swapIdx = dir==='up' ? idx-1 : idx+1;
+  if (swapIdx < 0 || swapIdx >= fhItems.length) return;
+  [fhItems[idx], fhItems[swapIdx]] = [fhItems[swapIdx], fhItems[idx]];
+  fhItems.forEach((it,i) => it.order = i+1);
+  renderList();
+  await persistItems('Reorder Fun Hub items');
+}
+
+/* ── DELETE ── */
+async function deleteItem(id) {
+  if (!confirm('Opravdu smazat tuto kartu?')) return;
+  fhItems = fhItems.filter(it => it.id !== id);
+  fhItems.forEach((it,i) => it.order = i+1);
+  renderList();
+  await persistItems('Delete Fun Hub item');
+}
+
+/* ── PERSIST ── */
+async function persistItems(message) {
+  toast('Ukládám na GitHub…', 'loading', 0);
+  try {
+    const result = await saveItems(fhItems, fhSha, message);
+    fhSha = result.content.sha;
+    toast('Uloženo! Vercel deploy spuštěn ~30s.', 'success');
+  } catch(e) {
+    toast('Chyba: ' + e.message, 'error', 6000);
+  }
+}
+
+/* ── FORM ── */
+function openForm(editId) {
+  fhEditId = editId;
+  const existing = editId ? fhItems.find(x=>x.id===editId) : null;
+  const wrap = document.getElementById('fh-form-wrap');
+  wrap.style.display = 'block';
+  wrap.scrollIntoView({ behavior:'smooth', block:'start' });
+
+  wrap.innerHTML = `
+    <div class="form-card">
+      <div class="form-title">${existing ? '✏️ Upravit kartu' : '➕ Nová karta'}</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Nadpis (H2)</label>
+          <input type="text" id="f-title" value="${esc(existing?.title||'')}" placeholder="Nadpis karty" maxlength="80">
+        </div>
+        <div class="form-group full">
+          <label>URL odkazu (proklik)</label>
+          <input type="url" id="f-link" value="${esc(existing?.linkUrl||'')}" placeholder="https://...">
+        </div>
+        <div class="form-group full">
+          <label>Text (max 450 znaků)</label>
+          <textarea id="f-text" maxlength="500" placeholder="Popis karty…">${esc(existing?.text||'')}</textarea>
+          <div class="char-count" id="char-count">0 / 450</div>
+        </div>
+        <div class="form-group full">
+          <label>Náhledový obrázek</label>
+          <div class="img-tabs">
+            <div class="img-tab ${!existing?.imageBase64?'active':''}" data-tab="url">URL</div>
+            <div class="img-tab ${existing?.imageBase64?'active':''}" data-tab="upload">Nahrát soubor</div>
+          </div>
+          <div id="img-url-wrap">
+            <input type="url" id="f-img-url" value="${esc(existing?.imageUrl||'')}" placeholder="https://...obrazek.jpg">
+            <p class="input-hint">Odkaz na obrázek (JPG, PNG, WebP)</p>
+          </div>
+          <div id="img-upload-wrap" style="display:none">
+            <input type="file" id="f-img-file" accept="image/*" style="color:var(--text2);font-size:13px">
+            <p class="input-hint">Obrázek bude uložen jako base64 v JSON (ideálně &lt;200 KB)</p>
+          </div>
+          <img id="img-preview" class="img-preview ${(existing?.imageBase64||existing?.imageUrl)?'show':''}"
+               src="${esc(existing?.imageBase64||existing?.imageUrl||'')}" alt="Náhled">
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap">
+        <button class="btn btn-primary" id="btn-save-item">💾 Uložit a publikovat</button>
+        <button class="btn btn-ghost" id="btn-cancel-form">Zrušit</button>
+      </div>
+    </div>`;
+
+  // char counter
+  const txt = document.getElementById('f-text');
+  const cc  = document.getElementById('char-count');
+  function updateCount() {
+    const len = txt.value.length;
+    cc.textContent = `${len} / 450`;
+    cc.className = 'char-count' + (len>450?'over':len>400?' warn':'');
+  }
+  txt.addEventListener('input', updateCount);
+  updateCount();
+
+  // image tabs
+  wrap.querySelectorAll('.img-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      wrap.querySelectorAll('.img-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const isUpload = tab.dataset.tab === 'upload';
+      document.getElementById('img-url-wrap').style.display   = isUpload ? 'none' : 'block';
+      document.getElementById('img-upload-wrap').style.display = isUpload ? 'block' : 'none';
+    });
+  });
+
+  // image URL preview
+  document.getElementById('f-img-url').addEventListener('input', e => {
+    const prev = document.getElementById('img-preview');
+    prev.src = e.target.value;
+    prev.className = 'img-preview ' + (e.target.value ? 'show' : '');
+  });
+
+  // file upload → base64
+  document.getElementById('f-img-file').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 500*1024) { toast('Obrázek je příliš velký (max 500 KB doporučeno)', 'error'); }
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const prev = document.getElementById('img-preview');
+      prev.src = ev.target.result;
+      prev.className = 'img-preview show';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // URL preview on load if existing
+  const urlInput = document.getElementById('f-img-url');
+  const prev = document.getElementById('img-preview');
+  if (urlInput.value && !existing?.imageBase64) {
+    prev.onerror = () => { prev.className='img-preview'; };
+  }
+
+  document.getElementById('btn-cancel-form').addEventListener('click', () => {
+    wrap.style.display = 'none';
+    fhEditId = null;
+  });
+  document.getElementById('btn-save-item').addEventListener('click', saveFormItem);
+}
+
+async function saveFormItem() {
+  const title   = document.getElementById('f-title').value.trim();
+  const linkUrl = document.getElementById('f-link').value.trim();
+  const text    = document.getElementById('f-text').value.trim();
+  const imgUrl  = document.getElementById('f-img-url').value.trim();
+  const fileEl  = document.getElementById('f-img-file');
+  const isUploadTab = document.querySelector('.img-tab[data-tab="upload"]').classList.contains('active');
+
+  if (!title)   { toast('Zadej nadpis', 'error'); return; }
+  if (!linkUrl) { toast('Zadej URL odkazu', 'error'); return; }
+  if (text.length > 500) { toast('Text je příliš dlouhý', 'error'); return; }
+
+  const btn = document.getElementById('btn-save-item');
+  btn.disabled = true;
+
+  // Handle image
+  let imageBase64 = null;
+  let imageUrl    = imgUrl || null;
+
+  if (isUploadTab && fileEl.files[0]) {
+    imageBase64 = await new Promise(res => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result);
+      r.readAsDataURL(fileEl.files[0]);
+    });
+    imageUrl = null;
+  } else if (!isUploadTab) {
+    // keep existing base64 if url tab but no new file
+    if (fhEditId) {
+      const ex = fhItems.find(x=>x.id===fhEditId);
+      imageBase64 = ex?.imageBase64 || null;
+    }
+  }
+
+  if (fhEditId) {
+    const idx = fhItems.findIndex(x=>x.id===fhEditId);
+    fhItems[idx] = { ...fhItems[idx], title, text, imageUrl, imageBase64, linkUrl };
+  } else {
+    fhItems.push({
+      id: uid(),
+      order: fhItems.length + 1,
+      title, text, imageUrl, imageBase64, linkUrl,
+      createdAt: new Date().toISOString().slice(0,10)
+    });
+  }
+
+  document.getElementById('fh-form-wrap').style.display = 'none';
+  renderList();
+  await persistItems(fhEditId ? `Update Fun Hub item: ${title}` : `Add Fun Hub item: ${title}`);
+  fhEditId = null;
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>
