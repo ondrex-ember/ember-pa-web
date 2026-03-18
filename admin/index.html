@@ -787,136 +787,135 @@ async function saveFormItem() {
   btn.disabled = false;
 }
 
+
 /* ════════════════════════════════════════════════
-   MODULE: NASTAVENÍ — Změna hesla
+   MODULE: NASTAVENI - Zmena hesla
 ════════════════════════════════════════════════ */
 function initSettings() {
-  const mc = document.getElementById('module-container');
-  mc.innerHTML = `
-    <div class="module-header">
-      <div>
-        <div class="module-title">⚙️ Nastavení</div>
-        <div class="module-sub">Správa přihlašovacích údajů</div>
-      </div>
-    </div>
+  var mc = document.getElementById('module-container');
+  mc.innerHTML =
+    '<div class="module-header">' +
+      '<div>' +
+        '<div class="module-title">\u2699\ufe0f Nastaven\u00ed</div>' +
+        '<div class="module-sub">Spr\u00e1va p\u0159ihla\u0161ovac\u00edch \u00fadaj\u016f</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="form-card" style="max-width:480px">' +
+      '<div class="form-title">\uD83D\uDD11 Zm\u011bna hesla</div>' +
+      '<p style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6">' +
+        'Nov\u00e9 heslo p\u0159e\u0161ifruje GitHub token a aktualizuje ' +
+        '<code style="font-family:JetBrains Mono,monospace;color:var(--accent);font-size:12px">admin/index.html</code>' +
+        ' v repozit\u00e1\u0159i. \u017d\u00e1dn\u00e9 heslo se nikam neodesil\u00e1 \u2014 v\u0161e prob\u00edh\u00e1 v prohl\u00ed\u017ee\u010di.' +
+      '</p>' +
+      '<div style="display:flex;flex-direction:column;gap:14px">' +
+        '<div class="form-group">' +
+          '<label>Nov\u00e9 heslo</label>' +
+          '<input type="password" id="s-pw1" placeholder="Minim\u00e1ln\u011b 8 znak\u016f" autocomplete="new-password"' +
+          ' style="font-family:JetBrains Mono,monospace;letter-spacing:2px">' +
+        '</div>' +
+        '<div class="form-group">' +
+          '<label>Nov\u00e9 heslo znovu</label>' +
+          '<input type="password" id="s-pw2" placeholder="Zopakuj heslo" autocomplete="new-password"' +
+          ' style="font-family:JetBrains Mono,monospace;letter-spacing:2px">' +
+        '</div>' +
+        '<div id="s-strength" style="font-size:12px;color:var(--text3);min-height:16px"></div>' +
+        '<button class="btn btn-primary" id="btn-change-pw" style="margin-top:4px">\uD83D\uDD12 Zm\u011bnit heslo a ulo\u017eit</button>' +
+        '<div id="s-error" style="font-size:13px;color:var(--red);min-height:18px"></div>' +
+      '</div>' +
+    '</div>';
 
-    <div class="form-card" style="max-width:480px">
-      <div class="form-title">🔑 Změna hesla</div>
-      <p style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6">
-        Nové heslo přešifruje GitHub token a aktualizuje <code style="font-family:JetBrains Mono,monospace;color:var(--accent);font-size:12px">admin/index.html</code>
-        v repozitáři. Žádné heslo se nikam neodesílá — vše probíhá v prohlížeči.
-      </p>
-      <div style="display:flex;flex-direction:column;gap:14px">
-        <div class="form-group">
-          <label>Nové heslo</label>
-          <input type="password" id="s-pw1" placeholder="Minimálně 8 znaků" autocomplete="new-password"
-                 style="font-family:JetBrains Mono,monospace;letter-spacing:2px">
-        </div>
-        <div class="form-group">
-          <label>Nové heslo znovu</label>
-          <input type="password" id="s-pw2" placeholder="Zopakuj heslo" autocomplete="new-password"
-                 style="font-family:JetBrains Mono,monospace;letter-spacing:2px">
-        </div>
-        <div id="s-strength" style="font-size:12px;color:var(--text3);min-height:16px"></div>
-        <button class="btn btn-primary" id="btn-change-pw" style="margin-top:4px">🔒 Změnit heslo a uložit</button>
-        <div id="s-error" style="font-size:13px;color:var(--red);min-height:18px"></div>
-      </div>
-    </div>`;
-
-  // Password strength indicator
-  const pw1 = document.getElementById('s-pw1');
-  const strength = document.getElementById('s-strength');
-  pw1.addEventListener('input', () => {
-    const v = pw1.value;
-    if (!v) { strength.textContent=''; return; }
-    let score = 0;
+  var pw1 = document.getElementById('s-pw1');
+  var strength = document.getElementById('s-strength');
+  pw1.addEventListener('input', function() {
+    var v = pw1.value;
+    if (!v) { strength.textContent = ''; return; }
+    var score = 0;
     if (v.length >= 8)  score++;
     if (v.length >= 12) score++;
     if (/[A-Z]/.test(v)) score++;
     if (/[0-9]/.test(v)) score++;
     if (/[^A-Za-z0-9]/.test(v)) score++;
-    const labels = ['','Velmi slabé 🔴','Slabé 🟠','Střední 🟡','Silné 🟢','Velmi silné 💪'];
-    strength.textContent = 'Síla hesla: ' + (labels[score] || labels[1]);
+    var labels = ['','Velmi slab\u00e9 \uD83D\uDD34','Slab\u00e9 \uD83D\uDFE0','St\u0159edn\u00ed \uD83D\uDFE1','Siln\u00e9 \uD83D\uDFE2','Velmi siln\u00e9 \uD83D\uDCAA'];
+    strength.textContent = 'S\u00edla hesla: ' + (labels[score] || labels[1]);
   });
 
   document.getElementById('btn-change-pw').addEventListener('click', doChangePassword);
 }
 
 async function doChangePassword() {
-  const pw1 = document.getElementById('s-pw1').value;
-  const pw2 = document.getElementById('s-pw2').value;
-  const err = document.getElementById('s-error');
-  const btn = document.getElementById('btn-change-pw');
+  var pw1 = document.getElementById('s-pw1').value;
+  var pw2 = document.getElementById('s-pw2').value;
+  var err = document.getElementById('s-error');
+  var btn = document.getElementById('btn-change-pw');
   err.textContent = '';
 
-  if (pw1.length < 8)  { err.textContent = 'Heslo musí mít alespoň 8 znaků.'; return; }
-  if (pw1 !== pw2)     { err.textContent = 'Hesla se neshodují.'; return; }
-  if (!githubToken)    { err.textContent = 'Chyba: token není v paměti. Přihlas se znovu.'; return; }
+  if (pw1.length < 8) { err.textContent = 'Heslo mus\u00ed m\u00edt alespo\u0148 8 znak\u016f.'; return; }
+  if (pw1 !== pw2)    { err.textContent = 'Hesla se neshoduj\u00ed.'; return; }
+  if (!githubToken)   { err.textContent = 'Chyba: token nen\u00ed v pam\u011bti. P\u0159ihla\u0161 se znovu.'; return; }
 
   btn.disabled = true;
-  btn.textContent = 'Generuji nové credentials…';
+  btn.textContent = 'Generuji nov\u00e9 credentials\u2026';
 
   try {
-    // 1) Nový SHA-256 hash
-    const newHash = await sha256hex(pw1);
+    // 1) Novy SHA-256 hash
+    var newHash = await sha256hex(pw1);
 
-    // 2) Nový AES-GCM blob
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-    const iv   = crypto.getRandomValues(new Uint8Array(12));
+    // 2) Novy AES-GCM blob
+    var salt = crypto.getRandomValues(new Uint8Array(16));
+    var iv   = crypto.getRandomValues(new Uint8Array(12));
 
-    const keyMaterial = await crypto.subtle.importKey(
+    var keyMaterial = await crypto.subtle.importKey(
       'raw', new TextEncoder().encode(pw1), 'PBKDF2', false, ['deriveKey']
     );
-    const key = await crypto.subtle.deriveKey(
-      { name:'PBKDF2', salt, iterations:100000, hash:'SHA-256' },
+    var key = await crypto.subtle.deriveKey(
+      { name:'PBKDF2', salt:salt, iterations:100000, hash:'SHA-256' },
       keyMaterial,
       { name:'AES-GCM', length:256 },
       false, ['encrypt']
     );
-    const ct = await crypto.subtle.encrypt({ name:'AES-GCM', iv }, key, new TextEncoder().encode(githubToken));
+    var ct = await crypto.subtle.encrypt({ name:'AES-GCM', iv:iv }, key, new TextEncoder().encode(githubToken));
 
-    const toB64 = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
-    const newBlob = {
+    function toB64(buf) {
+      return btoa(String.fromCharCode.apply(null, new Uint8Array(buf)));
+    }
+    var newBlob = {
       salt: toB64(salt.buffer),
       iv:   toB64(iv.buffer),
       ct:   toB64(ct)
     };
 
-    // 3) Načti aktuální admin/index.html z GitHubu
-    toast('Načítám admin/index.html z GitHubu…', 'loading', 0);
-    const fileData = await ghGet('admin/index.html');
-    let htmlContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
-    const fileSha = fileData.sha;
+    // 3) Nacteni admin/index.html z GitHubu
+    toast('Na\u010d\u00edt\u00e1m admin/index.html z GitHubu\u2026', 'loading', 0);
+    var fileData = await ghGet('admin/index.html');
+    var htmlContent = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g,''))));
+    var fileSha = fileData.sha;
 
-    // 4) Nahraď PW_HASH
-    const hashRegex = /const PW_HASH = "[a-f0-9]{64}"/;
-    if (!hashRegex.test(htmlContent)) throw new Error('PW_HASH pattern nenalezen v souboru');
-    htmlContent = htmlContent.replace(hashRegex, \`const PW_HASH = "\${newHash}"\`);
+    // 4) Nahrazeni PW_HASH
+    var hashRegex = /const PW_HASH = "[a-f0-9]{64}"/;
+    if (!hashRegex.test(htmlContent)) throw new Error('PW_HASH pattern nenalezen');
+    htmlContent = htmlContent.replace(hashRegex, 'const PW_HASH = "' + newHash + '"');
 
-    // 5) Nahraď TOKEN_BLOB
-    const blobRegex = /const TOKEN_BLOB = \{[\s\S]*?\};/;
-    if (!blobRegex.test(htmlContent)) throw new Error('TOKEN_BLOB pattern nenalezen v souboru');
-    const newBlobStr = \`const TOKEN_BLOB = \${JSON.stringify(newBlob, null, 2)};\`;
+    // 5) Nahrazeni TOKEN_BLOB
+    var blobRegex = /const TOKEN_BLOB = \{[\s\S]*?\};/;
+    if (!blobRegex.test(htmlContent)) throw new Error('TOKEN_BLOB pattern nenalezen');
+    var newBlobStr = 'const TOKEN_BLOB = ' + JSON.stringify(newBlob, null, 2) + ';';
     htmlContent = htmlContent.replace(blobRegex, newBlobStr);
 
-    // 6) Commitni
-    toast('Ukládám na GitHub…', 'loading', 0);
+    // 6) Commit
+    toast('Ukl\u00e1d\u00e1m na GitHub\u2026', 'loading', 0);
     await ghPut('admin/index.html', htmlContent, fileSha, 'Admin: change password');
 
-    // 7) Aktualizuj in-memory konstanty (pro případ reload-free pokračování)
-    // (stránka bude po reloadu používat nový hash z repo)
-    toast('✅ Heslo změněno! Při příštím přihlášení použij nové heslo.', 'success', 6000);
-
+    toast('\u2705 Heslo zm\u011bn\u011bno! P\u0159i p\u0159\u00ed\u0161t\u00edm p\u0159ihl\u00e1\u0161en\u00ed pou\u017eij nov\u00e9 heslo.', 'success', 6000);
     document.getElementById('s-pw1').value = '';
     document.getElementById('s-pw2').value = '';
     document.getElementById('s-strength').textContent = '';
-    btn.textContent = '✅ Hotovo';
+    btn.textContent = '\u2705 Hotovo';
 
   } catch(e) {
     err.textContent = 'Chyba: ' + e.message;
-    toast('Chyba při změně hesla: ' + e.message, 'error', 8000);
+    toast('Chyba p\u0159i zm\u011bn\u011b hesla: ' + e.message, 'error', 8000);
     btn.disabled = false;
-    btn.textContent = '🔒 Změnit heslo a uložit';
+    btn.textContent = '\uD83D\uDD12 Zm\u011bnit heslo a ulo\u017eit';
   }
 }
 
