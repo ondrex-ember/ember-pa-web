@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Fun Hub — Ember PA</title>
+<meta name="description" content="Tipy, nástroje, projekty a weby, které stojí za pozornost. Osobní výběr Ondřeje Panušky.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://ember-pa.cz/fun/">
+<link rel="alternate" hreflang="cs" href="https://ember-pa.cz/fun/">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎉</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WTB3ZDZN');</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K1CK86V4PE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K1CK86V4PE', { page_title: document.title, page_location: window.location.href });
+</script>
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window,document,"clarity","script","ve6zmcb7ue");
+</script>
+
+<style>
+:root {
+  --bg-dark:    #0a0e27;
+  --bg-mid:     #111827;
+  --bg-card:    #1e2940;
+  --blue:       #3b82f6;
+  --blue-dim:   rgba(59,130,246,0.15);
+  --orange:     #f97316;
+  --accent:     #60a5fa;
+  --amber:      #f59e0b;
+  --green:      #22c55e;
+  --text:       #e8edf4;
+  --text2:      #94a3b8;
+  --text3:      #64748b;
+  --border:     rgba(59,130,246,0.2);
+  --border-hi:  rgba(59,130,246,0.5);
+  --radius:     14px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1f3a 50%, var(--bg-dark) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(59,130,246,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(249,115,22,0.12) 0%, transparent 50%);
+  animation: ambientGlow 15s ease-in-out infinite;
+}
+@keyframes ambientGlow { 0%,100%{opacity:.5} 50%{opacity:.9} }
+
+/* ── HEADER ── */
+#header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 40px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(17,24,39,0.7);
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
+}
+@media(max-width:600px){ #header{ padding:16px 20px; } }
+
+.logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+.logo-icon { font-size:28px; animation: flameFlicker 3s ease-in-out infinite; }
+@keyframes flameFlicker { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+.logo-text {
+  font-size:20px; font-weight:800;
+  background: linear-gradient(135deg,#3b82f6,#f97316);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.nav-links { display:flex; gap:24px; align-items:center; }
+.nav-link {
+  font-family:'JetBrains Mono',monospace; font-size:13px;
+  color:var(--text2); text-decoration:none;
+  padding:6px 12px; border-radius:6px;
+  transition:all .2s;
+}
+.nav-link:hover { color:var(--accent); background:var(--blue-dim); }
+.nav-link.active { color:var(--orange); font-weight:600; }
+
+/* ── HERO ── */
+.hero {
+  text-align:center;
+  padding: 72px 40px 56px;
+  position:relative;
+}
+@media(max-width:600px){ .hero{ padding:48px 20px 40px; } }
+
+.hero-badge {
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:1px;
+  color:var(--orange); text-transform:uppercase;
+  background: rgba(249,115,22,0.1);
+  border:1px solid rgba(249,115,22,0.25);
+  border-radius:20px; padding:6px 14px;
+  margin-bottom:20px;
+}
+.hero h1 {
+  font-size:clamp(32px,6vw,56px); font-weight:800; line-height:1.1;
+  margin-bottom:20px;
+  background: linear-gradient(135deg,#60a5fa 0%,#f59e0b 100%);
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.hero-sub {
+  font-size:clamp(15px,2vw,18px); color:var(--text2); line-height:1.7;
+  max-width:600px; margin:0 auto;
+}
+
+/* ── GRID ── */
+#items-section { padding:0 40px 80px; max-width:1280px; margin:0 auto; }
+@media(max-width:600px){ #items-section{ padding:0 16px 60px; } }
+
+.items-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap:24px;
+}
+@media(max-width:600px){ .items-grid{ grid-template-columns:1fr; gap:16px; } }
+
+/* ── CARD ── */
+.item-card {
+  background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(20,28,48,0.9));
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  transition: transform .25s, border-color .25s, box-shadow .25s;
+  animation: cardIn .5s ease-out both;
+}
+.item-card:hover {
+  transform:translateY(-4px);
+  border-color:var(--border-hi);
+  box-shadow:0 20px 40px rgba(59,130,246,0.15);
+}
+@keyframes cardIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+.card-thumb {
+  width:100%; aspect-ratio:16/9;
+  object-fit:cover; display:block;
+  background: linear-gradient(135deg,#1e2940,#0d1629);
+  cursor:pointer;
+}
+.card-thumb-placeholder {
+  width:100%; aspect-ratio:16/9;
+  background: linear-gradient(135deg,#1e2940 0%,#0d1629 100%);
+  display:flex; align-items:center; justify-content:center;
+  font-size:48px; cursor:pointer;
+}
+
+.card-body { padding:20px; flex:1; display:flex; flex-direction:column; gap:10px; }
+
+.card-title {
+  font-size:17px; font-weight:700; color:var(--text); line-height:1.3;
+  cursor:pointer; transition:color .2s;
+}
+.card-title:hover { color:var(--accent); }
+
+.card-text { font-size:14px; color:var(--text2); line-height:1.6; flex:1; }
+
+.card-footer { margin-top:auto; padding-top:12px; }
+.btn-visit {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:9px 20px;
+  background: linear-gradient(135deg,var(--blue),var(--orange));
+  color:#fff; font-size:13px; font-weight:600;
+  border-radius:8px; text-decoration:none;
+  transition: opacity .2s, transform .15s;
+}
+.btn-visit:hover { opacity:.9; transform:translateY(-1px); }
+.btn-visit svg { width:14px; height:14px; }
+
+/* ── EMPTY STATE ── */
+#empty-state {
+  grid-column:1/-1;
+  text-align:center; padding:80px 20px;
+  color:var(--text3);
+}
+#empty-state .empty-icon { font-size:56px; margin-bottom:16px; }
+#empty-state p { font-size:16px; }
+
+/* ── LOADING ── */
+#loading {
+  text-align:center; padding:80px 20px;
+  color:var(--text2);
+}
+.spinner {
+  width:36px;height:36px;border-radius:50%;
+  border:3px solid var(--border);
+  border-top-color:var(--blue);
+  animation:spin .7s linear infinite;
+  margin:0 auto 16px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── FOOTER ── */
+#footer {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:24px 40px;
+  border-top:1px solid var(--border);
+  background:rgba(17,24,39,0.5);
+  font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--text3);
+}
+@media(max-width:600px){ #footer{ padding:20px; flex-direction:column; gap:8px; text-align:center; } }
+.footer-link { color:var(--accent); text-decoration:none; }
+.footer-link:hover { color:var(--amber); }
+</style>
+</head>
+<body>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTB3ZDZN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<header id="header">
+  <a href="/" class="logo">
+    <span class="logo-icon">🔥</span>
+    <span class="logo-text">Ember</span>
+  </a>
+  <nav class="nav-links">
+    <a href="/" class="nav-link">← Domů</a>
+    <a href="/tools/" class="nav-link">Tools</a>
+    <a href="/fun/" class="nav-link active">Fun Hub</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-badge">✨ Osobní výběr</div>
+  <h1>Fun Hub</h1>
+  <p class="hero-sub">Tipy, weby a projekty, které stojí za pozornost.<br>Průběžně aktualizovaný výběr zajímavých věcí z internetu.</p>
+</section>
+
+<section id="items-section">
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>Načítám obsah…</p>
+  </div>
+  <div class="items-grid" id="items-grid" style="display:none"></div>
+</section>
+
+<footer id="footer">
+  <div>🔥 Ember PA © 2026</div>
+  <div><a href="/" class="footer-link">ember-pa.cz</a></div>
+</footer>
+
+<script>
+(async function() {
+  const grid = document.getElementById('items-grid');
+  const loading = document.getElementById('loading');
+
+  try {
+    const res = await fetch('/fun/items.json?' + Date.now());
+    if (!res.ok) throw new Error('fetch failed');
+    const items = await res.json();
+
+    loading.style.display = 'none';
+    grid.style.display = 'grid';
+
+    if (!items.length) {
+      grid.innerHTML = `
+        <div id="empty-state">
+          <div class="empty-icon">🌱</div>
+          <p>Obsah se teprve připravuje. Brzy zde něco přibude.</p>
+        </div>`;
+      return;
+    }
+
+    // Sort by order, then createdAt desc
+    items.sort((a, b) => {
+      if (a.order != null && b.order != null) return a.order - b.order;
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+
+    items.forEach((item, i) => {
+      const imgSrc = item.imageBase64 || item.imageUrl;
+      const thumb = imgSrc
+        ? `<img class="card-thumb" src="${escHtml(imgSrc)}" alt="${escHtml(item.title)}" loading="lazy" onclick="window.open('${escHtml(item.linkUrl)}','_blank')">`
+        : `<div class="card-thumb-placeholder" onclick="window.open('${escHtml(item.linkUrl)}','_blank')">🔗</div>`;
+
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.style.animationDelay = (i * 0.07) + 's';
+      card.innerHTML = `
+        ${thumb}
+        <div class="card-body">
+          <h2 class="card-title" onclick="window.open('${escHtml(item.linkUrl)}','_blank')">${escHtml(item.title)}</h2>
+          <p class="card-text">${escHtml(item.text)}</p>
+          <div class="card-footer">
+            <a href="${escHtml(item.linkUrl)}" target="_blank" rel="noopener" class="btn-visit"
+               onclick="gtag('event','funhub_visit',{item_title:'${escHtml(item.title)}'})">
+              NAVŠTÍVIT
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    // Track page view with item count
+    gtag('event', 'funhub_view', { item_count: items.length });
+
+  } catch (e) {
+    loading.innerHTML = '<p style="color:#ef4444">Nepodařilo se načíst obsah. Zkuste to prosím znovu.</p>';
+    console.error(e);
+  }
+
+  function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+})();
+</script>
+</body>
+</html>
