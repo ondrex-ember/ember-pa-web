@@ -470,8 +470,19 @@ async function ghPut(path, content, sha, message) {
 
 async function loadItems() {
   const data = await ghGet(ITEMS_PATH);
-  const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
-  return { items: JSON.parse(content), sha: data.sha };
+  
+  let contentStr;
+  // GitHub API limits the 'content' field to 1MB. If the file is larger, it returns an empty string.
+  if (!data.content || data.content === "") {
+    // If it's too large, we bypass the API and fetch the raw file directly
+    const rawReq = await fetch(data.download_url);
+    contentStr = await rawReq.text();
+  } else {
+    // Standard decoding for files under 1MB
+    contentStr = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+  }
+  
+  return { items: JSON.parse(contentStr), sha: data.sha };
 }
 
 async function saveItems(items, sha, message) {
