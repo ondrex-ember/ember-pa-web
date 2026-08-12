@@ -1,0 +1,2694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember PA — Tools Hub | PPC, SEO & Analytics Tools</title>
+<meta name="description" content="Internal Ember PA toolkit. PPC keyword permutations, UTM builder, meta tags, calculators and other tools for performance marketing.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WTB3ZDZN');</script>
+
+<!-- Google tag (gtag.js) — GA4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K1CK86V4PE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K1CK86V4PE', { page_title: document.title, page_location: window.location.href });
+</script>
+
+<!-- Microsoft Clarity -->
+<script type="text/javascript">
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window,document,"clarity","script","ve6zmcb7ue");
+</script>
+
+<style>
+/* ════════════════════════════════════════════════
+   ROOT — EMBER PA COLOR SYSTEM
+═══════════════════════════════════════════════ */
+:root {
+  --bg-dark:   #0a0e27;
+  --bg-mid:    #111827;
+  --bg-card:   #1e2940;
+  --bg-panel:  #1a2235;
+  --bg-input:  #0d1629;
+  --blue:      #3b82f6;
+  --blue-dim:  rgba(59,130,246,0.15);
+  --orange:    #f97316;
+  --orange-dim:rgba(249,115,22,0.15);
+  --accent:    #60a5fa;
+  --amber:     #f59e0b;
+  --green:     #22c55e;
+  --red:       #ef4444;
+  --text:      #e8edf4;
+  --text2:     #94a3b8;
+  --text3:     #64748b;
+  --border:    rgba(59,130,246,0.2);
+  --border-hi: rgba(59,130,246,0.5);
+  --radius:    12px;
+  --shadow:    0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* ════════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1f3a 50%, var(--bg-dark) 100%);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(59,130,246,0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(249,115,22,0.1) 0%, transparent 50%);
+  animation: ambientGlow 15s ease-in-out infinite;
+}
+@keyframes ambientGlow { 0%,100%{opacity:.5} 50%{opacity:.9} }
+
+/* ════════════════════════════════════════════════
+   MAIN CONTAINER
+═══════════════════════════════════════════════ */
+#main-container {
+  width: 100%; max-width: 1400px; margin: 0 auto;
+  background: linear-gradient(145deg, rgba(17,24,39,.97), rgba(30,41,59,.97));
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  box-shadow: 0 30px 80px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.04);
+  position: relative; z-index: 1;
+  overflow: hidden;
+  animation: appear .5s ease-out;
+}
+@keyframes appear { from{opacity:0;transform:translateY(24px) scale(.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+
+/* ════════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════ */
+#header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 28px;
+  border-bottom: 2px solid var(--border);
+  background: rgba(10,14,39,.6);
+  gap: 16px; flex-wrap: wrap;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-icon { font-size: 28px; animation: flame 3s ease-in-out infinite; }
+@keyframes flame { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+.logo-text {
+  font-size: 22px; font-weight: 800;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--orange) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  letter-spacing: -.5px;
+}
+.header-center {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; color: var(--text3);
+  letter-spacing: 2px; text-transform: uppercase;
+}
+.header-right { display: flex; align-items: center; gap: 16px; }
+.back-to-home {
+  font-size: 13px; color: var(--text2); text-decoration: none;
+  padding: 6px 14px; border: 1px solid var(--border);
+  border-radius: 8px; transition: all .2s;
+  font-family: 'JetBrains Mono', monospace;
+}
+.back-to-home:hover { color: var(--blue); border-color: var(--blue); background: var(--blue-dim); }
+
+/* ════════════════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════════════ */
+#dashboard { padding: 36px 28px; }
+
+.tools-hero { text-align: center; margin-bottom: 40px; }
+.tools-hero h1 {
+  font-size: 2.6rem; font-weight: 800;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--amber) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 10px;
+}
+.tools-hero p { color: var(--text2); font-size: 1rem; }
+
+/* SEARCH */
+.tools-search-wrap {
+  display: flex; justify-content: center; margin-bottom: 28px;
+}
+.tools-search {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px 16px; width: 100%; max-width: 400px;
+  transition: border-color .2s;
+}
+.tools-search:focus-within { border-color: var(--blue); }
+.tools-search input {
+  background: none; border: none; color: var(--text); font-size: .9rem;
+  outline: none; width: 100%; font-family: inherit;
+}
+.tools-search input::placeholder { color: var(--text3); }
+
+/* CAT FILTER */
+.cat-filter { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 28px; }
+.cat-btn {
+  padding: 7px 18px; border-radius: 50px;
+  border: 1px solid var(--border); background: var(--bg-panel);
+  color: var(--text2); cursor: pointer; font-size: .82rem; font-weight: 600;
+  transition: all .2s; font-family: inherit;
+}
+.cat-btn:hover { color: var(--blue); border-color: var(--blue); background: var(--blue-dim); }
+.cat-btn.active { color: #fff; background: linear-gradient(135deg, var(--blue), var(--orange)); border-color: transparent; }
+
+/* TOOLS GRID */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+/* TOOL CARD */
+.tool-card {
+  background: var(--bg-card); border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,.06);
+  padding: 22px; cursor: pointer;
+  transition: all .25s; position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 14px;
+}
+.tool-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--card-color, var(--blue));
+}
+.tool-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255,255,255,.15);
+  box-shadow: 0 12px 32px rgba(0,0,0,.4);
+}
+.tool-card.hidden { display: none !important; }
+
+.tool-card-icon {
+  width: 48px; height: 48px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  background: color-mix(in srgb, var(--card-color, var(--blue)) 15%, transparent);
+}
+.tool-card-info { flex: 1; min-width: 0; }
+.tool-card-name { font-size: .95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.tool-card-desc { font-size: .75rem; color: var(--text2); line-height: 1.4; }
+.tool-card-arrow { color: var(--text3); font-size: 1rem; flex-shrink: 0; transition: transform .2s; }
+.tool-card:hover .tool-card-arrow { transform: translateX(4px); color: var(--blue); }
+
+.badge { display: inline-block; padding: 1px 7px; border-radius: 50px; font-size: .65rem; font-weight: 700; vertical-align: middle; margin-left: 6px; }
+.badge-hot { background: var(--orange); color: #fff; }
+.badge-new { background: var(--blue); color: #fff; }
+
+/* ════════════════════════════════════════════════
+   TOOL VIEW
+═══════════════════════════════════════════════ */
+#toolView { display: none; padding: 28px; }
+
+.tv-header {
+  display: flex; align-items: center; gap: 16px; margin-bottom: 24px;
+  padding-bottom: 20px; border-bottom: 1px solid var(--border);
+}
+.back-btn {
+  background: var(--bg-panel); border: 1px solid var(--border);
+  color: var(--text2); padding: 9px 20px; border-radius: 8px;
+  cursor: pointer; font-size: .88rem; transition: all .2s; font-family: inherit;
+  white-space: nowrap;
+}
+.back-btn:hover { background: var(--blue-dim); color: var(--blue); border-color: var(--blue); }
+#tvTitle { font-size: 1.6rem; color: var(--accent); font-weight: 800; }
+
+/* ════════════════════════════════════════════════
+   TOOL PANELS (shared UI components)
+═══════════════════════════════════════════════ */
+.tool-panel {
+  background: var(--bg-panel); border-radius: var(--radius);
+  padding: 24px; border: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+.tool-panel h3 {
+  color: var(--blue); font-size: .82rem;
+  margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;
+}
+
+label { display: block; font-size: .82rem; color: var(--text2); margin-bottom: 5px; margin-top: 12px; }
+label:first-child { margin-top: 0; }
+
+input[type="text"], input[type="number"], input[type="url"],
+input[type="date"], input[type="datetime-local"], select, textarea {
+  width: 100%; background: var(--bg-input); border: 1px solid var(--bg-card);
+  color: var(--text); padding: 9px 13px; border-radius: 8px;
+  font-size: .88rem; outline: none; transition: border .2s;
+  font-family: inherit;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--blue); }
+textarea { resize: vertical; min-height: 120px; }
+input[type="color"] { padding: 3px; cursor: pointer; }
+
+.btn {
+  padding: 9px 20px; border-radius: 8px; border: none; cursor: pointer;
+  font-size: .88rem; font-weight: 700; transition: all .2s; font-family: inherit;
+}
+.btn-primary { background: linear-gradient(135deg, var(--blue), var(--orange)); color: #fff; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(59,130,246,.4); }
+.btn-secondary { background: var(--bg-card); color: var(--text2); border: 1px solid var(--border); }
+.btn-secondary:hover { background: var(--blue-dim); color: var(--blue); border-color: var(--blue); }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-success { background: var(--green); color: #fff; }
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+.result-box {
+  background: var(--bg-input); border: 1px solid var(--bg-card);
+  border-radius: 8px; padding: 14px; margin-top: 14px;
+  font-size: .88rem; min-height: 44px; white-space: pre-wrap; word-break: break-all; line-height: 1.6;
+}
+.result-big { color: var(--amber); font-size: 1.8rem; font-weight: 900; text-align: center; padding: 18px; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+.stat-chip { background: var(--bg-input); border: 1px solid var(--bg-card); border-radius: 8px; padding: 9px 14px; font-size: .82rem; }
+.stat-chip strong { color: var(--amber); }
+.stats-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+
+.checkbox-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.chk-item {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg-input); border: 1px solid var(--bg-card);
+  padding: 6px 12px; border-radius: 6px; cursor: pointer;
+  font-size: .82rem; transition: border .2s; user-select: none;
+}
+.chk-item:hover { border-color: var(--blue); }
+.chk-item input { accent-color: var(--blue); width: auto !important; }
+
+.progress-bar { background: var(--bg-card); border-radius: 50px; height: 6px; overflow: hidden; margin-top: 5px; }
+.progress-fill { height: 100%; background: var(--blue); border-radius: 50px; transition: width .4s; }
+
+table { width: 100%; border-collapse: collapse; font-size: .84rem; margin-top: 14px; }
+th { background: var(--bg-input); color: var(--blue); padding: 9px 12px; text-align: left; font-size: .74rem; text-transform: uppercase; letter-spacing: .5px; }
+td { padding: 9px 12px; border-bottom: 1px solid rgba(255,255,255,.04); }
+tr:hover td { background: rgba(255,255,255,.02); }
+
+.color-preview { width: 100%; height: 72px; border-radius: 8px; margin-top: 12px; border: 1px solid var(--bg-card); }
+.swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.swatch { width: 48px; height: 48px; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: transform .2s; display: flex; align-items: center; justify-content: center; font-size: .6rem; color: rgba(255,255,255,.7); }
+.swatch:hover { transform: scale(1.2); border-color: rgba(255,255,255,.5); }
+
+.stopwatch-display { font-size: 3rem; font-weight: 900; font-family: 'JetBrains Mono', monospace; color: var(--amber); text-align: center; padding: 20px; letter-spacing: 4px; }
+.laps-list { max-height: 200px; overflow-y: auto; margin-top: 10px; }
+
+.tz-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; background: var(--bg-input); border-radius: 8px; margin-bottom: 8px; }
+
+/* ppc-card (old simple PPC boxes – kept for backward compat) */
+.ppc-boxes { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: 12px; margin-bottom: 14px; }
+.ppc-card { background: var(--bg-input); border-radius: 8px; border: 1px solid var(--bg-card); overflow: hidden; }
+.ppc-card-head { background: var(--bg-card); padding: 7px 12px; display: flex; justify-content: space-between; align-items: center; }
+.ppc-card-head span { color: var(--amber); font-weight: 700; font-size: .82rem; }
+.ppc-card textarea { border-radius: 0; border: none; min-height: 100px; font-size: .8rem; }
+.ppc-rm { background: none; border: none; color: var(--red); cursor: pointer; font-size: .9rem; }
+
+/* ════════════════════════════════════════════════
+   KWTOOL — PPC KEYWORD PERMUTATION TOOL
+═══════════════════════════════════════════════ */
+.kw-boxes-toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+
+.kw-boxes-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px; margin-bottom: 18px;
+}
+
+.kw-box-card { background: var(--bg-input); border-radius: 10px; border: 1px solid var(--bg-card); overflow: hidden; }
+.kw-box-card.disabled { opacity: .45; }
+
+.kw-box-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 13px; background: var(--bg-card);
+  border-bottom: 1px solid rgba(59,130,246,.15);
+}
+.kw-box-label { font-weight: 700; font-size: .9rem; color: var(--amber); letter-spacing: 1px; }
+.kw-box-toggle { display: flex; align-items: center; gap: 6px; font-size: .78rem; color: var(--text2); cursor: pointer; user-select: none; }
+.kw-box-toggle input { width: 14px; height: 14px; accent-color: var(--blue); cursor: pointer; }
+
+.kw-box-textarea {
+  width: 100%; min-height: 140px; background: var(--bg-input);
+  border: none; color: var(--text); padding: 11px;
+  font-size: .84rem; resize: vertical; outline: none;
+  font-family: 'JetBrains Mono', monospace; line-height: 1.5;
+}
+.kw-box-textarea::placeholder { color: var(--text3); }
+
+.kw-adv-toggle {
+  padding: 6px 13px; background: rgba(0,0,0,.2);
+  cursor: pointer; font-size: .76rem; color: var(--text3);
+  display: flex; align-items: center; gap: 6px; user-select: none;
+  border-top: 1px solid var(--bg-card);
+}
+.kw-adv-toggle:hover { color: var(--blue); }
+.kw-adv-panel { display: none; padding: 10px 13px; background: rgba(0,0,0,.2); border-top: 1px solid var(--bg-card); flex-direction: column; gap: 8px; }
+.kw-adv-panel.open { display: flex; }
+.kw-adv-row { display: flex; gap: 6px; flex-wrap: wrap; }
+.kw-adv-input { flex: 1; min-width: 80px; padding: 5px 8px; background: var(--bg-dark); border: 1px solid var(--bg-card); color: var(--text); border-radius: 4px; font-size: .8rem; outline: none; }
+.kw-adv-input:focus { border-color: var(--blue); }
+.kw-adv-input::placeholder { color: var(--text3); }
+.kw-adv-btn { padding: 5px 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text2); border-radius: 4px; cursor: pointer; font-size: .76rem; white-space: nowrap; transition: all .2s; font-family: inherit; }
+.kw-adv-btn:hover { background: var(--blue-dim); color: var(--blue); border-color: var(--blue); }
+
+.kw-sep-section { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+.kw-sep-section label { font-size: .82rem; color: var(--text2); margin: 0; }
+.kw-sep-input { width: 64px; padding: 5px 8px; background: var(--bg-input); border: 1px solid var(--bg-card); color: var(--amber); border-radius: 5px; font-size: .9rem; text-align: center; outline: none; font-family: 'JetBrains Mono', monospace; }
+.kw-sep-input:focus { border-color: var(--blue); }
+.kw-sep-presets { display: flex; gap: 5px; flex-wrap: wrap; }
+.kw-sep-btn { padding: 4px 10px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text2); border-radius: 4px; cursor: pointer; font-size: .76rem; transition: all .2s; font-family: 'JetBrains Mono', monospace; }
+.kw-sep-btn.active, .kw-sep-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); font-weight: 700; }
+
+.kw-bottom { display: grid; grid-template-columns: 260px 1fr; gap: 16px; }
+@media (max-width: 700px) { .kw-bottom { grid-template-columns: 1fr; } }
+
+.kw-include-section { background: var(--bg-input); border-radius: 10px; border: 1px solid var(--bg-card); overflow: hidden; align-self: start; }
+.kw-include-header { padding: 11px 15px; background: var(--bg-card); }
+.kw-include-header h4 { color: var(--blue); font-size: .82rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.kw-select-links { font-size: .76rem; }
+.kw-select-links a { color: var(--amber); cursor: pointer; text-decoration: none; }
+.kw-select-links a:hover { text-decoration: underline; }
+.kw-select-links span { color: var(--text3); margin: 0 4px; }
+.kw-include-body { padding: 10px 14px; }
+.kw-include-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--bg-card); cursor: pointer; user-select: none; }
+.kw-include-row:last-child { border-bottom: none; }
+.kw-include-row input { width: 14px; height: 14px; accent-color: var(--blue); cursor: pointer; flex-shrink: 0; }
+.kw-include-row label { font-size: .84rem; color: var(--text2); cursor: pointer; flex: 1; margin: 0; }
+.kw-include-row:hover label { color: var(--accent); }
+
+.match-badge { font-size: .7rem; padding: 2px 6px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-weight: 700; white-space: nowrap; }
+.badge-broad     { background: #1a3a1a; color: #6fdf6f; border: 1px solid #2a6a2a; }
+.badge-broad-mod { background: #1a2a3a; color: #6fafdf; border: 1px solid #2a5a8a; }
+.badge-phrase    { background: #2a2a1a; color: #dfdf6f; border: 1px solid #6a6a2a; }
+.badge-exact     { background: #2a1a1a; color: #df6f6f; border: 1px solid #8a2a2a; }
+.badge-neg-exact { background: #2a1a2a; color: #df6fdf; border: 1px solid #7a2a7a; }
+.badge-neg-phrase{ background: #1a1a2a; color: #9f9fdf; border: 1px solid #3a3a7a; }
+.badge-neg-broad { background: #1a2a2a; color: #6fdfdf; border: 1px solid #2a6a6a; }
+
+.kw-right-side { display: flex; flex-direction: column; gap: 14px; }
+.kw-generate-btn {
+  display: block; width: 100%; padding: 15px;
+  background: linear-gradient(135deg, var(--blue) 0%, var(--orange) 100%);
+  color: #fff; border: none; border-radius: 8px;
+  font-size: 1rem; font-weight: 700; cursor: pointer;
+  letter-spacing: 1px; text-transform: uppercase;
+  transition: all .2s; box-shadow: 0 4px 20px rgba(59,130,246,.35);
+  font-family: inherit;
+}
+.kw-generate-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(59,130,246,.5); }
+
+.kw-output-section { background: var(--bg-input); border-radius: 10px; border: 1px solid var(--bg-card); overflow: hidden; }
+.kw-output-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 15px; background: var(--bg-card); flex-wrap: wrap; gap: 8px; }
+.kw-output-header h4 { color: var(--blue); font-size: .82rem; text-transform: uppercase; letter-spacing: 1px; }
+.kw-output-stats { font-size: .8rem; color: var(--text2); }
+.kw-output-stats span { color: var(--amber); font-weight: 600; }
+.kw-output-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.kw-out-btn { padding: 5px 12px; background: var(--bg-panel); border: 1px solid var(--border); color: var(--text2); border-radius: 5px; cursor: pointer; font-size: .78rem; transition: all .2s; font-family: inherit; }
+.kw-out-btn:hover { border-color: var(--blue); color: var(--accent); }
+.kw-out-btn.success { border-color: var(--green); color: var(--green); }
+.kw-output-textarea { width: 100%; min-height: 280px; background: var(--bg-input); border: none; color: var(--text); padding: 14px; font-size: .84rem; resize: vertical; outline: none; font-family: 'JetBrains Mono', monospace; line-height: 1.7; }
+
+/* ════════════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════════ */
+#footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 28px; flex-wrap: wrap; gap: 8px;
+  border-top: 1px solid var(--border);
+  background: rgba(10,14,39,.4);
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text3);
+}
+.footer-link { color: var(--blue); text-decoration: none; }
+.footer-link:hover { color: var(--orange); text-decoration: underline; }
+
+/* ════════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+@keyframes fadeInUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  body { padding: 10px 6px; }
+  #header { padding: 14px 16px; }
+  #dashboard { padding: 24px 16px; }
+  #toolView { padding: 20px 16px; }
+  .tools-hero h1 { font-size: 1.9rem; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  #footer { padding: 14px 16px; justify-content: center; text-align: center; }
+}
+</style>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WTB3ZDZN" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<div id="main-container">
+
+<!-- HEADER -->
+<header id="header">
+  <a href="/" class="logo">
+    <span class="logo-icon">🔥</span>
+    <span class="logo-text">Ember PA</span>
+  </a>
+  <div class="header-center">TOOLS HUB</div>
+  <div class="header-right">
+    <a href="/en/" class="back-to-home">← Back to home</a>
+  </div>
+</header>
+
+<!-- DASHBOARD VIEW -->
+<div id="dashboard">
+  <div class="tools-hero">
+    <h1>⚡ Performance Tools</h1>
+    <p>Internal tools for PPC, SEO, Analytics and more :D. Everything runs locally, no ads. Keyword Permutation — Cartesian product of keywords with all Google Ads match types at once. Meta Tags & SERP, UTM Builder, URL Slug, cURL → JSON, HTML Syntax Check, Word Counter, Text Case Converter, Find & Replace, Lorem Ipsum, 
+      Special Characters, ROI Calculator, BMI Calculator, Calorie Calculator, Color Converter... </p>
+  </div>
+
+  <div class="tools-search-wrap">
+    <div class="tools-search">
+      <span>🔍</span>
+      <input type="text" id="globalSearch" placeholder="Search tools..." oninput="searchTools(this.value)">
+    </div>
+  </div>
+
+  <div class="cat-filter">
+    <button class="cat-btn active" onclick="filterCat('all',this)">⭐ All</button>
+    <button class="cat-btn" onclick="filterCat('seo',this)">🎯 SEO & PPC</button>
+    <button class="cat-btn" onclick="filterCat('text',this)">📝 Text</button>
+    <button class="cat-btn" onclick="filterCat('finance',this)">💰 Finance</button>
+    <button class="cat-btn" onclick="filterCat('math',this)">🔢 Math</button>
+    <button class="cat-btn" onclick="filterCat('convert',this)">⚖️ Convert</button>
+    <button class="cat-btn" onclick="filterCat('color',this)">🎨 Colors</button>
+    <button class="cat-btn" onclick="filterCat('time',this)">🕐 Time</button>
+    <button class="cat-btn" onclick="filterCat('health',this)">❤️ Health</button>
+  </div>
+
+  <div class="tools-grid" id="toolsGrid"></div>
+</div>
+
+<!-- TOOL VIEW -->
+<div id="toolView">
+  <div class="tv-header">
+    <button class="back-btn" onclick="showDashboard()">← Back to overview</button>
+    <h2 id="tvTitle"></h2>
+  </div>
+  <div id="tvContent"></div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <span>🔥 Ember PA Tools Hub © 2026</span>
+  <span><a href="/" class="footer-link">ember-pa.cz</a> | <a href="/cdn-cgi/l/email-protection#4421292621366a34252a042329252d286a272b29" class="footer-link"><span class="__cf_email__" data-cfemail="94f1f9f6f1e6bae4f5fad4f3f9f5fdf8baf7fbf9">[email&#160;protected]</span></a></span>
+</footer>
+
+</div><!-- /main-container -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ═══════════════════════════════════════════════════════════
+// TOOLS REGISTRY
+// ═══════════════════════════════════════════════════════════
+const TOOLS = [
+  {id:'ppc',        icon:'🎯', name:'Keyword Permutation', desc:'Cartesian product of keywords. All Google Ads match types at once.', cat:'seo',     color:'#3b82f6', badge:'hot'},
+  {id:'metatags',   icon:'🏷️', name:'Meta Tags & SERP',    desc:'Checks title/description length with a live search results preview.', cat:'seo',     color:'#3b82f6'},
+  {id:'utmbuilder', icon:'📊', name:'UTM Builder',         desc:'UTM parameter generator for GA4 campaigns.', cat:'seo',     color:'#3b82f6'},
+  {id:'slugify',    icon:'🔗', name:'URL Slug',            desc:'Instantly converts a heading into an SEO-friendly URL slug.', cat:'seo',     color:'#3b82f6'},
+  {id:'curljson',   icon:'🔄', name:'cURL → JSON',         desc:'Converts a cURL command into structured JSON — method, URL, headers, body.', cat:'seo',     color:'#3b82f6', badge:'new'},
+  {id:'htmllint',   icon:'🔍', name:'HTML Syntax Check',   desc:'Checks HTML/CSS/JS file syntax — errors, warnings, statistics.', cat:'seo',     color:'#3b82f6', badge:'new'},
+  {id:'wordcount',  icon:'📝', name:'Word Counter',        desc:'Words, characters, sentences, paragraphs, reading time and word frequency.', cat:'text',    color:'#60a5fa'},
+  {id:'caseconvert',icon:'🔡', name:'Text Case Converter', desc:'UPPER, lower, Title, camelCase, snake_case, kebab-case…', cat:'text',    color:'#60a5fa'},
+  {id:'findreplace',icon:'🔄', name:'Find & Replace',      desc:'Bulk replace with regular expression support.', cat:'text',    color:'#60a5fa'},
+  {id:'loremipsum', icon:'📄', name:'Lorem Ipsum',         desc:'Placeholder text generator — paragraphs, sentences or words.', cat:'text',    color:'#60a5fa'},
+  {id:'charmap',    icon:'🔣', name:'Special Characters',  desc:'Click-to-copy table of symbols, diacritics and emoji.', cat:'text',    color:'#60a5fa'},
+  {id:'roi',        icon:'💹', name:'ROI Calculator',      desc:'Return on investment, net profit, annual ROI, ROAS and cost of sale.', cat:'finance', color:'#f97316'},
+  {id:'vat',        icon:'🧾', name:'VAT Calculator',      desc:'Add/remove VAT 10%, 15%, 21% — both directions.', cat:'finance', color:'#f97316'},
+  {id:'loan',       icon:'🏦', name:'Loan Calculator',      desc:'Monthly payment, total interest and amortization table.', cat:'finance', color:'#f97316'},
+  {id:'currency',   icon:'💱', name:'Currency Converter',    desc:'Quick conversion between CZK, EUR, USD, GBP, JPY and more.', cat:'finance', color:'#f97316'},
+  {id:'calc',       icon:'🧮', name:'Scientific Calculator', desc:'Basic operations, powers, roots, log, sin, cos, tan…', cat:'math',    color:'#a855f7'},
+  {id:'percentage', icon:'📐', name:'Percentage Calculator', desc:'Four types of percentage calculations, including reverse calculation.', cat:'math',    color:'#a855f7'},
+  {id:'primes',     icon:'🔢', name:'Primes & Factorization',   desc:'Primality test, factorization, GCD, LCM, Sieve of Eratosthenes.', cat:'math',    color:'#a855f7'},
+  {id:'units',      icon:'⚖️', name:'Unit Converter',      desc:'Length, weight, volume, temperature, area, speed.', cat:'convert', color:'#22c55e'},
+  {id:'numbase',    icon:'🔀', name:'Number Systems',      desc:'Instant conversion DEC ↔ BIN ↔ OCT ↔ HEX + ASCII table.', cat:'convert', color:'#22c55e'},
+  {id:'encoding',   icon:'🔐', name:'Text Encoding',       desc:'Base64, URL encode, HTML entities — both encode and decode.', cat:'convert', color:'#22c55e'},
+  {id:'morse',      icon:'📡', name:'Morse Code',          desc:'Real-time conversion between text and Morse code.', cat:'convert', color:'#22c55e'},
+  {id:'colorconvert',icon:'🎨', name:'Color Converter',    desc:'HEX ↔ RGB ↔ HSL ↔ CMYK with live preview.', cat:'color',   color:'#ec4899'},
+  {id:'palette',    icon:'🖌️', name:'Palette Generator',   desc:'Complementary, analogous, triadic and monochromatic palettes.', cat:'color',   color:'#ec4899'},
+  {id:'contrast',   icon:'👁️', name:'WCAG Contrast',       desc:'Contrast check per WCAG 2.1 AA/AAA.', cat:'color',   color:'#ec4899'},
+  {id:'datetime',   icon:'📅', name:'Date & Time',         desc:'Date difference, add days, week number, day of week.', cat:'time',    color:'#06b6d4'},
+  {id:'timezone',   icon:'🌍', name:'Time Zones',          desc:'Convert the current or a given time between world time zones.', cat:'time',    color:'#06b6d4'},
+  {id:'stopwatch',  icon:'⏱️', name:'Stopwatch & Timer',   desc:'Precise stopwatch with laps and a countdown timer with alarm.', cat:'time',    color:'#06b6d4'},
+  {id:'bmi',        icon:'⚕️', name:'BMI Calculator',      desc:'BMI, weight category, ideal weight and a visual scale.', cat:'health',  color:'#84cc16'},
+  {id:'calories',   icon:'🔥', name:'Calorie Calculator',   desc:'Daily calorie needs based on BMR (Harris-Benedict) + macros.', cat:'health',  color:'#84cc16'},
+];
+
+// ═══════════════════════════════════════════════════════════
+// RENDERS
+// ═══════════════════════════════════════════════════════════
+const RENDERS = {
+
+// ─── PPC KEYWORD PERMUTATION TOOL (KWtool) ───────────────
+ppc: () => `
+<div class="tool-panel">
+  <p style="font-size:.82rem;color:var(--text2);margin-bottom:14px;">
+    Enter keywords into the lists (one word/phrase per line). The tool generates every combination (Cartesian product) and applies the selected match types.
+  </p>
+  <div class="kw-boxes-toolbar">
+    <button class="kw-adv-btn" onclick="kwAddBox()" style="padding:8px 18px;font-size:.86rem;">+ Add list</button>
+    <button class="kw-adv-btn" onclick="kwResetBoxes()" style="padding:8px 18px;font-size:.86rem;">↺ Reset</button>
+  </div>
+  <div class="kw-boxes-wrapper" id="kwBoxesWrapper"></div>
+  <div class="kw-sep-section">
+    <label>Separator:</label>
+    <input type="text" class="kw-sep-input" id="kwSeparator" value=" " title="Separator between words from the lists" style="width:64px;">
+    <div class="kw-sep-presets">
+      <button class="kw-sep-btn active" onclick="kwSetSep(' ',this)">space</button>
+      <button class="kw-sep-btn" onclick="kwSetSep('_',this)">_</button>
+      <button class="kw-sep-btn" onclick="kwSetSep('-',this)">-</button>
+      <button class="kw-sep-btn" onclick="kwSetSep('+',this)">+</button>
+    </div>
+  </div>
+  <div class="kw-bottom">
+    <div class="kw-include-section">
+      <div class="kw-include-header">
+        <h4>Include in output</h4>
+        <div class="kw-select-links">
+          <a onclick="kwSelectAll()">Select all</a>
+          <span>|</span>
+          <a onclick="kwDeselectAll()">Deselect all</a>
+        </div>
+      </div>
+      <div class="kw-include-body">
+        <div class="kw-include-row" onclick="kwToggleCheck('kwOpExact')">
+          <input type="checkbox" id="kwOpExact" name="kwOp" value="exact">
+          <label>Exact</label>
+          <span class="match-badge badge-exact">[kw]</span>
+        </div>
+        <div class="kw-include-row" onclick="kwToggleCheck('kwOpPhrase')">
+          <input type="checkbox" id="kwOpPhrase" name="kwOp" value="phrase">
+          <label>Phrase</label>
+          <span class="match-badge badge-phrase">"kw"</span>
+        </div>
+        <div class="kw-include-row" onclick="kwToggleCheck('kwOpBroad')">
+          <input type="checkbox" id="kwOpBroad" name="kwOp" value="broad" checked>
+          <label>Broad match</label>
+          <span class="match-badge badge-broad">kw</span>
+        </div>
+        <div class="kw-include-row" onclick="kwToggleCheck('kwOpModBroad')">
+          <input type="checkbox" id="kwOpModBroad" name="kwOp" value="modified-broad">
+          <label>Modified broad</label>
+          <span class="match-badge badge-broad-mod">+kw</span>
+        </div>
+        <div class="kw-include-row" onclick="kwToggleCheck('kwOpCapitalize')">
+          <input type="checkbox" id="kwOpCapitalize" name="kwCapitalize">
+          <label>Capitalise first letters</label>
+          <span class="match-badge" style="background:#1e293b;color:#94a3b8;border:1px solid #334155;">Aa</span>
+        </div>
+        <div class="kw-include-row" onclick="kwToggleCheck('kwOpNegExact')">
+          <input type="checkbox" id="kwOpNegExact" name="kwOp" value="negative-exact">
+          <label>Negative Exact</label>
+          <span class="match-badge badge-neg-exact">-[kw]</span>
+        </div>
+        <div class="kw-include-row" onclick="kwToggleCheck('kwOpNegPhrase')">
+          <input type="checkbox" id="kwOpNegPhrase" name="kwOp" value="negative-phrase">
+          <label>Negative Phrase</label>
+          <span class="match-badge badge-neg-phrase">-"kw"</span>
+        </div>
+        <div class="kw-include-row" onclick="kwToggleCheck('kwOpNegBroad')">
+          <input type="checkbox" id="kwOpNegBroad" name="kwOp" value="negative-broad">
+          <label>Negative Broad</label>
+          <span class="match-badge badge-neg-broad">-kw</span>
+        </div>
+      </div>
+    </div>
+    <div class="kw-right-side">
+      <button class="kw-generate-btn" onclick="kwGenerate()">🔀 GENERATE KEYWORDS</button>
+      <div class="kw-output-section">
+        <div class="kw-output-header">
+          <h4>Result</h4>
+          <div class="kw-output-stats">Total: <span id="kwCountTotal">0</span> keywords</div>
+          <div class="kw-output-actions">
+            <button class="kw-out-btn" onclick="kwCopyOutput()" id="kwCopyBtn">📋 Copy</button>
+            <button class="kw-out-btn" onclick="kwDownloadCSV()">⬇ CSV</button>
+            <button class="kw-out-btn" onclick="kwDownloadTXT()">⬇ TXT</button>
+            <button class="kw-out-btn" onclick="kwClearOutput()">🗑 Clear</button>
+          </div>
+        </div>
+        <textarea class="kw-output-textarea" id="kwOutputArea"
+          placeholder="The result will appear here...&#10;&#10;Example:&#10;1. Enter keywords into lists A, B, C&#10;2. Select match types on the left&#10;3. Click GENERATE"></textarea>
+      </div>
+    </div>
+  </div>
+</div>`,
+
+// ─── META TAGS ────────────────────────────────────────────
+metatags: () => `
+<div class="tool-panel">
+  <h3>🏷️ Meta Tags</h3>
+  <label>Title tag</label>
+  <input type="text" id="mt_title" placeholder="Page title — max. 60 characters" oninput="mt_check()">
+  <div class="progress-bar"><div class="progress-fill" id="mt_tb" style="width:0"></div></div>
+  <div id="mt_ti" style="font-size:.76rem;color:var(--text2);margin-top:3px;"></div>
+  <label>Meta description</label>
+  <textarea id="mt_desc" placeholder="Page description — ideally 120–155 characters" oninput="mt_check()" style="min-height:80px;"></textarea>
+  <div class="progress-bar"><div class="progress-fill" id="mt_db" style="width:0"></div></div>
+  <div id="mt_di" style="font-size:.76rem;color:var(--text2);margin-top:3px;"></div>
+</div>
+<div class="tool-panel">
+  <h3>👁️ SERP Preview</h3>
+  <div style="background:#fff;border-radius:10px;padding:20px;max-width:590px;">
+    <div id="mt_pt" style="color:#1a0dab;font-size:1.05rem;font-weight:500;font-family:Arial;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Page title</div>
+    <div style="color:#006621;font-size:.78rem;font-family:Arial;margin:2px 0;">https://ember-pa.cz › stranka</div>
+    <div id="mt_pd" style="color:#545454;font-size:.86rem;font-family:Arial;line-height:1.45;">Page description will appear here...</div>
+  </div>
+</div>`,
+
+// ─── UTM BUILDER ─────────────────────────────────────────
+utmbuilder: () => `
+<div class="tool-panel">
+  <h3>📊 UTM Parameters</h3>
+  <label>Website URL *</label>
+  <input type="url" id="utm_url" placeholder="https://example.com/page" oninput="utm_build()">
+  <div class="grid-2">
+    <div><label>utm_source *</label><input type="text" id="utm_src" placeholder="google" oninput="utm_build()"></div>
+    <div><label>utm_medium *</label><input type="text" id="utm_med" placeholder="cpc" oninput="utm_build()"></div>
+    <div><label>utm_campaign *</label><input type="text" id="utm_cam" placeholder="summer_sale_2024" oninput="utm_build()"></div>
+    <div><label>utm_term</label><input type="text" id="utm_ter" placeholder="cheap shoes" oninput="utm_build()"></div>
+    <div><label>utm_content</label><input type="text" id="utm_con" placeholder="banner_a" oninput="utm_build()"></div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>✅ Resulting URL</h3>
+  <div class="result-box" id="utm_out" style="color:var(--accent);word-break:break-all;">Fill in the fields above…</div>
+  <div class="btn-row">
+    <button class="btn btn-success" onclick="copyText('utm_out')">📋 Copy</button>
+    <button class="btn btn-secondary" onclick="utm_reset()">🗑️ Reset</button>
+  </div>
+</div>`,
+
+// ─── SLUG ─────────────────────────────────────────────────
+slugify: () => `
+<div class="tool-panel">
+  <h3>🔗 URL Slug Generator</h3>
+  <label>Input text</label>
+  <textarea id="sl_in" placeholder="How to optimize Google Ads in 2024?" oninput="sl_run()" style="min-height:80px;"></textarea>
+  <div class="grid-2" style="margin-top:12px;">
+    <div><label>Separator</label>
+      <select id="sl_sep" onchange="sl_run()">
+        <option value="-">Hyphen -</option>
+        <option value="_">Underscore _</option>
+        <option value="">No separator</option>
+      </select>
+    </div>
+    <div><label>Letter case</label>
+      <select id="sl_case" onchange="sl_run()">
+        <option value="lower">lowercase</option>
+        <option value="upper">UPPERCASE</option>
+        <option value="keep">Keep as is</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>✅ Resulting slug</h3>
+  <div class="result-box" id="sl_out" style="font-size:1.05rem;color:var(--amber);">—</div>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyText('sl_out')">📋 Copy</button></div>
+</div>`,
+
+// ─── CURL → JSON ──────────────────────────────────────────
+curljson: () => `
+<div class="tool-panel">
+  <h3>🔄 Input cURL command</h3>
+  <textarea id="curl_in" placeholder="curl 'https://api.example.com/data' \\
+  -H 'Authorization: Bearer TOKEN' \\
+  -H 'Content-Type: application/json' \\
+  --data-raw '{&quot;key&quot;:&quot;value&quot;}'" style="min-height:160px;font-family:var(--mono);font-size:0.85rem;" oninput="curl_parse()"></textarea>
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="document.getElementById('curl_in').value='';document.getElementById('curl_out').textContent='—';document.getElementById('curl_summary').innerHTML=''">🗑️ Clear</button>
+    <button class="btn btn-primary" onclick="curl_parse()">⚙️ Convert</button>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>📋 Structured JSON output</h3>
+  <div id="curl_summary" style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;"></div>
+  <pre id="curl_out" style="background:var(--bg1);border:1px solid var(--border);border-radius:10px;padding:16px;font-size:0.82rem;font-family:var(--mono);color:var(--text1);overflow-x:auto;white-space:pre-wrap;min-height:80px;">—</pre>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyEl('curl_out')">📋 Copy JSON</button></div>
+</div>`,
+
+// ─── HTML SYNTAX CHECK ────────────────────────────────────
+htmllint: () => `
+<div class="tool-panel">
+  <h3>🔍 Upload or paste a file</h3>
+  <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px;">
+    <label style="cursor:pointer;padding:8px 18px;background:linear-gradient(135deg,#3b82f6,#6366f1);border-radius:8px;font-size:0.85rem;font-weight:600;color:#fff;" for="hl_file">📂 Upload HTML file</label>
+    <input type="file" id="hl_file" accept=".html,.htm" style="display:none" onchange="hl_loadFile(this)">
+    <span id="hl_filename" style="color:var(--text3);font-size:0.82rem;font-family:var(--mono);">no file</span>
+  </div>
+  <textarea id="hl_in" placeholder="...or paste HTML code directly here" style="min-height:180px;font-family:var(--mono);font-size:0.8rem;" oninput="hl_run()"></textarea>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="hl_run()">🔍 Check</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('hl_in').value='';document.getElementById('hl_filename').textContent='no file';hl_reset()">🗑️ Clear</button>
+  </div>
+</div>
+<div class="tool-panel" id="hl_stats_panel" style="display:none">
+  <h3>📊 Overview</h3>
+  <div class="stats-row" id="hl_stats"></div>
+</div>
+<div class="tool-panel" id="hl_errors_panel" style="display:none">
+  <h3>🚨 Issues</h3>
+  <div id="hl_errors"></div>
+</div>
+<div class="tool-panel" id="hl_ok_panel" style="display:none">
+  <h3>✅ Structure</h3>
+  <div id="hl_ok"></div>
+</div>`,
+
+// ─── WORD COUNT ───────────────────────────────────────────
+wordcount: () => `
+<div class="tool-panel">
+  <h3>📝 Input</h3>
+  <textarea id="wc_in" placeholder="Paste or type text..." style="min-height:180px;" oninput="wc_run()"></textarea>
+  <div class="btn-row"><button class="btn btn-secondary" onclick="document.getElementById('wc_in').value='';wc_run()">🗑️ Clear</button></div>
+</div>
+<div class="tool-panel">
+  <h3>📊 Statistics</h3>
+  <div class="stats-row">
+    <div class="stat-chip">Words: <strong id="wc_w">0</strong></div>
+    <div class="stat-chip">Characters (with spaces): <strong id="wc_c">0</strong></div>
+    <div class="stat-chip">Characters (without spaces): <strong id="wc_c2">0</strong></div>
+    <div class="stat-chip">Sentences: <strong id="wc_s">0</strong></div>
+    <div class="stat-chip">Paragraphs: <strong id="wc_p">0</strong></div>
+    <div class="stat-chip">Reading time: <strong id="wc_r">0 min</strong></div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>🔠 Top 10 words</h3>
+  <div id="wc_freq"></div>
+</div>`,
+
+// ─── CASE CONVERT ─────────────────────────────────────────
+caseconvert: () => `
+<div class="tool-panel">
+  <h3>🔡 Input</h3>
+  <textarea id="cc_in" placeholder="Paste text..." style="min-height:130px;"></textarea>
+  <div class="btn-row" style="flex-wrap:wrap;">
+    ${['UPPER|upper','lower|lower','Title Case|title','Sentence case|sentence','camelCase|camel','PascalCase|pascal','snake_case|snake','kebab-case|kebab','aLtErNaTiNg|alt','esreveR|rev'].map(x => {
+      const [l,v] = x.split('|');
+      return `<button class="btn btn-primary" onclick="cc('${v}')">${l}</button>`;
+    }).join('')}
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>✅ Output</h3>
+  <div class="result-box" id="cc_out">—</div>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyText('cc_out')">📋 Copy</button></div>
+</div>`,
+
+// ─── FIND & REPLACE ───────────────────────────────────────
+findreplace: () => `
+<div class="tool-panel">
+  <h3>🔄 Find & Replace</h3>
+  <div class="grid-2">
+    <div><label>Search for (text or /regex/flags)</label><input type="text" id="fr_find" placeholder="/word/gi"></div>
+    <div><label>Replace with</label><input type="text" id="fr_rep" placeholder="new text"></div>
+  </div>
+  <label>Text</label>
+  <textarea id="fr_in" placeholder="Paste text..." style="min-height:150px;"></textarea>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="fr_run()">🔄 Replace</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('fr_in').value='';document.getElementById('fr_out').value='';document.getElementById('fr_cnt').textContent=''">🗑️ Clear</button>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>✅ Output <span id="fr_cnt" style="color:var(--red);font-size:.8rem;"></span></h3>
+  <textarea id="fr_out" style="min-height:150px;" readonly placeholder="Output…"></textarea>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyText('fr_out')">📋 Copy</button></div>
+</div>`,
+
+// ─── LOREM IPSUM ──────────────────────────────────────────
+loremipsum: () => `
+<div class="tool-panel">
+  <h3>📄 Settings</h3>
+  <div class="grid-3">
+    <div><label>Count</label><input type="number" id="li_n" value="3" min="1" max="30"></div>
+    <div><label>Type</label>
+      <select id="li_t"><option value="p">Paragraphs</option><option value="s">Sentences</option><option value="w">Words</option></select>
+    </div>
+    <div><label>Start with "Lorem ipsum"</label>
+      <select id="li_s"><option value="1">Yes</option><option value="0">No</option></select>
+    </div>
+  </div>
+  <div class="btn-row"><button class="btn btn-primary" onclick="li_gen()">⚡ Generate</button></div>
+</div>
+<div class="tool-panel">
+  <h3>✅ Output</h3>
+  <div class="result-box" id="li_out" style="max-height:350px;overflow-y:auto;">Click Generate…</div>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyText('li_out')">📋 Copy</button></div>
+</div>`,
+
+// ─── CHAR MAP ─────────────────────────────────────────────
+charmap: () => `
+<div class="tool-panel">
+  <h3>🔣 Symbols – click to add</h3>
+  <div id="cm_sym" style="display:flex;flex-wrap:wrap;gap:5px;"></div>
+</div>
+<div class="tool-panel">
+  <h3>😀 Emoji</h3>
+  <div id="cm_emo" style="display:flex;flex-wrap:wrap;gap:5px;font-size:1.5rem;"></div>
+</div>
+<div class="tool-panel">
+  <h3>📋 Clipboard</h3>
+  <div class="result-box" id="cm_col" style="min-height:40px;font-size:1.2rem;letter-spacing:3px;">Click a character…</div>
+  <div class="btn-row">
+    <button class="btn btn-success" onclick="copyText('cm_col')">📋 Copy</button>
+    <button class="btn btn-secondary" onclick="document.getElementById('cm_col').textContent=''">🗑️ Clear</button>
+  </div>
+</div>`,
+
+// ─── ROI ──────────────────────────────────────────────────
+roi: () => `
+<div class="tool-panel">
+  <h3>💹 Input values</h3>
+  <div class="grid-2">
+    <div><label>Ad spend / investment (Kč)</label><input type="number" id="roi_i" placeholder="10000" oninput="roi_calc()"></div>
+    <div><label>Total revenue from ads (Kč)</label><input type="number" id="roi_r" placeholder="50000" oninput="roi_calc()"></div>
+    <div><label>Other costs (Kč)</label><input type="number" id="roi_c" placeholder="0" oninput="roi_calc()"></div>
+    <div><label>Duration (months)</label><input type="number" id="roi_m" placeholder="12" oninput="roi_calc()"></div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>📊 Results</h3>
+  <div class="stats-row">
+    <div class="stat-chip">Net profit: <strong id="roi_profit">—</strong></div>
+    <div class="stat-chip">ROI: <strong id="roi_pct">—</strong></div>
+    <div class="stat-chip">Annual ROI: <strong id="roi_ann">—</strong></div>
+    <div class="stat-chip">Break-even: <strong id="roi_be">—</strong></div>
+    <div class="stat-chip" title="Return on Ad Spend = Revenue / Ad Spend">ROAS: <strong id="roi_roas">—</strong></div>
+    <div class="stat-chip" title="Cost of Sale = Cost / Revenue × 100">CoS: <strong id="roi_pno">—</strong></div>
+  </div>
+</div>`,
+
+// ─── VAT ──────────────────────────────────────────────────
+vat: () => `
+<div class="tool-panel">
+  <h3>🧾 VAT Calculator</h3>
+  <div class="grid-3">
+    <div><label>VAT rate</label>
+      <select id="vat_r"><option value="21">21% – standard</option><option value="15">15% – reduced</option><option value="10">10% – second reduced</option><option value="0">0%</option></select>
+    </div>
+    <div><label>Price WITHOUT VAT (Kč)</label><input type="number" id="vat_n" placeholder="1000" oninput="vatFromNet()"></div>
+    <div><label>Price WITH VAT (Kč)</label><input type="number" id="vat_g" placeholder="1210" oninput="vatFromGross()"></div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>📊 Results</h3>
+  <div class="stats-row">
+    <div class="stat-chip">Price without VAT: <strong id="vat_ro1">—</strong></div>
+    <div class="stat-chip">VAT amount: <strong id="vat_ro2">—</strong></div>
+    <div class="stat-chip">Price with VAT: <strong id="vat_ro3">—</strong></div>
+  </div>
+</div>`,
+
+// ─── LOAN ─────────────────────────────────────────────────
+loan: () => `
+<div class="tool-panel">
+  <h3>🏦 Loan Calculator</h3>
+  <div class="grid-3">
+    <div><label>Loan amount (Kč)</label><input type="number" id="ln_p" placeholder="500000" oninput="ln_calc()"></div>
+    <div><label>Annual interest rate (%)</label><input type="number" id="ln_r" placeholder="4.5" step="0.1" oninput="ln_calc()"></div>
+    <div><label>Repayment period (months)</label><input type="number" id="ln_n" placeholder="240" oninput="ln_calc()"></div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>📊 Results</h3>
+  <div class="stats-row">
+    <div class="stat-chip">Monthly payment: <strong id="ln_mo">—</strong></div>
+    <div class="stat-chip">Total paid: <strong id="ln_tot">—</strong></div>
+    <div class="stat-chip">Total interest: <strong id="ln_int">—</strong></div>
+  </div>
+  <div id="ln_table_wrap" style="max-height:300px;overflow-y:auto;margin-top:16px;"></div>
+</div>`,
+
+// ─── CURRENCY ─────────────────────────────────────────────
+currency: () => `
+<div class="tool-panel">
+  <h3>💱 Currency Converter</h3>
+  <p style="font-size:.76rem;color:var(--red);margin-bottom:12px;">⚠️ Rates are approximate (fixed values). For accurate rates, use the Czech National Bank (ČNB) or Google.</p>
+  <div class="grid-3">
+    <div><label>Amount</label><input type="number" id="cur_amt" value="1000" oninput="cur_calc()"></div>
+    <div><label>From currency</label>
+      <select id="cur_from" onchange="cur_calc()">
+        <option value="CZK">CZK – Czech Koruna</option><option value="EUR">EUR – Euro</option>
+        <option value="USD">USD – Dollar</option><option value="GBP">GBP – Pound</option>
+        <option value="CHF">CHF – Franc</option><option value="JPY">JPY – Yen</option>
+        <option value="PLN">PLN – Zloty</option><option value="HUF">HUF – Forint</option>
+      </select>
+    </div>
+    <div><label>To currency</label>
+      <select id="cur_to" onchange="cur_calc()">
+        <option value="EUR">EUR – Euro</option><option value="CZK">CZK – Czech Koruna</option>
+        <option value="USD">USD – Dollar</option><option value="GBP">GBP – Pound</option>
+        <option value="CHF">CHF – Franc</option><option value="JPY">JPY – Yen</option>
+        <option value="PLN">PLN – Zloty</option><option value="HUF">HUF – Forint</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="tool-panel">
+  <div class="result-box result-big" id="cur_out">—</div>
+  <div id="cur_rate" style="text-align:center;font-size:.8rem;color:var(--text2);margin-top:8px;"></div>
+</div>`,
+
+// ─── CALCULATOR ───────────────────────────────────────────
+calc: () => `
+<div class="tool-panel">
+  <h3>🧮 Scientific Calculator</h3>
+  <div id="calc_hist" style="min-height:18px;text-align:right;font-size:.76rem;color:var(--text2);margin-bottom:4px;font-family:monospace;"></div>
+  <input type="text" id="calc_disp" value="0" style="font-size:1.8rem;text-align:right;font-weight:700;font-family:monospace;" readonly>
+  <div id="calc_pad" style="display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:12px;"></div>
+</div>`,
+
+// ─── PERCENTAGE ───────────────────────────────────────────
+percentage: () => `
+<div class="tool-panel"><h3>① X % of Y = ?</h3>
+  <div class="grid-3">
+    <div><label>Percentage (%)</label><input type="number" id="p1p" placeholder="25"></div>
+    <div><label>Value Y</label><input type="number" id="p1v" placeholder="200"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="pc1()">Calculate</button></div>
+  </div>
+  <div class="result-box" id="p1o" style="min-height:36px;padding:9px;">—</div>
+</div>
+<div class="tool-panel"><h3>② What % is X of Y?</h3>
+  <div class="grid-3">
+    <div><label>Part X</label><input type="number" id="p2x" placeholder="50"></div>
+    <div><label>Whole Y</label><input type="number" id="p2y" placeholder="200"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="pc2()">Calculate</button></div>
+  </div>
+  <div class="result-box" id="p2o" style="min-height:36px;padding:9px;">—</div>
+</div>
+<div class="tool-panel"><h3>③ Percentage change A → B</h3>
+  <div class="grid-3">
+    <div><label>Original A</label><input type="number" id="p3a" placeholder="100"></div>
+    <div><label>New B</label><input type="number" id="p3b" placeholder="130"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="pc3()">Calculate</button></div>
+  </div>
+  <div class="result-box" id="p3o" style="min-height:36px;padding:9px;">—</div>
+</div>
+<div class="tool-panel"><h3>④ X is P% of what?</h3>
+  <div class="grid-3">
+    <div><label>Value X</label><input type="number" id="p4x" placeholder="50"></div>
+    <div><label>Percentage P</label><input type="number" id="p4p" placeholder="25"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="pc4()">Calculate</button></div>
+  </div>
+  <div class="result-box" id="p4o" style="min-height:36px;padding:9px;">—</div>
+</div>`,
+
+// ─── PRIMES ───────────────────────────────────────────────
+primes: () => `
+<div class="tool-panel"><h3>🔍 Primality Test</h3>
+  <div class="grid-2">
+    <div><label>Number</label><input type="number" id="pr1" placeholder="97"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="prTest()">Test</button></div>
+  </div>
+  <div class="result-box" id="pr1o" style="min-height:36px;padding:9px;">—</div>
+</div>
+<div class="tool-panel"><h3>🔢 Prime Factorization</h3>
+  <div class="grid-2">
+    <div><label>Number</label><input type="number" id="pr2" placeholder="360"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="prFactor()">Factorize</button></div>
+  </div>
+  <div class="result-box" id="pr2o" style="min-height:36px;padding:9px;">—</div>
+</div>
+<div class="tool-panel"><h3>⚙️ GCD & LCM</h3>
+  <div class="grid-3">
+    <div><label>Number A</label><input type="number" id="pr3a" placeholder="12"></div>
+    <div><label>Number B</label><input type="number" id="pr3b" placeholder="18"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="prGcdLcm()">Calculate</button></div>
+  </div>
+  <div class="result-box" id="pr3o" style="min-height:36px;padding:9px;">—</div>
+</div>
+<div class="tool-panel"><h3>🧮 Sieve of Eratosthenes</h3>
+  <div class="grid-2">
+    <div><label>Primes up to N</label><input type="number" id="pr4" placeholder="100"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="prSieve()">Generate</button></div>
+  </div>
+  <div class="result-box" id="pr4o" style="min-height:36px;padding:9px;max-height:200px;overflow-y:auto;">—</div>
+</div>`,
+
+// ─── UNITS ────────────────────────────────────────────────
+units: () => `
+<div class="tool-panel">
+  <h3>⚖️ Unit Conversion</h3>
+  <div class="grid-2">
+    <div><label>Category</label>
+      <select id="un_cat" onchange="un_updateUnits()">
+        <option value="length">📏 Length</option><option value="weight">⚖️ Weight</option>
+        <option value="volume">🧪 Volume</option><option value="temp">🌡️ Temperature</option>
+        <option value="area">📐 Area</option><option value="speed">💨 Speed</option>
+        <option value="time">⏱️ Time</option><option value="data">💾 Data</option>
+      </select>
+    </div>
+    <div><label>Value</label><input type="number" id="un_val" placeholder="1" oninput="un_calc()"></div>
+    <div><label>From unit</label><select id="un_from" onchange="un_calc()"></select></div>
+    <div><label>To unit</label><select id="un_to" onchange="un_calc()"></select></div>
+  </div>
+</div>
+<div class="tool-panel">
+  <div class="result-box result-big" id="un_out">—</div>
+  <div id="un_all" style="margin-top:14px;"></div>
+</div>`,
+
+// ─── NUMBASE ──────────────────────────────────────────────
+numbase: () => `
+<div class="tool-panel">
+  <h3>🔀 Number Systems</h3>
+  <div class="grid-2">
+    <div><label>Decimal (DEC)</label><input type="text" id="nb_dec" placeholder="255" oninput="nb_fromDec(this.value)"></div>
+    <div><label>Binary (BIN)</label><input type="text" id="nb_bin" placeholder="11111111" oninput="nb_fromBin(this.value)"></div>
+    <div><label>Octal (OCT)</label><input type="text" id="nb_oct" placeholder="377" oninput="nb_fromOct(this.value)"></div>
+    <div><label>Hexadecimal (HEX)</label><input type="text" id="nb_hex" placeholder="FF" oninput="nb_fromHex(this.value)"></div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>📊 ASCII table</h3>
+  <div id="nb_ascii" style="max-height:250px;overflow-y:auto;"></div>
+</div>`,
+
+// ─── ENCODING ─────────────────────────────────────────────
+encoding: () => `
+<div class="tool-panel">
+  <h3>🔐 Text Encoding</h3>
+  <label>Vstup</label>
+  <textarea id="enc_in" placeholder="Paste text..." style="min-height:100px;"></textarea>
+  <div class="btn-row" style="flex-wrap:wrap;">
+    <button class="btn btn-primary" onclick="enc_run('b64e')">Base64 Encode</button>
+    <button class="btn btn-primary" onclick="enc_run('b64d')">Base64 Decode</button>
+    <button class="btn btn-primary" onclick="enc_run('urle')">URL Encode</button>
+    <button class="btn btn-primary" onclick="enc_run('urld')">URL Decode</button>
+    <button class="btn btn-primary" onclick="enc_run('htmle')">HTML Encode</button>
+    <button class="btn btn-primary" onclick="enc_run('htmld')">HTML Decode</button>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>✅ Output</h3>
+  <div class="result-box" id="enc_out" style="max-height:200px;overflow-y:auto;">—</div>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyText('enc_out')">📋 Copy</button></div>
+</div>`,
+
+// ─── MORSE ────────────────────────────────────────────────
+morse: () => `
+<div class="tool-panel">
+  <h3>📡 Text → Morse</h3>
+  <textarea id="mo_in" placeholder="Type text..." style="min-height:80px;" oninput="mo_toMorse()"></textarea>
+  <div class="result-box" id="mo_out" style="font-family:monospace;letter-spacing:2px;margin-top:8px;">—</div>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyText('mo_out')">📋 Copy</button></div>
+</div>
+<div class="tool-panel">
+  <h3>📡 Morse → Text</h3>
+  <textarea id="mo_min" placeholder="... --- ..." style="min-height:80px;" oninput="mo_fromMorse()"></textarea>
+  <div class="result-box" id="mo_mout" style="margin-top:8px;">—</div>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyText('mo_mout')">📋 Copy</button></div>
+</div>`,
+
+// ─── COLOR CONVERT ────────────────────────────────────────
+colorconvert: () => `
+<div class="tool-panel">
+  <h3>🎨 Color Converter</h3>
+  <div class="color-preview" id="cv_prev" style="background:#3a7bd5;"></div>
+  <div class="grid-2" style="margin-top:14px;">
+    <div><label>HEX</label><input type="text" id="cv_hex" value="#3a7bd5" oninput="cv_fromHex()" maxlength="7"></div>
+    <div><label>Color picker</label><input type="color" id="cv_picker" value="#3a7bd5" oninput="cv_fromPicker()" style="height:42px;"></div>
+    <div><label>RGB</label><input type="text" id="cv_rgb" placeholder="58, 123, 213" oninput="cv_fromRgb()"></div>
+    <div><label>HSL</label><input type="text" id="cv_hsl" placeholder="214, 65%, 53%" oninput="cv_fromHsl()"></div>
+    <div><label>CMYK</label><input type="text" id="cv_cmyk" placeholder="73, 42, 0, 16" oninput="cv_fromCmyk()"></div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>📋 CSS output</h3>
+  <div class="result-box" id="cv_css" style="font-family:monospace;font-size:.84rem;line-height:2;">—</div>
+  <div class="btn-row"><button class="btn btn-success" onclick="copyText('cv_css')">📋 Copy CSS</button></div>
+</div>`,
+
+// ─── PALETTE ──────────────────────────────────────────────
+palette: () => `
+<div class="tool-panel">
+  <h3>🖌️ Color Palette Generator</h3>
+  <div class="grid-2">
+    <div><label>Base color</label>
+      <div style="display:flex;gap:10px;">
+        <input type="text" id="pal_hex" value="#3b82f6" placeholder="#rrggbb" oninput="pal_gen()" style="flex:1;">
+        <input type="color" id="pal_pick" value="#3b82f6" oninput="document.getElementById('pal_hex').value=this.value;pal_gen()" style="height:42px;cursor:pointer;">
+      </div>
+    </div>
+    <div><label>Palette type</label>
+      <select id="pal_type" onchange="pal_gen()">
+        <option value="comp">Complementary</option><option value="anal">Analogous</option>
+        <option value="triad">Triadic</option><option value="tetrad">Tetradic</option>
+        <option value="mono">Monochromatic</option><option value="split">Split-complementary</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="tool-panel">
+  <h3>🎨 Palette</h3>
+  <div id="pal_out" class="swatches"></div>
+  <div id="pal_codes" style="margin-top:14px;font-family:monospace;font-size:.82rem;line-height:1.8;color:var(--text2);"></div>
+</div>`,
+
+// ─── CONTRAST WCAG ────────────────────────────────────────
+contrast: () => `
+<div class="tool-panel">
+  <h3>👁️ WCAG Contrast</h3>
+  <div class="grid-2">
+    <div><label>Text color</label>
+      <div style="display:flex;gap:10px;">
+        <input type="text" id="wc_fg" value="#ffffff" oninput="wcag_calc()" style="flex:1;">
+        <input type="color" id="wc_fgp" value="#ffffff" oninput="document.getElementById('wc_fg').value=this.value;wcag_calc()" style="height:42px;">
+      </div>
+    </div>
+    <div><label>Background color</label>
+      <div style="display:flex;gap:10px;">
+        <input type="text" id="wc_bg" value="#0a0e27" oninput="wcag_calc()" style="flex:1;">
+        <input type="color" id="wc_bgp" value="#0a0e27" oninput="document.getElementById('wc_bg').value=this.value;wcag_calc()" style="height:42px;">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="tool-panel">
+  <div id="wcag_prev" style="border-radius:10px;padding:22px;margin-bottom:14px;text-align:center;font-size:1.1rem;font-weight:700;transition:all .3s;">Sample text on background</div>
+  <div class="stats-row">
+    <div class="stat-chip">Ratio: <strong id="wcag_ratio">—</strong></div>
+    <div class="stat-chip">AA normal: <strong id="wcag_aa">—</strong></div>
+    <div class="stat-chip">AA large: <strong id="wcag_aa_l">—</strong></div>
+    <div class="stat-chip">AAA normal: <strong id="wcag_aaa">—</strong></div>
+    <div class="stat-chip">AAA large: <strong id="wcag_aaa_l">—</strong></div>
+  </div>
+</div>`,
+
+// ─── DATETIME ─────────────────────────────────────────────
+datetime: () => `
+<div class="tool-panel"><h3>📅 Date Difference</h3>
+  <div class="grid-2">
+    <div><label>From date</label><input type="date" id="dt_from"></div>
+    <div><label>To date</label><input type="date" id="dt_to"></div>
+  </div>
+  <div class="btn-row"><button class="btn btn-primary" onclick="dt_diff()">Calculate difference</button></div>
+  <div class="result-box" id="dt_diff_out" style="min-height:36px;padding:9px;">—</div>
+</div>
+<div class="tool-panel"><h3>➕ Add / Subtract days</h3>
+  <div class="grid-3">
+    <div><label>Date</label><input type="date" id="dt_base"></div>
+    <div><label>Number of days (+ or -)</label><input type="number" id="dt_days" placeholder="+30"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="dt_add()">Calculate</button></div>
+  </div>
+  <div class="result-box" id="dt_add_out" style="min-height:36px;padding:9px;">—</div>
+</div>
+<div class="tool-panel"><h3>📆 Date Info</h3>
+  <div class="grid-2">
+    <div><label>Date</label><input type="date" id="dt_info"></div>
+    <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" style="width:100%" onclick="dt_info_run()">Show</button></div>
+  </div>
+  <div class="result-box" id="dt_info_out" style="min-height:36px;padding:9px;">—</div>
+</div>`,
+
+// ─── TIMEZONE ─────────────────────────────────────────────
+timezone: () => `
+<div class="tool-panel">
+  <h3>🌍 Time Zone Conversion</h3>
+  <div class="grid-2">
+    <div><label>Date and time</label><input type="datetime-local" id="tz_in"></div>
+    <div><label>Source zone</label>
+      <select id="tz_from">
+        <option value="Europe/Prague">🇨🇿 Prague (CET/CEST)</option>
+        <option value="UTC">🌐 UTC</option>
+        <option value="Europe/London">🇬🇧 London</option>
+        <option value="America/New_York">🇺🇸 New York</option>
+        <option value="America/Los_Angeles">🇺🇸 Los Angeles</option>
+        <option value="Asia/Tokyo">🇯🇵 Tokyo</option>
+        <option value="Asia/Shanghai">🇨🇳 Shanghai</option>
+        <option value="Asia/Dubai">🇦🇪 Dubai</option>
+        <option value="Australia/Sydney">🇦🇺 Sydney</option>
+      </select>
+    </div>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" onclick="tz_convert()">🔄 Convert</button>
+    <button class="btn btn-secondary" onclick="tz_now()">⏰ Current time</button>
+  </div>
+</div>
+<div class="tool-panel"><div id="tz_out"></div></div>`,
+
+// ─── STOPWATCH ────────────────────────────────────────────
+stopwatch: () => `
+<div class="tool-panel">
+  <h3>⏱️ Stopwatch</h3>
+  <div class="stopwatch-display" id="sw_disp">00:00:00.000</div>
+  <div class="btn-row" style="justify-content:center;">
+    <button class="btn btn-primary" id="sw_startbtn" onclick="sw_toggle()">▶ Start</button>
+    <button class="btn btn-secondary" onclick="sw_lap()">🏁 Lap</button>
+    <button class="btn btn-danger" onclick="sw_reset()">↺ Reset</button>
+  </div>
+  <div class="laps-list" id="sw_laps"></div>
+</div>
+<div class="tool-panel">
+  <h3>⏳ Countdown</h3>
+  <div class="grid-3">
+    <div><label>Hours</label><input type="number" id="cd_h" value="0" min="0" max="23"></div>
+    <div><label>Minutes</label><input type="number" id="cd_m" value="5" min="0" max="59"></div>
+    <div><label>Seconds</label><input type="number" id="cd_s" value="0" min="0" max="59"></div>
+  </div>
+  <div class="stopwatch-display" id="cd_disp" style="font-size:2.4rem;">05:00</div>
+  <div class="btn-row" style="justify-content:center;">
+    <button class="btn btn-primary" id="cd_startbtn" onclick="cd_toggle()">▶ Start</button>
+    <button class="btn btn-danger" onclick="cd_reset()">↺ Reset</button>
+  </div>
+</div>`,
+
+// ─── BMI ──────────────────────────────────────────────────
+bmi: () => `
+<div class="tool-panel">
+  <h3>⚕️ BMI Calculator</h3>
+  <div class="grid-2">
+    <div><label>Height (cm)</label><input type="number" id="bmi_h" placeholder="175" oninput="bmi_calc()"></div>
+    <div><label>Weight (kg)</label><input type="number" id="bmi_w" placeholder="70" oninput="bmi_calc()"></div>
+    <div><label>Age</label><input type="number" id="bmi_a" placeholder="30" oninput="bmi_calc()"></div>
+    <div><label>Gender</label>
+      <select id="bmi_g" onchange="bmi_calc()"><option value="m">Male</option><option value="f">Female</option></select>
+    </div>
+  </div>
+</div>
+<div class="tool-panel">
+  <div id="bmi_out"></div>
+  <div style="margin-top:14px;">
+    <div style="display:flex;justify-content:space-between;font-size:.7rem;color:var(--text2);margin-bottom:4px;">
+      <span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obesity</span>
+    </div>
+    <div style="display:flex;height:10px;border-radius:50px;overflow:hidden;">
+      <div style="flex:1;background:#3b82f6;"></div>
+      <div style="flex:1;background:#22c55e;"></div>
+      <div style="flex:1;background:#f97316;"></div>
+      <div style="flex:1;background:#ef4444;"></div>
+    </div>
+    <div id="bmi_needle" style="margin-top:5px;text-align:center;font-size:1.3rem;">▲</div>
+  </div>
+</div>`,
+
+// ─── CALORIES ─────────────────────────────────────────────
+calories: () => `
+<div class="tool-panel">
+  <h3>🔥 Calorie Calculator (Harris-Benedict)</h3>
+  <div class="grid-2">
+    <div><label>Gender</label>
+      <select id="cal_g" onchange="cal_calc()"><option value="m">Male</option><option value="f">Female</option></select>
+    </div>
+    <div><label>Age (years)</label><input type="number" id="cal_a" placeholder="30" oninput="cal_calc()"></div>
+    <div><label>Height (cm)</label><input type="number" id="cal_h" placeholder="175" oninput="cal_calc()"></div>
+    <div><label>Weight (kg)</label><input type="number" id="cal_w" placeholder="70" oninput="cal_calc()"></div>
+    <div><label>Activity level</label>
+      <select id="cal_act" onchange="cal_calc()">
+        <option value="1.2">Sedentary lifestyle</option>
+        <option value="1.375">Lightly active (1–3×/week)</option>
+        <option value="1.55">Moderately active (3–5×/week)</option>
+        <option value="1.725">Very active (6–7×/week)</option>
+        <option value="1.9">Extremely active (2×/day)</option>
+      </select>
+    </div>
+    <div><label>Goal</label>
+      <select id="cal_goal" onchange="cal_calc()">
+        <option value="0">Maintain weight</option>
+        <option value="-500">Lose weight (-500 kcal)</option>
+        <option value="-250">Lose weight slowly (-250 kcal)</option>
+        <option value="300">Build muscle (+300 kcal)</option>
+        <option value="500">Bulk aggressively (+500 kcal)</option>
+      </select>
+    </div>
+  </div>
+</div>
+<div class="tool-panel"><div id="cal_out"></div></div>`,
+
+}; // END RENDERS
+
+// ═══════════════════════════════════════════════════════════
+// ██   KWTOOL — PPC KEYWORD PERMUTATION LOGIC
+// ═══════════════════════════════════════════════════════════
+const KW_MATCH_CONFIGS = {
+  'broad':          (kw) => kw,
+  'modified-broad': (kw) => kw.split(' ').map(w => '+' + w).join(' '),
+  'phrase':         (kw) => `"${kw}"`,
+  'exact':          (kw) => `[${kw}]`,
+  'negative-broad': (kw) => `-${kw}`,
+  'negative-phrase':(kw) => `-"${kw}"`,
+  'negative-exact': (kw) => `-[${kw}]`,
+};
+
+let kwBoxes = [], kwBoxCounter = 0;
+
+function kwInitBoxes() {
+  kwBoxes = []; kwBoxCounter = 0;
+  const w = document.getElementById('kwBoxesWrapper');
+  if (w) w.innerHTML = '';
+  ['A', 'B', 'C'].forEach(l => kwAddBox(l));
+}
+
+function kwAddBox(label) {
+  kwBoxCounter++;
+  const id = 'kwBox_' + kwBoxCounter;
+  const lbl = label || String.fromCharCode(64 + kwBoxCounter);
+  kwBoxes.push({ id, label: lbl, enabled: true });
+  const wrapper = document.getElementById('kwBoxesWrapper');
+  if (!wrapper) return;
+  const card = document.createElement('div');
+  card.className = 'kw-box-card';
+  card.id = 'kwCard_' + id;
+  card.innerHTML = `
+    <div class="kw-box-header">
+      <span class="kw-box-label">List ${lbl}</span>
+      <label class="kw-box-toggle">
+        <input type="checkbox" id="kwChk_${id}" checked onchange="kwToggleBox('${id}',this)"> active
+      </label>
+    </div>
+    <textarea class="kw-box-textarea" id="kwTa_${id}"
+      placeholder="Enter keywords&#10;one per line&#10;e.g.:&#10;cheap&#10;quality&#10;best"></textarea>
+    <div class="kw-adv-toggle" onclick="kwToggleAdv('kwAdv_${id}',this)">
+      <span>⚙ Advanced</span><span class="arr">▸</span>
+    </div>
+    <div class="kw-adv-panel" id="kwAdv_${id}">
+      <div class="kw-adv-row">
+        <input class="kw-adv-input" id="kwPfx_${id}" type="text" placeholder="Prefix">
+        <input class="kw-adv-input" id="kwSfx_${id}" type="text" placeholder="Suffix">
+        <button class="kw-adv-btn" onclick="kwApplyPfxSfx('${id}')">Apply</button>
+      </div>
+      <div class="kw-adv-row">
+        <button class="kw-adv-btn" onclick="kwClearDupes('${id}')">Remove duplicates</button>
+        <button class="kw-adv-btn" onclick="document.getElementById('kwTa_${id}').value=''">Clear content</button>
+        <button class="kw-adv-btn" onclick="kwRemoveBox('${id}')">✕ Remove list</button>
+      </div>
+    </div>`;
+  wrapper.appendChild(card);
+}
+
+function kwRemoveBox(id) {
+  kwBoxes = kwBoxes.filter(b => b.id !== id);
+  const c = document.getElementById('kwCard_' + id);
+  if (c) c.remove();
+}
+
+function kwResetBoxes() {
+  if (!confirm('Reset everything? All content will be deleted.')) return;
+  kwInitBoxes();
+  kwClearOutput();
+}
+
+function kwToggleBox(id, chk) {
+  const b = kwBoxes.find(b => b.id === id);
+  if (b) b.enabled = chk.checked;
+  document.getElementById('kwCard_' + id)?.classList.toggle('disabled', !chk.checked);
+}
+
+function kwToggleAdv(panelId, trigger) {
+  const p = document.getElementById(panelId);
+  p.classList.toggle('open');
+  trigger.querySelector('.arr').textContent = p.classList.contains('open') ? '▾' : '▸';
+}
+
+function kwSelectAll() {
+  document.querySelectorAll('[name="kwOp"], [name="kwCapitalize"]').forEach(cb => cb.checked = true);
+}
+function kwDeselectAll() {
+  document.querySelectorAll('[name="kwOp"], [name="kwCapitalize"]').forEach(cb => cb.checked = false);
+}
+function kwToggleCheck(id) {
+  const cb = document.getElementById(id);
+  cb.checked = !cb.checked;
+}
+
+function kwSetSep(val, btn) {
+  const inp = document.getElementById('kwSeparator');
+  if (inp) inp.value = val;
+  document.querySelectorAll('.kw-sep-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function kwGenerate() {
+  const sep = document.getElementById('kwSeparator')?.value ?? ' ';
+  const capitalize = document.getElementById('kwOpCapitalize')?.checked;
+  const activeTypes = [];
+  document.querySelectorAll('[name="kwOp"]').forEach(cb => { if (cb.checked) activeTypes.push(cb.value); });
+  if (activeTypes.length === 0) { toast('Select at least one match type!', 'var(--red)'); return; }
+  const lists = [];
+  for (const box of kwBoxes) {
+    if (!box.enabled) continue;
+    const ta = document.getElementById('kwTa_' + box.id);
+    if (!ta) continue;
+    const lines = ta.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length > 0) lists.push(lines);
+  }
+  if (lists.length === 0) { toast('Enter keywords into at least one active list!', 'var(--red)'); return; }
+  const combined = kwCartesian(lists, sep);
+  const allLines = [];
+  for (const type of activeTypes) {
+    const fmt = KW_MATCH_CONFIGS[type];
+    if (!fmt) continue;
+    for (let kw of combined) {
+      if (capitalize) kw = kw.replace(/\b\w/g, c => c.toUpperCase());
+      allLines.push(fmt(kw));
+    }
+  }
+  const outEl = document.getElementById('kwOutputArea');
+  const cntEl = document.getElementById('kwCountTotal');
+  if (outEl) outEl.value = allLines.join('\n');
+  if (cntEl) cntEl.textContent = allLines.length;
+  toast(`✓ ${allLines.length} keywords generated`);
+}
+
+function kwCartesian(lists, sep) {
+  return lists.reduce((acc, list) => {
+    const res = [];
+    for (const a of acc) for (const b of list) res.push(a + sep + b);
+    return res;
+  });
+}
+
+function kwApplyPfxSfx(id) {
+  const ta = document.getElementById('kwTa_' + id);
+  const pfx = document.getElementById('kwPfx_' + id).value;
+  const sfx = document.getElementById('kwSfx_' + id).value;
+  if (!pfx && !sfx) return;
+  ta.value = ta.value.split('\n').map(l => l.trim() ? pfx + l + sfx : l).join('\n');
+}
+
+function kwClearDupes(id) {
+  const ta = document.getElementById('kwTa_' + id);
+  ta.value = [...new Set(ta.value.split('\n').map(l => l.trim()))].join('\n');
+}
+
+function kwCopyOutput() {
+  const val = document.getElementById('kwOutputArea')?.value;
+  if (!val) return;
+  navigator.clipboard.writeText(val).then(() => {
+    const btn = document.getElementById('kwCopyBtn');
+    if (btn) { btn.textContent = '✓ Copied!'; btn.classList.add('success'); setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('success'); }, 2000); }
+  }).catch(() => { const ta = document.getElementById('kwOutputArea'); if(ta){ta.select();document.execCommand('copy');} });
+}
+
+function kwDownloadTXT() {
+  const c = document.getElementById('kwOutputArea')?.value; if (!c) return;
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([c], { type: 'text/plain' }));
+  a.download = 'ppc_keywords.txt'; a.click();
+}
+
+function kwDownloadCSV() {
+  const c = document.getElementById('kwOutputArea')?.value; if (!c) return;
+  const csv = c.split('\n').map(l => '"' + l.replace(/"/g, '""') + '"').join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = 'ppc_keywords.csv'; a.click();
+}
+
+function kwClearOutput() {
+  const o = document.getElementById('kwOutputArea'); if (o) o.value = '';
+  const c = document.getElementById('kwCountTotal'); if (c) c.textContent = '0';
+}
+
+// ═══════════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════════
+function toast(msg, color) {
+  const d = document.createElement('div');
+  d.textContent = msg;
+  d.style.cssText = `position:fixed;bottom:28px;right:28px;background:${color||'var(--green)'};color:#fff;padding:10px 22px;border-radius:8px;font-weight:700;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.4);animation:fadeInUp .3s ease;font-family:inherit;font-size:.88rem;`;
+  document.body.appendChild(d);
+  setTimeout(() => { d.style.opacity = '0'; d.style.transition = 'opacity .4s'; setTimeout(() => d.remove(), 400); }, 2400);
+}
+
+function copyText(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const txt = (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') ? el.value : el.textContent;
+  navigator.clipboard.writeText(txt).then(() => toast('✓ Copied!')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); toast('✓ Copied!');
+  });
+}
+
+function fmt(n, dec = 2) {
+  return isNaN(n) ? '—' : Number(n).toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: dec });
+}
+
+// ═══════════════════════════════════════════════════════════
+// DASHBOARD NAVIGATION (SINGLE AUTHORITATIVE VERSION)
+// ═══════════════════════════════════════════════════════════
+function renderDashboard() {
+  document.getElementById('toolsGrid').innerHTML = TOOLS.map(t => `
+    <div class="tool-card" data-cat="${t.cat}" onclick="openTool('${t.id}')" style="--card-color:${t.color}">
+      <div class="tool-card-icon" style="background:color-mix(in srgb,${t.color} 14%,transparent);color:${t.color}">${t.icon}</div>
+      <div class="tool-card-info">
+        <div class="tool-card-name">${t.name}${t.badge ? `<span class="badge badge-${t.badge}">${t.badge.toUpperCase()}</span>` : ''}</div>
+        <div class="tool-card-desc">${t.desc}</div>
+      </div>
+      <div class="tool-card-arrow">→</div>
+    </div>`).join('');
+}
+
+function filterCat(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tool-card').forEach(c =>
+    c.classList.toggle('hidden', cat !== 'all' && c.dataset.cat !== cat));
+}
+
+function searchTools(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.tool-card').forEach(c => {
+    const txt = c.textContent.toLowerCase();
+    c.classList.toggle('hidden', !!q && !txt.includes(q));
+  });
+}
+
+function showDashboard() {
+  document.getElementById('toolView').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  // Stop stopwatch/countdown timers
+  if (swRunning) sw_toggle();
+  if (cdRunning) cd_toggle();
+}
+
+function openTool(id) {
+  const t = TOOLS.find(x => x.id === id);
+  if (!t || !RENDERS[id]) return;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('toolView').style.display = 'block';
+  document.getElementById('tvTitle').textContent = t.icon + ' ' + t.name;
+  document.getElementById('tvContent').innerHTML = RENDERS[id]();
+  // Post-init
+  if (id === 'ppc')         setTimeout(kwInitBoxes, 0);
+  if (id === 'calc')        initCalc();
+  if (id === 'charmap')     initCharmap();
+  if (id === 'units')       un_updateUnits();
+  if (id === 'colorconvert') cv_updateAll(58, 123, 213);
+  if (id === 'palette')     pal_gen();
+  if (id === 'contrast')    wcag_calc();
+  if (id === 'timezone')    tz_now();
+  if (id === 'numbase')     initAscii();
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — TEXT
+// ═══════════════════════════════════════════════════════════
+function wc_run() {
+  const t = document.getElementById('wc_in').value;
+  const words = t.trim() ? t.trim().split(/\s+/) : [];
+  const sentences = t.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const paras = t.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+  document.getElementById('wc_w').textContent = words.length;
+  document.getElementById('wc_c').textContent = t.length;
+  document.getElementById('wc_c2').textContent = t.replace(/\s/g, '').length;
+  document.getElementById('wc_s').textContent = sentences.length;
+  document.getElementById('wc_p').textContent = paras.length || (t.trim() ? 1 : 0);
+  document.getElementById('wc_r').textContent = Math.ceil(words.length / 200) + ' min';
+  const freq = {};
+  words.forEach(w => { const k = w.toLowerCase().replace(/[^a-záčďéěíňóřšťúůýž]/g, ''); if (k.length > 2) freq[k] = (freq[k] || 0) + 1; });
+  const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const max = sorted[0]?.[1] || 1;
+  document.getElementById('wc_freq').innerHTML = sorted.length ? sorted.map(([w, c]) =>
+    `<div style="margin-bottom:5px;"><div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:2px;"><span>${w}</span><span style="color:var(--amber)">${c}×</span></div>
+    <div class="progress-bar"><div class="progress-fill" style="width:${c/max*100}%"></div></div></div>`
+  ).join('') : '<span style="color:var(--text2)">No data yet…</span>';
+}
+
+function cc(type) {
+  let t = document.getElementById('cc_in').value;
+  if (!t) { toast('Paste text!', 'var(--red)'); return; }
+  switch (type) {
+    case 'upper': t = t.toUpperCase(); break;
+    case 'lower': t = t.toLowerCase(); break;
+    case 'title': t = t.replace(/\b\w/g, c => c.toUpperCase()); break;
+    case 'sentence': t = t.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase()); break;
+    case 'camel': t = t.toLowerCase().replace(/[\s_-](.)/g, (_, c) => c.toUpperCase()); break;
+    case 'pascal': t = t.toLowerCase().replace(/(^\w|[\s_-]\w)/g, (_, c) => c.toUpperCase()).replace(/[\s_-]/g, ''); break;
+    case 'snake': t = t.trim().toLowerCase().replace(/[\s-]+/g, '_'); break;
+    case 'kebab': t = t.trim().toLowerCase().replace(/[\s_]+/g, '-'); break;
+    case 'alt': t = t.split('').map((c, i) => i % 2 === 0 ? c.toLowerCase() : c.toUpperCase()).join(''); break;
+    case 'rev': t = t.split('').reverse().join(''); break;
+  }
+  document.getElementById('cc_out').textContent = t;
+}
+
+function fr_run() {
+  const inp = document.getElementById('fr_in').value;
+  const findStr = document.getElementById('fr_find').value;
+  const rep = document.getElementById('fr_rep').value;
+  if (!findStr) { toast('Enter search text', 'var(--red)'); return; }
+  let result, count = 0;
+  try {
+    let rx;
+    const rxMatch = findStr.match(/^\/(.+)\/([gimsuy]*)$/);
+    if (rxMatch) {
+      rx = new RegExp(rxMatch[1], rxMatch[2] || 'g');
+    } else {
+      const escaped = findStr.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      rx = new RegExp(escaped, 'g');
+    }
+    result = inp.replace(rx, m => { count++; return rep; });
+    document.getElementById('fr_out').value = result;
+    document.getElementById('fr_cnt').textContent = count > 0 ? `(${count} replacements)` : '(0 found)';
+  } catch (e) { toast('RegEx error: ' + e.message, 'var(--red)'); }
+}
+
+const LOREM_WORDS = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua enim ad minim veniam quis nostrud exercitation ullamco laboris nisi aliquip commodo consequat duis aute irure reprehenderit voluptate velit esse cillum fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt culpa qui officia deserunt mollit anim est'.split(' ');
+
+function li_gen() {
+  const n = parseInt(document.getElementById('li_n').value) || 3;
+  const type = document.getElementById('li_t').value;
+  const start = document.getElementById('li_s').value === '1';
+  const rw = (cnt) => Array.from({ length: cnt }, () => LOREM_WORDS[Math.floor(Math.random() * LOREM_WORDS.length)]).join(' ');
+  let out = '';
+  if (type === 'w') { out = start ? 'Lorem ipsum ' + rw(n - 2) : rw(n); }
+  else if (type === 's') {
+    const sents = Array.from({ length: n }, (_, i) => {
+      const s = (i === 0 && start) ? 'Lorem ipsum dolor sit amet ' + rw(8) : rw(10 + Math.floor(Math.random() * 8));
+      return s.charAt(0).toUpperCase() + s.slice(1) + '.';
+    });
+    out = sents.join(' ');
+  } else {
+    out = Array.from({ length: n }, (_, i) => {
+      return Array.from({ length: 3 + Math.floor(Math.random() * 3) }, (_, j) => {
+        const s = (i === 0 && j === 0 && start) ? 'Lorem ipsum dolor sit amet consectetur ' + rw(8) : rw(10 + Math.floor(Math.random() * 8));
+        return s.charAt(0).toUpperCase() + s.slice(1) + '.';
+      }).join(' ');
+    }).join('\n\n');
+  }
+  document.getElementById('li_out').textContent = out;
+}
+
+function initCharmap() {
+  const syms = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~©®™°±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ€£¥¢∞∑∏√∫≈≠≤≥←→↑↓↔♠♣♥♦★☆☎✓✗•–—·…';
+  const emojis = '😀😂😍🤔😎😭😤🥳🤩😱🙈🙉🙊🐶🐱🐻🦊🐼🦁🐯🐸🐵🐧🦋🌸🌹🌺🍕🍔🍟🍣🍜🍦🎂🍩☕🍺🎮🎯🎲🎸🎹🚀✈️🚗🚢🏆🎉🎊🔥💡💎💰🌍🌙⭐❤️💙💚💛💜🖤';
+  const cont = document.getElementById('cm_sym');
+  const econt = document.getElementById('cm_emo');
+  [...syms].forEach(s => {
+    const b = document.createElement('button');
+    b.className = 'btn btn-secondary';
+    b.style.cssText = 'padding:5px 9px;font-size:.95rem;min-width:36px;';
+    b.textContent = s;
+    b.onclick = () => { document.getElementById('cm_col').textContent += s; b.style.borderColor = 'var(--blue)'; setTimeout(() => b.style.borderColor = '', 300); };
+    cont.appendChild(b);
+  });
+  [...emojis].forEach(e => {
+    const b = document.createElement('button');
+    b.style.cssText = 'background:none;border:none;cursor:pointer;font-size:1.5rem;transition:transform .15s;';
+    b.textContent = e;
+    b.onmouseover = () => b.style.transform = 'scale(1.25)';
+    b.onmouseout = () => b.style.transform = '';
+    b.onclick = () => document.getElementById('cm_col').textContent += e;
+    econt.appendChild(b);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — SEO
+// ═══════════════════════════════════════════════════════════
+function sl_run() {
+  let t = document.getElementById('sl_in').value;
+  const sep = document.getElementById('sl_sep').value;
+  const cas = document.getElementById('sl_case').value;
+  t = t.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  t = t.replace(/[^a-zA-Z0-9\s-]/g, '').trim();
+  t = t.replace(/\s+/g, sep || '-');
+  if (sep) t = t.replace(new RegExp(`${sep}+`, 'g'), sep);
+  if (cas === 'lower') t = t.toLowerCase();
+  else if (cas === 'upper') t = t.toUpperCase();
+  document.getElementById('sl_out').textContent = t || '—';
+}
+
+function mt_check() {
+  const title = document.getElementById('mt_title').value;
+  const desc = document.getElementById('mt_desc').value;
+  const tl = title.length, dl = desc.length;
+  document.getElementById('mt_tb').style.width = Math.min(tl / 60 * 100, 100) + '%';
+  document.getElementById('mt_db').style.width = Math.min(dl / 155 * 100, 100) + '%';
+  document.getElementById('mt_tb').style.background = tl < 30 ? 'var(--red)' : tl <= 60 ? 'var(--green)' : 'var(--orange)';
+  document.getElementById('mt_db').style.background = dl < 80 ? 'var(--red)' : dl <= 155 ? 'var(--green)' : 'var(--orange)';
+  document.getElementById('mt_ti').textContent = `${tl}/60 characters ${tl < 30 ? '– too short' : tl > 60 ? '– too long ⚠️' : '✓ OK'}`;
+  document.getElementById('mt_di').textContent = `${dl}/155 characters ${dl < 80 ? '– too short' : dl > 155 ? '– too long ⚠️' : '✓ OK'}`;
+  document.getElementById('mt_pt').textContent = title || 'Page title';
+  const pd = document.getElementById('mt_pd');
+  pd.textContent = desc.length > 155 ? desc.slice(0, 155) + '…' : (desc || 'Page description will appear here...');
+}
+
+function utm_build() {
+  const url = document.getElementById('utm_url').value.trim();
+  const src = document.getElementById('utm_src').value.trim();
+  const med = document.getElementById('utm_med').value.trim();
+  const cam = document.getElementById('utm_cam').value.trim();
+  const ter = document.getElementById('utm_ter').value.trim();
+  const con = document.getElementById('utm_con').value.trim();
+  if (!url || !src || !med || !cam) { document.getElementById('utm_out').textContent = 'Fill in the required fields (URL, source, medium, campaign)…'; return; }
+  let u = url + (url.includes('?') ? '&' : '?');
+  u += `utm_source=${encodeURIComponent(src)}&utm_medium=${encodeURIComponent(med)}&utm_campaign=${encodeURIComponent(cam)}`;
+  if (ter) u += `&utm_term=${encodeURIComponent(ter)}`;
+  if (con) u += `&utm_content=${encodeURIComponent(con)}`;
+  document.getElementById('utm_out').textContent = u;
+}
+
+function utm_reset() {
+  ['utm_url', 'utm_src', 'utm_med', 'utm_cam', 'utm_ter', 'utm_con'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('utm_out').textContent = 'Fill in the fields above…';
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — CALCULATOR
+// ═══════════════════════════════════════════════════════════
+let calcExpr = '0';
+
+function initCalc() {
+  const buttons = [
+    { l: 'AC', cl: 'btn-danger' }, { l: '±', cl: 'btn-secondary' }, { l: '%', cl: 'btn-secondary' }, { l: '÷', cl: 'btn-primary' }, { l: 'x²', cl: 'btn-secondary' },
+    { l: '7', cl: 'btn-secondary' }, { l: '8', cl: 'btn-secondary' }, { l: '9', cl: 'btn-secondary' }, { l: '×', cl: 'btn-primary' }, { l: '√', cl: 'btn-secondary' },
+    { l: '4', cl: 'btn-secondary' }, { l: '5', cl: 'btn-secondary' }, { l: '6', cl: 'btn-secondary' }, { l: '-', cl: 'btn-primary' }, { l: 'log', cl: 'btn-secondary' },
+    { l: '1', cl: 'btn-secondary' }, { l: '2', cl: 'btn-secondary' }, { l: '3', cl: 'btn-secondary' }, { l: '+', cl: 'btn-primary' }, { l: 'sin', cl: 'btn-secondary' },
+    { l: '0', cl: 'btn-secondary', wide: true }, { l: '.', cl: 'btn-secondary' }, { l: '=', cl: 'btn-success' }, { l: 'cos', cl: 'btn-secondary' },
+    { l: '(', cl: 'btn-secondary' }, { l: ')', cl: 'btn-secondary' }, { l: 'π', cl: 'btn-secondary' }, { l: 'e', cl: 'btn-secondary' }, { l: 'tan', cl: 'btn-secondary' },
+  ];
+  const pad = document.getElementById('calc_pad');
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = 'btn ' + b.cl;
+    if (b.wide) btn.style.gridColumn = 'span 2';
+    btn.textContent = b.l;
+    btn.onclick = () => calcPress(b.l);
+    pad.appendChild(btn);
+  });
+}
+
+function calcPress(k) {
+  const disp = document.getElementById('calc_disp');
+  const hist = document.getElementById('calc_hist');
+  if (k === 'AC') { calcExpr = '0'; disp.value = '0'; hist.textContent = ''; return; }
+  if (k === '=') {
+    try {
+      let expr = calcExpr.replace(/×/g, '*').replace(/÷/g, '/').replace(/π/g, Math.PI).replace(/e(?!\d)/g, Math.E);
+      expr = expr.replace(/sin\(/g, 'Math.sin(').replace(/cos\(/g, 'Math.cos(').replace(/tan\(/g, 'Math.tan(').replace(/log\(/g, 'Math.log10(').replace(/√\(/g, 'Math.sqrt(');
+      const res = Function('"use strict";return (' + expr + ')')();
+      hist.textContent = calcExpr + ' =';
+      calcExpr = String(parseFloat(res.toFixed(10)));
+      disp.value = calcExpr;
+    } catch (e) { disp.value = 'Error'; calcExpr = '0'; }
+    return;
+  }
+  if (k === '±') { calcExpr = calcExpr.startsWith('-') ? calcExpr.slice(1) : '-' + calcExpr; disp.value = calcExpr; return; }
+  if (k === '%') { try { calcExpr = String(parseFloat(calcExpr) / 100); } catch {} disp.value = calcExpr; return; }
+  if (k === 'x²') { try { calcExpr = String(Math.pow(parseFloat(calcExpr), 2)); } catch {} disp.value = calcExpr; return; }
+  if (['sin', 'cos', 'tan', 'log', '√'].includes(k)) { calcExpr += k + '('; disp.value = calcExpr; return; }
+  if (k === 'π') { calcExpr += 'π'; disp.value = calcExpr; return; }
+  if (k === 'e') { calcExpr += 'e'; disp.value = calcExpr; return; }
+  if (calcExpr === '0' && /\d/.test(k)) calcExpr = k; else calcExpr += k;
+  disp.value = calcExpr;
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — PERCENTAGE
+// ═══════════════════════════════════════════════════════════
+function pc1() { const p = parseFloat(document.getElementById('p1p').value), v = parseFloat(document.getElementById('p1v').value); document.getElementById('p1o').textContent = isNaN(p) || isNaN(v) ? 'Fill in both fields' : `${p}% of ${v} = ${fmt(p / 100 * v)}`; }
+function pc2() { const x = parseFloat(document.getElementById('p2x').value), y = parseFloat(document.getElementById('p2y').value); document.getElementById('p2o').textContent = isNaN(x) || isNaN(y) || y === 0 ? 'Fill in both fields (Y ≠ 0)' : `${x} is ${fmt(x / y * 100)}% of ${y}`; }
+function pc3() { const a = parseFloat(document.getElementById('p3a').value), b = parseFloat(document.getElementById('p3b').value); if (isNaN(a) || isNaN(b) || a === 0) { document.getElementById('p3o').textContent = 'Fill in both fields'; return; } const ch = (b - a) / a * 100; document.getElementById('p3o').textContent = `Change: ${fmt(ch)}% (${ch >= 0 ? '+' : ''}${fmt(b - a)})`; }
+function pc4() { const x = parseFloat(document.getElementById('p4x').value), p = parseFloat(document.getElementById('p4p').value); document.getElementById('p4o').textContent = isNaN(x) || isNaN(p) || p === 0 ? 'Fill in both fields (P ≠ 0)' : `${x} is ${p}% of ${fmt(x / p * 100)}`; }
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — PRIMES
+// ═══════════════════════════════════════════════════════════
+function isPrime(n) { if (n < 2) return false; if (n === 2) return true; if (n % 2 === 0) return false; for (let i = 3; i <= Math.sqrt(n); i += 2) if (n % i === 0) return false; return true; }
+function prTest() { const n = parseInt(document.getElementById('pr1').value); const el = document.getElementById('pr1o'); el.textContent = isNaN(n) ? 'Enter a number' : isPrime(n) ? `✅ ${n} IS prime` : `❌ ${n} is NOT prime`; }
+function prFactor() { let n = parseInt(document.getElementById('pr2').value); if (isNaN(n) || n < 2) { document.getElementById('pr2o').textContent = 'Enter a number ≥ 2'; return; } const f = {}; let d = 2; while (n > 1) { while (n % d === 0) { f[d] = (f[d] || 0) + 1; n /= d; } d++; } document.getElementById('pr2o').textContent = '= ' + Object.entries(f).map(([p, e]) => e > 1 ? `${p}^${e}` : p).join(' × '); }
+function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
+function prGcdLcm() { const a = parseInt(document.getElementById('pr3a').value), b = parseInt(document.getElementById('pr3b').value); if (isNaN(a) || isNaN(b)) { document.getElementById('pr3o').textContent = 'Enter both numbers'; return; } const g = gcd(Math.abs(a), Math.abs(b)), l = Math.abs(a * b) / g; document.getElementById('pr3o').textContent = `GCD(${a},${b}) = ${g}   |   LCM(${a},${b}) = ${l}`; }
+function prSieve() { const n = parseInt(document.getElementById('pr4').value); if (isNaN(n) || n < 2) { document.getElementById('pr4o').textContent = 'Enter N ≥ 2'; return; } if (n > 100000) { document.getElementById('pr4o').textContent = 'Max. 100,000'; return; } const sieve = new Array(n + 1).fill(true); sieve[0] = sieve[1] = false; for (let i = 2; i * i <= n; i++) if (sieve[i]) for (let j = i * i; j <= n; j += i) sieve[j] = false; const primes = sieve.map((v, i) => v ? i : null).filter(Boolean); document.getElementById('pr4o').textContent = `Found ${primes.length} primes:\n${primes.join(', ')}`; }
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — FINANCE
+// ═══════════════════════════════════════════════════════════
+function roi_calc() {
+  const inv = parseFloat(document.getElementById('roi_i').value) || 0;
+  const ret = parseFloat(document.getElementById('roi_r').value) || 0;
+  const cost = parseFloat(document.getElementById('roi_c').value) || 0;
+  const months = parseFloat(document.getElementById('roi_m').value) || 12;
+  const profit = ret - inv - cost;
+  const roi = inv > 0 ? profit / inv * 100 : 0;
+  const roas = inv > 0 ? ret / inv : 0;
+  const pno  = ret > 0 ? inv / ret * 100 : 0;
+  document.getElementById('roi_profit').innerHTML = `<span style="color:${profit >= 0 ? 'var(--green)' : 'var(--red)'}">${fmt(profit)} Kč</span>`;
+  document.getElementById('roi_pct').innerHTML    = `<span style="color:${roi  >= 0 ? 'var(--amber)' : 'var(--red)'}">${fmt(roi)} %</span>`;
+  document.getElementById('roi_ann').textContent  = fmt(roi / (months / 12)) + ' % / year';
+  document.getElementById('roi_be').textContent   = fmt(inv + cost) + ' Kč';
+  document.getElementById('roi_roas').innerHTML   = `<span style="color:${roas >= 1 ? 'var(--green)' : 'var(--red)'}">${roas.toFixed(2)}×</span>`;
+  document.getElementById('roi_pno').innerHTML    = `<span style="color:${pno <= 30 ? 'var(--green)' : pno <= 50 ? 'var(--amber)' : 'var(--red)'}">${fmt(pno)} %</span>`;
+}
+
+function copyEl(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    const btn = document.querySelector('[onclick="copyEl(\'' + id + '\')"]');
+    if (btn) { const orig = btn.textContent; btn.textContent = '✅ Copied'; setTimeout(() => btn.textContent = orig, 1500); }
+  });
+}
+
+function curl_parse() {
+  const raw = document.getElementById('curl_in').value.trim();
+  if (!raw) return;
+  const line = raw.replace(/\\\n\s*/g, ' ').replace(/\s+/g, ' ');
+  const result = { method: 'GET', url: '', headers: {}, body: null, queryParams: {} };
+  const urlMatch = line.match(/curl\s+(?:-[^\s'"]+\s+)*['"]?([^'"<>\s]+)['"]?/);
+  if (urlMatch) {
+    try {
+      const u = new URL(urlMatch[1]);
+      result.url = u.origin + u.pathname;
+      u.searchParams.forEach((v, k) => result.queryParams[k] = v);
+      if (!Object.keys(result.queryParams).length) delete result.queryParams;
+    } catch { result.url = urlMatch[1]; }
+  }
+  const mMatch = line.match(/-X\s+['"]?([A-Z]+)['"]?/);
+  if (mMatch) result.method = mMatch[1];
+  const hRe = /-H\s+['"]([^'"]+)['"]/g;
+  let hm;
+  while ((hm = hRe.exec(line)) !== null) {
+    const idx = hm[1].indexOf(':');
+    if (idx > -1) result.headers[hm[1].slice(0, idx).trim()] = hm[1].slice(idx + 1).trim();
+  }
+  if (!Object.keys(result.headers).length) delete result.headers;
+  const bodyMatch = line.match(/(?:--data(?:-raw|-binary|-urlencode)?|--json|-d)\s+['"](.+?)['"]/);
+  if (bodyMatch) {
+    result.method = result.method === 'GET' ? 'POST' : result.method;
+    try { result.body = JSON.parse(bodyMatch[1]); } catch { result.body = bodyMatch[1]; }
+  } else { delete result.body; }
+  const json = JSON.stringify(result, null, 2);
+  document.getElementById('curl_out').textContent = json;
+  const methodColor = { GET:'#3b82f6', POST:'#22c55e', PUT:'#f59e0b', DELETE:'#ef4444', PATCH:'#a855f7' };
+  const col = methodColor[result.method] || '#94a3b8';
+  const hCount = result.headers ? Object.keys(result.headers).length : 0;
+  document.getElementById('curl_summary').innerHTML =
+    '<span class="stat-chip" style="color:' + col + ';border-color:' + col + '40">' + result.method + '</span>' +
+    (hCount ? '<span class="stat-chip">' + hCount + ' headers</span>' : '') +
+    (result.body ? '<span class="stat-chip" style="color:var(--green)">body ✓</span>' : '') +
+    (result.queryParams ? '<span class="stat-chip">' + Object.keys(result.queryParams).length + ' query params</span>' : '');
+}
+
+function hl_loadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('hl_filename').textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+  const reader = new FileReader();
+  reader.onload = function(e) { document.getElementById('hl_in').value = e.target.result; hl_run(); };
+  reader.readAsText(file, 'UTF-8');
+}
+
+function hl_reset() {
+  ['hl_stats_panel','hl_errors_panel','hl_ok_panel'].forEach(function(id) {
+    var el = document.getElementById(id); if (el) el.style.display = 'none';
+  });
+}
+
+function hl_run() {
+  var src = document.getElementById('hl_in').value;
+  if (!src.trim()) { hl_reset(); return; }
+  var issues = [], infos = [], lines = src.split('\n');
+  var charCount = src.length, lineCount = lines.length;
+  var scriptTags = (src.match(/<script[\s>]/gi)||[]).length;
+  var styleTags  = (src.match(/<style[\s>]/gi)||[]).length;
+  var imgTags    = (src.match(/<img\s/gi)||[]).length;
+  var aTags      = (src.match(/<a\s/gi)||[]).length;
+  if (!/<html[\s>]/i.test(src)) issues.push({sev:'warn', msg:'Missing &lt;html&gt; tag'});
+  if (!/<head[\s>]/i.test(src)) issues.push({sev:'warn', msg:'Missing &lt;head&gt; tag'});
+  if (!/<body[\s>]/i.test(src)) issues.push({sev:'warn', msg:'Missing &lt;body&gt; tag'});
+  if (!/<title>/i.test(src))     issues.push({sev:'warn', msg:'Missing &lt;title&gt;'});
+  if (!/<meta\s[^>]*charset/i.test(src)) issues.push({sev:'warn', msg:'Missing charset meta tag'});
+  if (!/<meta\s[^>]*viewport/i.test(src)) issues.push({sev:'info', msg:'Missing viewport meta'});
+  var pairedTags = ['div','span','p','a','ul','ol','li','table','tr','td','thead','tbody','form','section','article','header','footer','nav','main','h1','h2','h3','h4','h5','h6','script','style','head','body','html','button','select','textarea'];
+  pairedTags.forEach(function(tag) {
+    var opens  = (src.match(new RegExp('<' + tag + '[\\s>]', 'gi'))||[]).length;
+    var closes = (src.match(new RegExp('</' + tag + '>', 'gi'))||[]).length;
+    if (opens !== closes) {
+      var diff = opens - closes;
+      issues.push({sev: diff > 0 ? 'error' : 'warn', msg: '&lt;' + tag + '&gt;: ' + opens + '× opened, ' + closes + '× closed' + (diff > 0 ? ' — missing ' + diff + '× &lt;/' + tag + '&gt;' : ' — extra ' + Math.abs(diff) + '× &lt;/' + tag + '&gt;')});
+    }
+  });
+  var imgNoAlt = (src.match(/<img(?![^>]*\balt\s*=)[^>]*>/gi)||[]).length;
+  if (imgNoAlt) issues.push({sev:'warn', msg: imgNoAlt + ' image(s) missing alt attribute'});
+  var inlineStyles = (src.match(/\bstyle\s*=/gi)||[]).length;
+  if (inlineStyles > 20) issues.push({sev:'info', msg: inlineStyles + '× inline style=""'});
+  var ids = Array.from(src.matchAll(/\bid\s*=\s*["']([^"']+)["']/gi)).map(function(m){return m[1];});
+  var dupIds = ids.filter(function(id,i){return ids.indexOf(id) !== i;});
+  if (dupIds.length) issues.push({sev:'error', msg:'Duplicate id: ' + [...new Set(dupIds)].join(', ')});
+  var consoleLogs = (src.match(/console\.log\s*\(/g)||[]).length;
+  if (consoleLogs) issues.push({sev:'info', msg: consoleLogs + '× console.log()'});
+  var varCount = (src.match(/\bvar\s+/g)||[]).length;
+  if (varCount) issues.push({sev:'info', msg: varCount + '× var — prefer let/const'});
+  var importantCount = (src.match(/!important/g)||[]).length;
+  if (importantCount > 3) issues.push({sev:'info', msg: importantCount + '× !important in CSS'});
+  var emptyHref = (src.match(/href\s*=\s*["']\s*["']/gi)||[]).length;
+  var emptySrc  = (src.match(/src\s*=\s*["']\s*["']/gi)||[]).length;
+  if (emptyHref) issues.push({sev:'warn', msg: emptyHref + '× empty href=""'});
+  if (emptySrc)  issues.push({sev:'warn', msg: emptySrc  + '× empty src=""'});
+  if (/<meta\s[^>]*description/i.test(src))  infos.push('✅ Meta description present');
+  if (/<meta\s[^>]*og:title/i.test(src))     infos.push('✅ Open Graph title');
+  if (/<link\s[^>]*canonical/i.test(src))    infos.push('✅ Canonical URL');
+  if (/<script[^>]*type="application\/ld\+json"/i.test(src)) infos.push('✅ Structured data (JSON-LD)');
+  if (/loading\s*=\s*["']lazy["']/i.test(src)) infos.push('✅ Lazy loading images');
+  if (/async|defer/i.test(src))               infos.push('✅ async/defer on scripts');
+  if (/rel\s*=\s*["']noopener/i.test(src))   infos.push('✅ rel="noopener"');
+  var errors   = issues.filter(function(i){return i.sev==='error';});
+  var warnings = issues.filter(function(i){return i.sev==='warn';});
+  var infoList = issues.filter(function(i){return i.sev==='info';});
+  var scoreColor = errors.length ? 'var(--red)' : warnings.length > 3 ? 'var(--amber)' : 'var(--green)';
+  var scoreLabel = errors.length ? 'Errors found' : warnings.length > 3 ? 'Warnings' : 'OK';
+  document.getElementById('hl_stats').innerHTML =
+    '<div class="stat-chip" style="color:' + scoreColor + '">' + scoreLabel + '</div>' +
+    '<div class="stat-chip">' + lineCount + ' lines</div>' +
+    '<div class="stat-chip">' + (charCount/1024).toFixed(1) + ' KB</div>' +
+    '<div class="stat-chip">' + scriptTags + ' &lt;script&gt;</div>' +
+    '<div class="stat-chip">' + styleTags  + ' &lt;style&gt;</div>' +
+    '<div class="stat-chip">' + imgTags    + ' &lt;img&gt;</div>' +
+    '<div class="stat-chip">' + aTags      + ' &lt;a&gt;</div>' +
+    (errors.length   ? '<div class="stat-chip" style="color:var(--red)">🚨 ' + errors.length   + ' errors</div>' : '') +
+    (warnings.length ? '<div class="stat-chip" style="color:var(--amber)">⚠️ ' + warnings.length + ' warnings</div>' : '') +
+    (infoList.length ? '<div class="stat-chip" style="color:var(--blue)">💡 ' + infoList.length  + ' info</div>' : '');
+  var sevIcon = {error:'🚨', warn:'⚠️', info:'💡'};
+  var sevCol  = {error:'var(--red)', warn:'var(--amber)', info:'var(--blue)'};
+  document.getElementById('hl_errors').innerHTML = issues.length
+    ? issues.map(function(i){return '<div style="padding:8px 12px;margin-bottom:6px;border-radius:8px;border-left:3px solid ' + sevCol[i.sev] + ';background:rgba(0,0,0,0.2);font-size:0.85rem;font-family:var(--mono)">' + sevIcon[i.sev] + ' <span style="color:' + sevCol[i.sev] + '">[' + i.sev.toUpperCase() + ']</span> ' + i.msg + '</div>';}).join('')
+    : '<div style="color:var(--green);padding:8px;">✅ No issues</div>';
+  document.getElementById('hl_ok').innerHTML = infos.length
+    ? infos.map(function(i){return '<div style="padding:6px 12px;margin-bottom:4px;border-radius:8px;background:rgba(34,197,94,0.08);font-size:0.85rem;color:var(--green)">' + i + '</div>';}).join('')
+    : '<div style="color:var(--text3);font-size:0.85rem;">— no positive findings</div>';
+  document.getElementById('hl_stats_panel').style.display = '';
+  document.getElementById('hl_errors_panel').style.display = '';
+  document.getElementById('hl_ok_panel').style.display = '';
+}
+
+function vatFromNet() {
+  const net = parseFloat(document.getElementById('vat_n').value), r = parseFloat(document.getElementById('vat_r').value);
+  if (isNaN(net)) return;
+  const vat = net * r / 100, gross = net + vat;
+  document.getElementById('vat_g').value = gross.toFixed(2);
+  document.getElementById('vat_ro1').textContent = fmt(net) + ' Kč';
+  document.getElementById('vat_ro2').textContent = fmt(vat) + ' Kč';
+  document.getElementById('vat_ro3').textContent = fmt(gross) + ' Kč';
+}
+
+function vatFromGross() {
+  const gross = parseFloat(document.getElementById('vat_g').value), r = parseFloat(document.getElementById('vat_r').value);
+  if (isNaN(gross)) return;
+  const net = gross / (1 + r / 100), vat = gross - net;
+  document.getElementById('vat_n').value = net.toFixed(2);
+  document.getElementById('vat_ro1').textContent = fmt(net) + ' Kč';
+  document.getElementById('vat_ro2').textContent = fmt(vat) + ' Kč';
+  document.getElementById('vat_ro3').textContent = fmt(gross) + ' Kč';
+}
+
+function ln_calc() {
+  const P = parseFloat(document.getElementById('ln_p').value);
+  const rAnn = parseFloat(document.getElementById('ln_r').value);
+  const n = parseInt(document.getElementById('ln_n').value);
+  if (isNaN(P) || isNaN(rAnn) || isNaN(n) || n <= 0) return;
+  const r = rAnn / 100 / 12;
+  const mo = r === 0 ? P / n : P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  const tot = mo * n, int = tot - P;
+  document.getElementById('ln_mo').textContent = fmt(mo) + ' Kč/mo.';
+  document.getElementById('ln_tot').textContent = fmt(tot) + ' Kč';
+  document.getElementById('ln_int').textContent = fmt(int) + ' Kč';
+  let table = '<table><thead><tr><th>#</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Remaining</th></tr></thead><tbody>';
+  let bal = P;
+  for (let i = 1; i <= Math.min(n, 120); i++) {
+    const interest = bal * r, principal = mo - interest;
+    bal -= principal;
+    table += `<tr><td>${i}</td><td>${fmt(mo)}</td><td>${fmt(interest)}</td><td>${fmt(principal)}</td><td>${fmt(Math.max(0, bal))}</td></tr>`;
+  }
+  if (n > 120) table += `<tr><td colspan="5" style="text-align:center;color:var(--text2);">… showing first 120 payments</td></tr>`;
+  table += '</tbody></table>';
+  document.getElementById('ln_table_wrap').innerHTML = table;
+}
+
+const CUR_RATES = { CZK: 1, EUR: 25.3, USD: 23.1, GBP: 29.4, CHF: 26.8, JPY: 0.155, PLN: 5.7, HUF: 0.063 };
+
+function cur_calc() {
+  const amt = parseFloat(document.getElementById('cur_amt').value) || 0;
+  const from = document.getElementById('cur_from').value;
+  const to = document.getElementById('cur_to').value;
+  const result = amt / CUR_RATES[from] * CUR_RATES[to];
+  document.getElementById('cur_out').textContent = `${amt.toLocaleString('en-GB')} ${from} = ${fmt(result)} ${to}`;
+  document.getElementById('cur_rate').textContent = `Rate: 1 ${from} = ${fmt(CUR_RATES[to] / CUR_RATES[from], 4)} ${to}`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — UNITS
+// ═══════════════════════════════════════════════════════════
+const UN_DEF = {
+  length: { m: 1, km: 1000, cm: 0.01, mm: 0.001, mi: 1609.344, yd: 0.9144, ft: 0.3048, in: 0.0254, nm: 1852 },
+  weight: { kg: 1, g: 0.001, mg: 0.000001, t: 1000, lb: 0.453592, oz: 0.028350, st: 6.35029 },
+  volume: { l: 1, ml: 0.001, m3: 1000, dl: 0.1, cl: 0.01, gal: 3.78541, qt: 0.946353, pt: 0.473176, cup: 0.236588, floz: 0.029574 },
+  temp: { '°C': null, '°F': null, 'K': null },
+  area: { m2: 1, km2: 1e6, cm2: 0.0001, mm2: 1e-6, ha: 10000, ac: 4046.86, ft2: 0.092903, in2: 0.000645 },
+  speed: { 'km/h': 1, 'm/s': 3.6, mph: 1.60934, kn: 1.852, 'ft/s': 1.09728 },
+  time: { s: 1, ms: 0.001, min: 60, h: 3600, d: 86400, w: 604800, mo: 2592000, y: 31536000 },
+  data: { B: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776, bit: 0.125 }
+};
+
+function un_updateUnits() {
+  const cat = document.getElementById('un_cat').value;
+  const units = Object.keys(UN_DEF[cat]);
+  const fromSel = document.getElementById('un_from'), toSel = document.getElementById('un_to');
+  fromSel.innerHTML = toSel.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
+  toSel.selectedIndex = 1; un_calc();
+}
+
+function un_calc() {
+  const cat = document.getElementById('un_cat').value;
+  const val = parseFloat(document.getElementById('un_val').value);
+  const from = document.getElementById('un_from').value, to = document.getElementById('un_to').value;
+  if (isNaN(val)) { document.getElementById('un_out').textContent = 'Enter a value'; return; }
+  let result;
+  if (cat === 'temp') {
+    let c; if (from === '°C') c = val; else if (from === '°F') c = (val - 32) * 5 / 9; else c = val - 273.15;
+    if (to === '°C') result = c; else if (to === '°F') result = c * 9 / 5 + 32; else result = c + 273.15;
+  } else { result = val * UN_DEF[cat][from] / UN_DEF[cat][to]; }
+  document.getElementById('un_out').textContent = `${val} ${from} = ${parseFloat(result.toPrecision(8))} ${to}`;
+  if (cat !== 'temp') {
+    const base = val * UN_DEF[cat][from];
+    document.getElementById('un_all').innerHTML = '<table><thead><tr><th>Unit</th><th>Value</th></tr></thead><tbody>' +
+      Object.keys(UN_DEF[cat]).map(u => `<tr><td>${u}</td><td>${parseFloat((base / UN_DEF[cat][u]).toPrecision(6))}</td></tr>`).join('') + '</tbody></table>';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — NUMBER SYSTEMS
+// ═══════════════════════════════════════════════════════════
+function nbSet(dec, bin, oct, hex) { document.getElementById('nb_dec').value = dec; document.getElementById('nb_bin').value = bin; document.getElementById('nb_oct').value = oct; document.getElementById('nb_hex').value = hex; }
+function nb_fromDec(v) { const n = parseInt(v, 10); if (isNaN(n)) return; nbSet(n, n.toString(2), n.toString(8), n.toString(16).toUpperCase()); }
+function nb_fromBin(v) { const n = parseInt(v, 2); if (isNaN(n)) return; nbSet(n, v, n.toString(8), n.toString(16).toUpperCase()); }
+function nb_fromOct(v) { const n = parseInt(v, 8); if (isNaN(n)) return; nbSet(n, n.toString(2), v, n.toString(16).toUpperCase()); }
+function nb_fromHex(v) { const n = parseInt(v, 16); if (isNaN(n)) return; nbSet(n, n.toString(2), n.toString(8), v.toUpperCase()); }
+
+function initAscii() {
+  const el = document.getElementById('nb_ascii'); if (!el) return;
+  let h = '<table><thead><tr><th>DEC</th><th>HEX</th><th>Char</th></tr></thead><tbody>';
+  for (let i = 32; i < 128; i++) h += `<tr><td>${i}</td><td>${i.toString(16).toUpperCase()}</td><td>${String.fromCharCode(i)}</td></tr>`;
+  el.innerHTML = h + '</tbody></table>';
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — ENCODING
+// ═══════════════════════════════════════════════════════════
+function enc_run(type) {
+  const inp = document.getElementById('enc_in').value;
+  let out = '';
+  try {
+    switch (type) {
+      case 'b64e': out = btoa(unescape(encodeURIComponent(inp))); break;
+      case 'b64d': out = decodeURIComponent(escape(atob(inp))); break;
+      case 'urle': out = encodeURIComponent(inp); break;
+      case 'urld': out = decodeURIComponent(inp); break;
+      case 'htmle': out = inp.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); break;
+      case 'htmld': out = inp.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'"); break;
+    }
+    document.getElementById('enc_out').textContent = out;
+  } catch (e) { document.getElementById('enc_out').textContent = 'Error: ' + e.message; }
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — MORSE
+// ═══════════════════════════════════════════════════════════
+const MORSE = { A: '.-', B: '-...', C: '-.-.', D: '-..', E: '.', F: '..-.', G: '--.', H: '....', I: '..', J: '.---', K: '-.-', L: '.-..', M: '--', N: '-.', O: '---', P: '.--.', Q: '--.-', R: '.-.', S: '...', T: '-', U: '..-', V: '...-', W: '.--', X: '-..-', Y: '-.--', Z: '--..', 0: '-----', 1: '.----', 2: '..---', 3: '...--', 4: '....-', 5: '.....', 6: '-....', 7: '--...', 8: '---..', 9: '----.' };
+const MORSE_INV = Object.fromEntries(Object.entries(MORSE).map(([k, v]) => [v, k]));
+
+function mo_toMorse() {
+  const t = document.getElementById('mo_in').value.toUpperCase();
+  const out = t.split('').map(c => c === ' ' ? '/' : (MORSE[c] || '?')).join(' ');
+  document.getElementById('mo_out').textContent = out || '—';
+}
+
+function mo_fromMorse() {
+  const t = document.getElementById('mo_min').value.trim();
+  const out = t.split(' / ').map(word => word.split(' ').map(code => MORSE_INV[code] || '?').join('')).join(' ');
+  document.getElementById('mo_mout').textContent = out || '—';
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — COLORS
+// ═══════════════════════════════════════════════════════════
+function hexToRgb(hex) { return { r: parseInt(hex.slice(1, 3), 16), g: parseInt(hex.slice(3, 5), 16), b: parseInt(hex.slice(5, 7), 16) }; }
+function rgbToHex(r, g, b) { return '#' + [r, g, b].map(v => Math.round(v).toString(16).padStart(2, '0')).join(''); }
+function rgbToHsl(r, g, b) { r /= 255; g /= 255; b /= 255; const max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if (max === min) { h = s = 0; } else { const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = (g - b) / d + (g < b ? 6 : 0); break; case g: h = (b - r) / d + 2; break; case b: h = (r - g) / d + 4; break; } h /= 6; } return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) }; }
+function hslToRgb(h, s, l) { s /= 100; l /= 100; h /= 360; let r, g, b; if (s === 0) { r = g = b = l; } else { const hue2rgb = (p, q, t) => { if (t < 0) t += 1; if (t > 1) t -= 1; if (t < 1 / 6) return p + (q - p) * 6 * t; if (t < 1 / 2) return q; if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6; return p; }; const q = l < 0.5 ? l * (1 + s) : l + s - l * s, p = 2 * l - q; r = hue2rgb(p, q, h + 1 / 3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1 / 3); } return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) }; }
+function rgbToCmyk(r, g, b) { r /= 255; g /= 255; b /= 255; const k = 1 - Math.max(r, g, b); if (k === 1) return { c: 0, m: 0, y: 0, k: 100 }; return { c: Math.round((1 - r - k) / (1 - k) * 100), m: Math.round((1 - g - k) / (1 - k) * 100), y: Math.round((1 - b - k) / (1 - k) * 100), k: Math.round(k * 100) }; }
+function cmykToRgb(c, m, y, k) { c /= 100; m /= 100; y /= 100; k /= 100; return { r: Math.round(255 * (1 - c) * (1 - k)), g: Math.round(255 * (1 - m) * (1 - k)), b: Math.round(255 * (1 - y) * (1 - k)) }; }
+
+function cv_updateAll(r, g, b) {
+  const hex = rgbToHex(r, g, b), hsl = rgbToHsl(r, g, b), cmyk = rgbToCmyk(r, g, b);
+  document.getElementById('cv_hex').value = hex; document.getElementById('cv_picker').value = hex;
+  document.getElementById('cv_rgb').value = `${r}, ${g}, ${b}`; document.getElementById('cv_hsl').value = `${hsl.h}, ${hsl.s}%, ${hsl.l}%`;
+  document.getElementById('cv_cmyk').value = `${cmyk.c}, ${cmyk.m}, ${cmyk.y}, ${cmyk.k}`;
+  document.getElementById('cv_prev').style.background = hex;
+  document.getElementById('cv_css').textContent = `color: ${hex};\ncolor: rgb(${r}, ${g}, ${b});\ncolor: hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%);\nbackground-color: ${hex};\nborder: 1px solid ${hex};`;
+}
+function cv_fromHex() { const hex = document.getElementById('cv_hex').value; if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return; const { r, g, b } = hexToRgb(hex); cv_updateAll(r, g, b); }
+function cv_fromPicker() { document.getElementById('cv_hex').value = document.getElementById('cv_picker').value; cv_fromHex(); }
+function cv_fromRgb() { const p = document.getElementById('cv_rgb').value.split(',').map(v => parseInt(v.trim())); if (p.length !== 3 || p.some(isNaN)) return; cv_updateAll(p[0], p[1], p[2]); }
+function cv_fromHsl() { const p = document.getElementById('cv_hsl').value.replace(/%/g, '').split(',').map(v => parseFloat(v.trim())); if (p.length !== 3 || p.some(isNaN)) return; const { r, g, b } = hslToRgb(p[0], p[1], p[2]); cv_updateAll(r, g, b); }
+function cv_fromCmyk() { const p = document.getElementById('cv_cmyk').value.split(',').map(v => parseFloat(v.trim())); if (p.length !== 4 || p.some(isNaN)) return; const { r, g, b } = cmykToRgb(p[0], p[1], p[2], p[3]); cv_updateAll(r, g, b); }
+
+function pal_hslToHex(h, s, l) { const { r, g, b } = hslToRgb(h, s, l); return rgbToHex(r, g, b); }
+function pal_gen() {
+  const hex = document.getElementById('pal_hex').value;
+  document.getElementById('pal_pick').value = hex;
+  if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return;
+  const { r, g, b } = hexToRgb(hex), { h, s, l } = rgbToHsl(r, g, b);
+  const type = document.getElementById('pal_type').value;
+  let colors = [];
+  switch (type) {
+    case 'comp': colors = [hex, pal_hslToHex((h + 180) % 360, s, l)]; break;
+    case 'anal': colors = [pal_hslToHex((h - 30 + 360) % 360, s, l), hex, pal_hslToHex((h + 30) % 360, s, l), pal_hslToHex((h + 60) % 360, s, l)]; break;
+    case 'triad': colors = [hex, pal_hslToHex((h + 120) % 360, s, l), pal_hslToHex((h + 240) % 360, s, l)]; break;
+    case 'tetrad': colors = [hex, pal_hslToHex((h + 90) % 360, s, l), pal_hslToHex((h + 180) % 360, s, l), pal_hslToHex((h + 270) % 360, s, l)]; break;
+    case 'mono': colors = [pal_hslToHex(h, s, Math.max(10, l - 30)), pal_hslToHex(h, s, Math.max(10, l - 15)), hex, pal_hslToHex(h, s, Math.min(90, l + 15)), pal_hslToHex(h, s, Math.min(90, l + 30))]; break;
+    case 'split': colors = [hex, pal_hslToHex((h + 150) % 360, s, l), pal_hslToHex((h + 210) % 360, s, l)]; break;
+  }
+  document.getElementById('pal_out').innerHTML = colors.map(c => `<div class="swatch" style="background:${c}" title="${c}" onclick="navigator.clipboard.writeText('${c}');toast('Copied: ${c}')"></div>`).join('');
+  document.getElementById('pal_codes').innerHTML = colors.map((c, i) => { const { r, g, b } = hexToRgb(c); const { h: ch, s: cs, l: cl } = rgbToHsl(r, g, b); return `<div>${i + 1}. ${c} | rgb(${r},${g},${b}) | hsl(${ch},${cs}%,${cl}%)</div>`; }).join('');
+}
+
+function wcag_lum(hex) { if (!/^#[0-9a-fA-F]{6}$/.test(hex)) return 0; const { r, g, b } = hexToRgb(hex); const sRGB = [r, g, b].map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * sRGB[0] + 0.7152 * sRGB[1] + 0.0722 * sRGB[2]; }
+function wcag_calc() {
+  const fg = document.getElementById('wc_fg').value, bg = document.getElementById('wc_bg').value;
+  document.getElementById('wc_fgp').value = fg.length === 7 ? fg : document.getElementById('wc_fgp').value;
+  document.getElementById('wc_bgp').value = bg.length === 7 ? bg : document.getElementById('wc_bgp').value;
+  if (!/^#[0-9a-fA-F]{6}$/.test(fg) || !/^#[0-9a-fA-F]{6}$/.test(bg)) return;
+  const l1 = wcag_lum(fg), l2 = wcag_lum(bg);
+  const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  const pass = (r, min) => `<strong style="color:${r >= min ? 'var(--green)' : 'var(--red)'}">${r >= min ? '✅ Passes' : '❌ Fails'}</strong>`;
+  document.getElementById('wcag_ratio').innerHTML = `<strong style="color:var(--amber)">${ratio.toFixed(2)}:1</strong>`;
+  document.getElementById('wcag_aa').innerHTML = pass(ratio, 4.5);
+  document.getElementById('wcag_aa_l').innerHTML = pass(ratio, 3);
+  document.getElementById('wcag_aaa').innerHTML = pass(ratio, 7);
+  document.getElementById('wcag_aaa_l').innerHTML = pass(ratio, 4.5);
+  document.getElementById('wcag_prev').style.color = fg;
+  document.getElementById('wcag_prev').style.background = bg;
+}
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — DATE & TIME
+// ═══════════════════════════════════════════════════════════
+function dt_diff() { const a = new Date(document.getElementById('dt_from').value), b = new Date(document.getElementById('dt_to').value); if (isNaN(a) || isNaN(b)) { document.getElementById('dt_diff_out').textContent = 'Fill in both dates'; return; } const ms = Math.abs(b - a), days = Math.floor(ms / 86400000), weeks = Math.floor(days / 7), months = Math.abs((b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth())), years = Math.abs(b.getFullYear() - a.getFullYear()); document.getElementById('dt_diff_out').textContent = `${days} days | ${weeks} weeks | ${months} months | ${years} years`; }
+function dt_add() { const base = new Date(document.getElementById('dt_base').value), days = parseInt(document.getElementById('dt_days').value) || 0; if (isNaN(base)) { document.getElementById('dt_add_out').textContent = 'Enter a valid date'; return; } const result = new Date(base.getTime() + days * 86400000); document.getElementById('dt_add_out').textContent = result.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }); }
+function dt_info_run() { const d = new Date(document.getElementById('dt_info').value); if (isNaN(d)) { document.getElementById('dt_info_out').textContent = 'Enter a valid date'; return; } const start = new Date(d.getFullYear(), 0, 0), diff = d - start, dayOfYear = Math.floor(diff / 86400000), weekNum = Math.ceil(dayOfYear / 7); const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']; const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']; const isLeap = y => (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; document.getElementById('dt_info_out').textContent = `Day of week: ${days[d.getDay()]} | Day of year: ${dayOfYear} | Week: ${weekNum}\nMonth: ${months[d.getMonth()]} | Leap year: ${isLeap(d.getFullYear()) ? 'Yes' : 'No'}\nTimestamp: ${Math.floor(d.getTime() / 1000)}`; }
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — TIME ZONES
+// ═══════════════════════════════════════════════════════════
+const TZ_ZONES = [
+  { tz: 'Europe/Prague', flag: '🇨🇿', name: 'Prague' }, { tz: 'UTC', flag: '🌐', name: 'UTC' },
+  { tz: 'Europe/London', flag: '🇬🇧', name: 'London' }, { tz: 'Europe/Berlin', flag: '🇩🇪', name: 'Berlin' },
+  { tz: 'Europe/Paris', flag: '🇫🇷', name: 'Paris' }, { tz: 'America/New_York', flag: '🇺🇸', name: 'New York' },
+  { tz: 'America/Chicago', flag: '🇺🇸', name: 'Chicago' }, { tz: 'America/Los_Angeles', flag: '🇺🇸', name: 'Los Angeles' },
+  { tz: 'America/Sao_Paulo', flag: '🇧🇷', name: 'São Paulo' }, { tz: 'Asia/Dubai', flag: '🇦🇪', name: 'Dubai' },
+  { tz: 'Asia/Kolkata', flag: '🇮🇳', name: 'India' }, { tz: 'Asia/Shanghai', flag: '🇨🇳', name: 'Shanghai' },
+  { tz: 'Asia/Tokyo', flag: '🇯🇵', name: 'Tokyo' }, { tz: 'Australia/Sydney', flag: '🇦🇺', name: 'Sydney' },
+];
+
+function tz_now() { const now = new Date(), pad = n => String(n).padStart(2, '0'); document.getElementById('tz_in').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}T${pad(now.getHours())}:${pad(now.getMinutes())}`; tz_convert(); }
+function tz_convert() { const val = document.getElementById('tz_in').value; if (!val) { toast('Enter date and time', 'var(--red)'); return; } const dt = new Date(val); document.getElementById('tz_out').innerHTML = TZ_ZONES.map(z => { try { const str = dt.toLocaleString('en-GB', { timeZone: z.tz, weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }); return `<div class="tz-row"><span>${z.flag} <strong>${z.name}</strong></span><span style="font-family:monospace;color:var(--amber)">${str}</span></div>`; } catch (e) { return ''; } }).join(''); }
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — STOPWATCH & COUNTDOWN
+// ═══════════════════════════════════════════════════════════
+let swTimer = null, swStart = 0, swElapsed = 0, swLaps = [], swRunning = false;
+let cdTimer = null, cdRemain = 0, cdRunning = false;
+
+function sw_fmt(ms) { const h = Math.floor(ms / 3600000), m = Math.floor((ms % 3600000) / 60000), s = Math.floor((ms % 60000) / 1000), msec = ms % 1000; return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${String(msec).padStart(3, '0')}`; }
+function sw_toggle() { if (swRunning) { clearInterval(swTimer); swElapsed += Date.now() - swStart; swRunning = false; document.getElementById('sw_startbtn').textContent = '▶ Resume'; } else { swStart = Date.now(); swRunning = true; swTimer = setInterval(() => { document.getElementById('sw_disp').textContent = sw_fmt(swElapsed + Date.now() - swStart); }, 50); document.getElementById('sw_startbtn').textContent = '⏸ Pause'; } }
+function sw_lap() { if (!swRunning && swElapsed === 0) return; const total = swElapsed + (swRunning ? Date.now() - swStart : 0), prev = swLaps.length ? swLaps[swLaps.length - 1].total : 0; swLaps.push({ total, lap: total - prev }); document.getElementById('sw_laps').innerHTML = swLaps.map((l, i) => `<div style="display:flex;justify-content:space-between;padding:4px 8px;background:var(--bg-input);border-radius:6px;margin-bottom:4px;font-family:monospace;font-size:.82rem;"><span style="color:var(--text2)">Lap ${i + 1}</span><span style="color:var(--text)">+${sw_fmt(l.lap)}</span><span style="color:var(--amber)">${sw_fmt(l.total)}</span></div>`).reverse().join(''); }
+function sw_reset() { clearInterval(swTimer); swTimer = null; swElapsed = 0; swStart = 0; swRunning = false; swLaps = []; const d = document.getElementById('sw_disp'); if (d) d.textContent = '00:00:00.000'; const b = document.getElementById('sw_startbtn'); if (b) b.textContent = '▶ Start'; const l = document.getElementById('sw_laps'); if (l) l.innerHTML = ''; }
+function cd_toggle() { if (cdRunning) { clearInterval(cdTimer); cdRunning = false; document.getElementById('cd_startbtn').textContent = '▶ Resume'; } else { if (cdRemain === 0) { const h = parseInt(document.getElementById('cd_h').value) || 0, m = parseInt(document.getElementById('cd_m').value) || 0, s = parseInt(document.getElementById('cd_s').value) || 0; cdRemain = (h * 3600 + m * 60 + s) * 1000; } if (cdRemain <= 0) { toast('Set a time!', 'var(--red)'); return; } cdRunning = true; document.getElementById('cd_startbtn').textContent = '⏸ Pause'; cdTimer = setInterval(() => { cdRemain -= 100; if (cdRemain <= 0) { cdRemain = 0; clearInterval(cdTimer); cdRunning = false; const d = document.getElementById('cd_disp'); if (d) d.textContent = '00:00'; const b = document.getElementById('cd_startbtn'); if (b) b.textContent = '▶ Start'; toast("⏰ Time's up!", 'var(--green)'); return; } const tot = Math.ceil(cdRemain / 1000), m = Math.floor(tot / 60), s = tot % 60; const d = document.getElementById('cd_disp'); if (d) d.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`; }, 100); } }
+function cd_reset() { clearInterval(cdTimer); cdTimer = null; cdRemain = 0; cdRunning = false; const b = document.getElementById('cd_startbtn'); if (b) b.textContent = '▶ Start'; const m = document.getElementById('cd_m')?.value || '05'; const d = document.getElementById('cd_disp'); if (d) d.textContent = `${String(m).padStart(2, '00')}:00`; }
+
+// ═══════════════════════════════════════════════════════════
+// LOGIC — BMI & CALORIES
+// ═══════════════════════════════════════════════════════════
+function bmi_calc() {
+  const h = parseFloat(document.getElementById('bmi_h').value) / 100, w = parseFloat(document.getElementById('bmi_w').value), a = parseInt(document.getElementById('bmi_a').value) || 25, g = document.getElementById('bmi_g').value;
+  if (!h || !w) return;
+  const bmi = w / (h * h);
+  let cat, color, pos;
+  if (bmi < 18.5) { cat = 'Underweight'; color = 'var(--blue)'; pos = bmi / 18.5 * 25; }
+  else if (bmi < 25) { cat = 'Normal weight'; color = 'var(--green)'; pos = 25 + (bmi - 18.5) / (25 - 18.5) * 25; }
+  else if (bmi < 30) { cat = 'Overweight'; color = 'var(--orange)'; pos = 50 + (bmi - 25) / 5 * 25; }
+  else { cat = 'Obesity'; color = 'var(--red)'; pos = Math.min(75 + (bmi - 30) / 10 * 25, 98); }
+  const ideal = g === 'm' ? 50 + 2.3 * (h * 100 / 2.54 - 60) : 45.5 + 2.3 * (h * 100 / 2.54 - 60);
+  const bmr = g === 'm' ? 88.362 + 13.397 * w + 4.799 * h * 100 - 5.677 * a : 447.593 + 9.247 * w + 3.098 * h * 100 - 4.330 * a;
+  document.getElementById('bmi_out').innerHTML = `<div class="stats-row"><div class="stat-chip">BMI: <strong style="color:${color};font-size:1.2rem;">${bmi.toFixed(1)}</strong></div><div class="stat-chip">Category: <strong style="color:${color}">${cat}</strong></div><div class="stat-chip">Ideal weight: <strong>${ideal.toFixed(1)} kg</strong></div><div class="stat-chip">BMR: <strong>${Math.round(bmr)} kcal/day</strong></div></div>`;
+  document.getElementById('bmi_needle').style.marginLeft = `calc(${pos}% - 12px)`;
+  document.getElementById('bmi_needle').style.color = color;
+}
+
+function cal_calc() {
+  const g = document.getElementById('cal_g').value, a = parseFloat(document.getElementById('cal_a').value), h = parseFloat(document.getElementById('cal_h').value), w = parseFloat(document.getElementById('cal_w').value), act = parseFloat(document.getElementById('cal_act').value), goal = parseFloat(document.getElementById('cal_goal').value);
+  if (isNaN(a) || isNaN(h) || isNaN(w)) return;
+  const bmr = g === 'm' ? 88.362 + 13.397 * w + 4.799 * h - 5.677 * a : 447.593 + 9.247 * w + 3.098 * h - 4.330 * a;
+  const tdee = bmr * act, target = tdee + goal;
+  const protein = Math.round(w * 2.2), fat = Math.round(target * 0.25 / 9), carbs = Math.round((target - protein * 4 - fat * 9) / 4);
+  document.getElementById('cal_out').innerHTML = `
+    <div class="stats-row">
+      <div class="stat-chip">BMR: <strong>${Math.round(bmr)} kcal</strong></div>
+      <div class="stat-chip">TDEE: <strong style="color:var(--amber)">${Math.round(tdee)} kcal</strong></div>
+      <div class="stat-chip">Target intake: <strong style="color:var(--green)">${Math.round(target)} kcal</strong></div>
+    </div>
+    <div style="margin-top:14px;">
+      <div style="font-weight:700;margin-bottom:8px;color:var(--text2)">Macronutrients:</div>
+      <div class="stats-row">
+        <div class="stat-chip">🥩 Protein: <strong>${protein}g</strong></div>
+        <div class="stat-chip">🧈 Fat: <strong>${fat}g</strong></div>
+        <div class="stat-chip">🍞 Carbs: <strong>${carbs}g</strong></div>
+      </div>
+      <div style="margin-top:12px;display:flex;height:12px;border-radius:50px;overflow:hidden;gap:2px;">
+        <div style="flex:${protein*4};background:var(--red);" title="Protein"></div>
+        <div style="flex:${fat*9};background:var(--orange);" title="Fat"></div>
+        <div style="flex:${carbs*4};background:var(--blue);" title="Carbs"></div>
+      </div>
+    </div>`;
+}
+
+
+renderDashboard();
+
+// ═══════════════════════════════════════════════════════════
+// EMBER PA TOOLS HUB — GA4 EVENT TRACKING
+// Each tool has its own events mapped to its actions.
+// All events go to dataLayer (GTM) + gtag() fallback.
+// ═══════════════════════════════════════════════════════════
+(function() {
+  'use strict';
+
+  // ── Utility ───────────────────────────────────────────────
+  function track(name, params) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'ember_' + name,
+      ember_event_name: name,
+      ember_params: params || {}
+    });
+    if (typeof gtag === 'function') gtag('event', name, params || {});
+  }
+
+  // Output field → tool mapping for the copyText patch
+  var OUTPUT_MAP = {
+    'utm_out':   { id: 'utmbuilder',  name: 'UTM Builder' },
+    'sl_out':    { id: 'slugify',     name: 'URL Slug' },
+    'cc_out':    { id: 'caseconvert', name: 'Text Case Converter' },
+    'fr_out':    { id: 'findreplace', name: 'Find & Replace' },
+    'li_out':    { id: 'loremipsum',  name: 'Lorem Ipsum' },
+    'cm_col':    { id: 'charmap',     name: 'Special Characters' },
+    'enc_out':   { id: 'encoding',    name: 'Text Encoding' },
+    'mo_out':    { id: 'morse',       name: 'Morse Code' },
+    'mo_mout':   { id: 'morse',       name: 'Morse Code' },
+    'cv_css':    { id: 'colorconvert',name: 'Color Converter' },
+    'kw_output': { id: 'ppc',         name: 'Keyword Permutation' }
+  };
+
+  var _openTimes = {};   // { tool_id: timestamp }
+  var _currentTool = null;
+
+  // ── 1. openTool patch ─────────────────────────────────────
+  var _origOpenTool = window.openTool;
+  window.openTool = function(id) {
+    var t = (window.TOOLS || []).find(function(x) { return x.id === id; });
+    _currentTool = id;
+    _openTimes[id] = Date.now();
+
+    track('tool_open', {
+      tool_id:        id,
+      tool_name:      t ? t.name : id,
+      tool_category:  t ? t.cat  : 'unknown',
+      event_category: 'tool_engagement'
+    });
+
+    if (_origOpenTool) _origOpenTool.call(this, id);
+  };
+
+  // ── 2. showDashboard patch — time_spent_sec ───────────────
+  var _origShowDashboard = window.showDashboard;
+  window.showDashboard = function() {
+    if (_currentTool && _openTimes[_currentTool]) {
+      var elapsed = Math.round((Date.now() - _openTimes[_currentTool]) / 1000);
+      var t = (window.TOOLS || []).find(function(x) { return x.id === _currentTool; });
+      track('tool_close', {
+        tool_id:          _currentTool,
+        tool_name:        t ? t.name : _currentTool,
+        tool_category:    t ? t.cat  : 'unknown',
+        time_spent_sec:   elapsed,
+        event_category:   'tool_engagement'
+      });
+    }
+    _currentTool = null;
+    if (_origShowDashboard) _origShowDashboard.call(this);
+  };
+
+  // ── 3. copyText patch — maps field to the right tool ────
+  var _origCopyText = window.copyText;
+  window.copyText = function(fieldId) {
+    var toolInfo = OUTPUT_MAP[fieldId];
+    var tid  = toolInfo ? toolInfo.id   : (_currentTool || 'unknown');
+    var tnam = toolInfo ? toolInfo.name : tid;
+    var t = (window.TOOLS || []).find(function(x) { return x.id === tid; });
+
+    track('tool_copy', {
+      tool_id:        tid,
+      tool_name:      tnam,
+      tool_category:  t ? t.cat : 'unknown',
+      output_field:   fieldId,
+      event_category: 'tool_engagement'
+    });
+
+    if (_origCopyText) _origCopyText.call(this, fieldId);
+  };
+
+  // ── 4. filterCat patch ────────────────────────────────────
+  var _origFilterCat = window.filterCat;
+  window.filterCat = function(cat, btn) {
+    track('tools_filter_category', {
+      category:       cat,
+      event_category: 'navigation'
+    });
+    if (_origFilterCat) _origFilterCat.call(this, cat, btn);
+  };
+
+  // ── 5. searchTools patch (debounced, min 2 znaky) ─────────
+  var _origSearchTools = window.searchTools;
+  var _searchTimer, _lastQ = '';
+  window.searchTools = function(q) {
+    if (_origSearchTools) _origSearchTools.call(this, q);
+    clearTimeout(_searchTimer);
+    _searchTimer = setTimeout(function() {
+      if (q && q.length >= 2 && q !== _lastQ) {
+        _lastQ = q;
+        track('tools_search', {
+          search_query:   q,
+          event_category: 'navigation'
+        });
+      }
+    }, 800);
+  };
+
+  // ────────────────────────────────────────────────────────────
+  // TOOL-SPECIFIC PATCHES
+  // ────────────────────────────────────────────────────────────
+
+  // ── PPC: Keyword Permutation ─────────────────────────────────────
+  var _origKwGenerate = window.kwGenerate;
+  window.kwGenerate = function() {
+    if (_origKwGenerate) _origKwGenerate.call(this);
+    setTimeout(function() {
+      var out = document.getElementById('kw_output');
+      var lines = out ? out.value.split('\n').filter(function(l) { return l.trim(); }) : [];
+      var matchTypes = [];
+      ['kwOpExact','kwOpPhrase','kwOpBroad','kwOpModBroad','kwOpCapitalize',
+       'kwOpNegExact','kwOpNegPhrase','kwOpNegBroad'].forEach(function(opId) {
+        var el = document.getElementById(opId);
+        if (el && el.checked) matchTypes.push(opId.replace('kwOp',''));
+      });
+      var boxCount = document.querySelectorAll('.kw-box').length;
+      track('kw_generate', {
+        tool_id:         'ppc',
+        tool_name:       'Keyword Permutation',
+        keywords_count:  lines.length,
+        box_count:       boxCount,
+        match_types:     matchTypes.join(','),
+        event_category:  'tool_engagement'
+      });
+    }, 80);
+  };
+
+  var _origKwCopyOutput = window.kwCopyOutput;
+  window.kwCopyOutput = function() {
+    var out = document.getElementById('kw_output');
+    var count = out ? out.value.split('\n').filter(function(l){return l.trim();}).length : 0;
+    track('kw_copy_output', {
+      tool_id:        'ppc',
+      tool_name:      'Keyword Permutation',
+      keywords_count: count,
+      event_category: 'tool_engagement'
+    });
+    if (_origKwCopyOutput) _origKwCopyOutput.call(this);
+  };
+
+  var _origKwDownloadTXT = window.kwDownloadTXT;
+  window.kwDownloadTXT = function() {
+    var out = document.getElementById('kw_output');
+    var count = out ? out.value.split('\n').filter(function(l){return l.trim();}).length : 0;
+    track('kw_download', {
+      tool_id:        'ppc',
+      tool_name:      'Keyword Permutation',
+      format:         'txt',
+      keywords_count: count,
+      event_category: 'tool_engagement'
+    });
+    if (_origKwDownloadTXT) _origKwDownloadTXT.call(this);
+  };
+
+  var _origKwDownloadCSV = window.kwDownloadCSV;
+  window.kwDownloadCSV = function() {
+    var out = document.getElementById('kw_output');
+    var count = out ? out.value.split('\n').filter(function(l){return l.trim();}).length : 0;
+    track('kw_download', {
+      tool_id:        'ppc',
+      tool_name:      'Keyword Permutation',
+      format:         'csv',
+      keywords_count: count,
+      event_category: 'tool_engagement'
+    });
+    if (_origKwDownloadCSV) _origKwDownloadCSV.call(this);
+  };
+
+  var _origKwAddBox = window.kwAddBox;
+  window.kwAddBox = function(label) {
+    track('kw_add_box', {
+      tool_id: 'ppc', tool_name: 'Keyword Permutation',
+      event_category: 'tool_engagement'
+    });
+    if (_origKwAddBox) _origKwAddBox.call(this, label);
+  };
+
+  // ── UTM Builder ───────────────────────────────────────────
+  // utm_build is called on every input change — we track copying
+  // (the copyText patch above covers this via OUTPUT_MAP utm_out)
+
+  // ── Find & Replace ──────────────────────────────────────
+  var _origFrRun = window.fr_run;
+  window.fr_run = function() {
+    if (_origFrRun) _origFrRun.call(this);
+    setTimeout(function() {
+      var cnt = document.getElementById('fr_cnt');
+      var count = cnt ? parseInt(cnt.textContent) || 0 : 0;
+      track('findreplace_run', {
+        tool_id:          'findreplace',
+        tool_name:        'Find & Replace',
+        replacements:     count,
+        event_category:   'tool_engagement'
+      });
+    }, 50);
+  };
+
+  // ── Lorem Ipsum ───────────────────────────────────────────
+  var _origLiGen = window.li_gen;
+  window.li_gen = function() {
+    var typeEl = document.getElementById('li_type');
+    var countEl = document.getElementById('li_count');
+    track('lorem_generate', {
+      tool_id:        'loremipsum',
+      tool_name:      'Lorem Ipsum',
+      generate_type:  typeEl ? typeEl.value : 'unknown',
+      count:          countEl ? parseInt(countEl.value) : 0,
+      event_category: 'tool_engagement'
+    });
+    if (_origLiGen) _origLiGen.call(this);
+  };
+
+  // ── Text Encoding ────────────────────────────────────────
+  var _origEncRun = window.enc_run;
+  window.enc_run = function(mode) {
+    track('encoding_run', {
+      tool_id:        'encoding',
+      tool_name:      'Text Encoding',
+      mode:           mode,
+      event_category: 'tool_engagement'
+    });
+    if (_origEncRun) _origEncRun.call(this, mode);
+  };
+
+  // ── ROI Calculator ────────────────────────────────────────
+  var _origRoiCalc = window.roi_calc;
+  window.roi_calc = function() {
+    if (_origRoiCalc) _origRoiCalc.call(this);
+    setTimeout(function() {
+      var roiEl = document.getElementById('roi_roi');
+      track('roi_calculate', {
+        tool_id:        'roi',
+        tool_name:      'ROI Calculator',
+        roi_value:      roiEl ? roiEl.textContent : '',
+        event_category: 'tool_engagement'
+      });
+    }, 50);
+  };
+
+  // ── VAT ───────────────────────────────────────────────────
+  var _origVatNet = window.vatFromNet;
+  window.vatFromNet = function() {
+    track('vat_calculate', {
+      tool_id: 'vat', tool_name: 'VAT Calculator',
+      direction: 'from_net', event_category: 'tool_engagement'
+    });
+    if (_origVatNet) _origVatNet.call(this);
+  };
+
+  var _origVatGross = window.vatFromGross;
+  window.vatFromGross = function() {
+    track('vat_calculate', {
+      tool_id: 'vat', tool_name: 'VAT Calculator',
+      direction: 'from_gross', event_category: 'tool_engagement'
+    });
+    if (_origVatGross) _origVatGross.call(this);
+  };
+
+  // ── Loan Calculator ──────────────────────────────────────
+  var _origLnCalc = window.ln_calc;
+  window.ln_calc = function() {
+    if (_origLnCalc) _origLnCalc.call(this);
+    track('loan_calculate', {
+      tool_id: 'loan', tool_name: 'Loan Calculator',
+      event_category: 'tool_engagement'
+    });
+  };
+
+  // ── BMI ───────────────────────────────────────────────────
+  var _origBmiCalc = window.bmi_calc;
+  window.bmi_calc = function() {
+    if (_origBmiCalc) _origBmiCalc.call(this);
+    setTimeout(function() {
+      var bmiEl = document.getElementById('bmi_val');
+      track('bmi_calculate', {
+        tool_id: 'bmi', tool_name: 'BMI Calculator',
+        bmi_value: bmiEl ? bmiEl.textContent : '',
+        event_category: 'tool_engagement'
+      });
+    }, 50);
+  };
+
+  // ── Calorie Calculator ──────────────────────────────────
+  var _origCalCalc = window.cal_calc;
+  window.cal_calc = function() {
+    if (_origCalCalc) _origCalCalc.call(this);
+    track('calories_calculate', {
+      tool_id: 'calories', tool_name: 'Calorie Calculator',
+      event_category: 'tool_engagement'
+    });
+  };
+
+  // ── Unit Converter ────────────────────────────────────────
+  var _origUnCalc = window.un_calc;
+  window.un_calc = function() {
+    var catEl = document.getElementById('un_cat');
+    track('units_convert', {
+      tool_id:  'units', tool_name: 'Unit Converter',
+      category: catEl ? catEl.value : 'unknown',
+      event_category: 'tool_engagement'
+    });
+    if (_origUnCalc) _origUnCalc.call(this);
+  };
+
+  // ── Morse Code ──────────────────────────────────────
+  var _origMoToMorse = window.mo_toMorse;
+  window.mo_toMorse = function() {
+    track('morse_encode', {
+      tool_id: 'morse', tool_name: 'Morse Code',
+      direction: 'text_to_morse', event_category: 'tool_engagement'
+    });
+    if (_origMoToMorse) _origMoToMorse.call(this);
+  };
+
+  var _origMoFromMorse = window.mo_fromMorse;
+  window.mo_fromMorse = function() {
+    track('morse_decode', {
+      tool_id: 'morse', tool_name: 'Morse Code',
+      direction: 'morse_to_text', event_category: 'tool_engagement'
+    });
+    if (_origMoFromMorse) _origMoFromMorse.call(this);
+  };
+
+  // ── WCAG Contrast ─────────────────────────────────────────
+  var _origWcagCalc = window.wcag_calc;
+  window.wcag_calc = function() {
+    if (_origWcagCalc) _origWcagCalc.call(this);
+    setTimeout(function() {
+      var ratioEl = document.getElementById('wcag_ratio');
+      track('contrast_check', {
+        tool_id: 'contrast', tool_name: 'WCAG Contrast',
+        ratio: ratioEl ? ratioEl.textContent : '',
+        event_category: 'tool_engagement'
+      });
+    }, 50);
+  };
+
+  // ── Stopwatch (start/stop) ───────────────────────────────────
+  var _origSwToggle = window.sw_toggle;
+  window.sw_toggle = function() {
+    var wasRunning = window.swRunning;
+    track('stopwatch_toggle', {
+      tool_id: 'stopwatch', tool_name: 'Stopwatch & Timer',
+      action: wasRunning ? 'stop' : 'start',
+      event_category: 'tool_engagement'
+    });
+    if (_origSwToggle) _origSwToggle.call(this);
+  };
+
+  // ── Number Systems ──────────────────────────────────────
+  var _origNbSet = window.nbSet;
+  window.nbSet = function(from) {
+    track('numbase_convert', {
+      tool_id: 'numbase', tool_name: 'Number Systems',
+      from_base: from, event_category: 'tool_engagement'
+    });
+    if (_origNbSet) _origNbSet.call(this, from);
+  };
+
+  // ── Session time milestones (1min, 3min, 5min) ───────────────
+  [60, 180, 300].forEach(function(sec) {
+    setTimeout(function() {
+      track('tools_hub_time', {
+        seconds: sec, event_category: 'engagement'
+      });
+    }, sec * 1000);
+  });
+
+  console.log('[Ember PA] Tools tracking initialized — ' + Object.keys(OUTPUT_MAP).length + ' output fields mapped.');
+
+})();
+</script>
+</body>
+</html>
