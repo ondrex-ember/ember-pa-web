@@ -131,6 +131,15 @@ body::before {
 }
 .back-to-home:hover { color: var(--blue); border-color: var(--blue); background: var(--blue-dim); }
 
+.lang-switch { display: flex; gap: 6px; align-items: center; }
+.lang-link {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--text2); text-decoration: none;
+  padding: 5px 10px; border-radius: 6px; transition: all .2s;
+}
+.lang-link:hover { color: var(--blue); background: var(--blue-dim); }
+.lang-link.active { color: var(--orange); font-weight: 700; }
+
 /* ════════════════════════════════════════════════
    DASHBOARD
 ═══════════════════════════════════════════════ */
@@ -472,6 +481,11 @@ tr:hover td { background: rgba(255,255,255,.02); }
   </a>
   <div class="header-center">TOOLS HUB</div>
   <div class="header-right">
+    <nav class="lang-switch">
+      <a href="/tools/" class="lang-link" hreflang="cs">CZ</a>
+      <span style="color: var(--text3);">|</span>
+      <a href="/tools/en/" class="lang-link active" hreflang="en">EN</a>
+    </nav>
     <a href="/en/" class="back-to-home">← Back to home</a>
   </div>
 </header>
