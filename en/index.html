@@ -733,6 +733,17 @@ body::before {
   text-decoration: underline;
 }
 
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.footer-sep {
+  color: #475569;
+  margin: 0 6px;
+}
+
 /* ANIMATIONS */
 .fade-in {
   animation: fadeIn 0.6s ease-out;
@@ -920,9 +931,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="footer-brand">
       🔥 Ember PA © 2026
     </div>
-    <div class="footer-info">
-      Made with 🔥 in Nový Bor | 
+    <div class="footer-links">
+      <a href="/tools/en/" class="footer-link">Tools Hub</a>
+      <span class="footer-sep">|</span>
       <a href="mailto:ember@ember-pa.cz" class="footer-link">Contact</a>
+    </div>
+    <div class="footer-info">
+      Made with 🔥 in Nový Bor
     </div>
   </footer>
 </div>
