@@ -965,7 +965,7 @@ loan: () => `
 currency: () => `
 <div class="tool-panel">
   <h3>💱 Currency Converter</h3>
-  <p style="font-size:.76rem;color:var(--red);margin-bottom:12px;">⚠️ Rates are approximate (fixed values). For accurate rates, use the Czech National Bank (ČNB) or Google.</p>
+  <p id="cur_status" style="font-size:.76rem;color:var(--text2);margin-bottom:12px;">⏳ Loading live rates…</p>
   <div class="grid-3">
     <div><label>Amount</label><input type="number" id="cur_amt" value="1000" oninput="cur_calc()"></div>
     <div><label>From currency</label>
@@ -1624,6 +1624,7 @@ function openTool(id) {
   if (id === 'contrast')    wcag_calc();
   if (id === 'timezone')    tz_now();
   if (id === 'numbase')     initAscii();
+  if (id === 'currency')    cur_init();
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2061,15 +2062,63 @@ function ln_calc() {
   document.getElementById('ln_table_wrap').innerHTML = table;
 }
 
-const CUR_RATES = { CZK: 1, EUR: 25.3, USD: 23.1, GBP: 29.4, CHF: 26.8, JPY: 0.155, PLN: 5.7, HUF: 0.063 };
+// Fallback rates (CZK price of 1 unit of the currency) — used only if the
+// live API can't be reached. Update occasionally so the offline fallback
+// doesn't drift too far from reality.
+let CUR_RATES = { CZK: 1, EUR: 25.3, USD: 23.1, GBP: 29.4, CHF: 26.8, JPY: 0.155, PLN: 5.7, HUF: 0.063 };
+let curRatesLive = false;
+let curLastFetch = 0;
+const CUR_CODES = ['CZK', 'EUR', 'USD', 'GBP', 'CHF', 'JPY', 'PLN', 'HUF'];
+const CUR_CACHE_MS = 10 * 60 * 1000; // 10 min
+
+function cur_init() {
+  cur_calc();
+  const fresh = curRatesLive && (Date.now() - curLastFetch < CUR_CACHE_MS);
+  if (fresh) { cur_setStatus(true); return; }
+  cur_fetchLive();
+}
+
+function cur_setStatus(live, dateStr) {
+  const el = document.getElementById('cur_status');
+  if (!el) return;
+  if (live) {
+    el.style.color = 'var(--green)';
+    el.textContent = `✅ Live rates (ECB via frankfurter.app)${dateStr ? ' · updated ' + dateStr : ''}`;
+  } else {
+    el.style.color = 'var(--red)';
+    el.textContent = '⚠️ Could not load live rates — using approximate (fixed) fallback values.';
+  }
+}
+
+function cur_fetchLive() {
+  const symbols = CUR_CODES.filter(c => c !== 'EUR').join(',');
+  fetch(`https://api.frankfurter.dev/v1/latest?base=EUR&symbols=${symbols}`)
+    .then(r => { if (!r.ok) throw new Error('bad response'); return r.json(); })
+    .then(data => {
+      const eurRates = { EUR: 1, ...data.rates };
+      const czkPerEur = eurRates.CZK;
+      if (!czkPerEur) throw new Error('missing CZK rate');
+      const next = {};
+      CUR_CODES.forEach(c => { next[c] = czkPerEur / eurRates[c]; });
+      CUR_RATES = next;
+      curRatesLive = true;
+      curLastFetch = Date.now();
+      cur_setStatus(true, data.date);
+      cur_calc();
+    })
+    .catch(() => {
+      curRatesLive = false;
+      cur_setStatus(false);
+    });
+}
 
 function cur_calc() {
   const amt = parseFloat(document.getElementById('cur_amt').value) || 0;
   const from = document.getElementById('cur_from').value;
   const to = document.getElementById('cur_to').value;
-  const result = amt / CUR_RATES[from] * CUR_RATES[to];
+  const result = amt * CUR_RATES[from] / CUR_RATES[to];
   document.getElementById('cur_out').textContent = `${amt.toLocaleString('en-GB')} ${from} = ${fmt(result)} ${to}`;
-  document.getElementById('cur_rate').textContent = `Rate: 1 ${from} = ${fmt(CUR_RATES[to] / CUR_RATES[from], 4)} ${to}`;
+  document.getElementById('cur_rate').textContent = `Rate: 1 ${from} = ${fmt(CUR_RATES[from] / CUR_RATES[to], 4)} ${to}`;
 }
 
 // ═══════════════════════════════════════════════════════════
