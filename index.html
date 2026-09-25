@@ -125,6 +125,23 @@
 }
 </script>
 
+<!-- Consent Mode v2 (advanced) — default state, must load before GTM -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  analytics_storage: 'denied',
+  functionality_storage: 'denied',
+  wait_for_update: 500
+});
+gtag('set', 'ads_data_redaction', true);
+// Vracející se návštěvník se souhlasem → update ještě před načtením GTM
+try{ if(localStorage.getItem('emberpa_consent')==='granted'){ gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted',functionality_storage:'granted'}); } }catch(e){}
+</script>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -136,19 +153,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-K1CK86V4PE"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-K1CK86V4PE');
 </script>
 
-<!-- Microsoft Clarity -->
+<!-- Microsoft Clarity — načte se až po souhlasu (Consent Mode v2 nemá pro Clarity nativní gating) -->
 <script type="text/javascript">
+  function emberLoadClarity(){
+    if(window.__emberClarityLoaded) return;
+    window.__emberClarityLoaded = true;
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "ve6zmcb7ue");
+  }
+  try{ if(localStorage.getItem('emberpa_consent')==='granted'){ emberLoadClarity(); } }catch(e){}
 </script>
 
 <style>
@@ -941,6 +961,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="/tools/" class="footer-link">Tools Hub</a>
     <span class="footer-sep">|</span>
     <a href="mailto:ember@ember-pa.cz" class="footer-link">Kontakt</a>
+    <span class="footer-sep">|</span>
+    <a href="#" class="footer-link" onclick="emberConsentInfo();return false;">🍪 Soukromí</a>
   </div>
   <div class="footer-info">
     Vytvořeno s 🔥 v Novém Boru
@@ -962,6 +984,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   });
 })();
 </script>
+<script src="/consent.js"></script>
 
 </body>
 </html>
