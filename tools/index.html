@@ -10,25 +10,45 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
+<!-- Consent Mode v2 (advanced) — default state, must load before GTM -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent', 'default', {
+  ad_storage: 'denied',
+  ad_user_data: 'denied',
+  ad_personalization: 'denied',
+  analytics_storage: 'denied',
+  functionality_storage: 'denied',
+  wait_for_update: 500
+});
+gtag('set', 'ads_data_redaction', true);
+// Vracejici se navstevnik se souhlasem -> update jeste pred nactenim GTM
+try{ if(localStorage.getItem('emberpa_consent')==='granted'){ gtag('consent','update',{ad_storage:'granted',ad_user_data:'granted',ad_personalization:'granted',analytics_storage:'granted',functionality_storage:'granted'}); } }catch(e){}
+</script>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WTB3ZDZN');</script>
 
 <!-- Google tag (gtag.js) — GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-K1CK86V4PE"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-K1CK86V4PE', { page_title: document.title, page_location: window.location.href });
 </script>
 
-<!-- Microsoft Clarity -->
+<!-- Microsoft Clarity - nacte se az po souhlasu (Consent Mode v2 nema nativni gating pro Clarity) -->
 <script type="text/javascript">
-  (function(c,l,a,r,i,t,y){
-    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-  })(window,document,"clarity","script","ve6zmcb7ue");
+  function emberLoadClarity(){
+    if(window.__emberClarityLoaded) return;
+    window.__emberClarityLoaded = true;
+    (function(c,l,a,r,i,t,y){
+      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window,document,"clarity","script","ve6zmcb7ue");
+  }
+  try{ if(localStorage.getItem('emberpa_consent')==='granted'){ emberLoadClarity(); } }catch(e){}
 </script>
 
 <style>
@@ -532,7 +552,7 @@ tr:hover td { background: rgba(255,255,255,.02); }
 <!-- FOOTER -->
 <footer id="footer">
   <span>🔥 Ember PA Tools Hub © 2026</span>
-  <span><a href="/" class="footer-link">ember-pa.cz</a> | <a href="/cdn-cgi/l/email-protection#4421292621366a34252a042329252d286a272b29" class="footer-link"><span class="__cf_email__" data-cfemail="94f1f9f6f1e6bae4f5fad4f3f9f5fdf8baf7fbf9">[email&#160;protected]</span></a></span>
+  <span><a href="/" class="footer-link">ember-pa.cz</a> | <a href="/cdn-cgi/l/email-protection#4421292621366a34252a042329252d286a272b29" class="footer-link"><span class="__cf_email__" data-cfemail="94f1f9f6f1e6bae4f5fad4f3f9f5fdf8baf7fbf9">[email&#160;protected]</span></a> | <a href="#" class="footer-link" onclick="emberConsentInfo();return false;">🍪 Soukromí</a></span>
 </footer>
 
 </div><!-- /main-container -->
@@ -2753,5 +2773,6 @@ renderDashboard();
 
 })();
 </script>
+<script src="/consent.js"></script>
 </body>
 </html>
