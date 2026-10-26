@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember Fajrum — Legal</title>
+<meta name="description" content="Privacy Policy and Terms &amp; Conditions of the Ember Fajrum – Glassworks Android game. / Zásady ochrany soukromí a obchodní podmínky hry Ember Fajrum – sklářská huť pro Android.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #d9a548;
+    --accent-light: #efcb85;
+    --accent-dim: rgba(217,165,72,0.10);
+    --accent-border: rgba(217,165,72,0.24);
+    --bg: #0a0a14;
+    --bg2: #12121f;
+    --surface: #1e1e3a;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --border: rgba(255,255,255,0.06);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.75;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(217,165,72,0.05) 0%, transparent 65%);
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,20,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  .nav-logo { font-size: 20px; color: var(--accent); }
+
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    font-weight: 400;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+  }
+
+  .nav-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    padding: 6px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .nav-tab.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+
+  .nav-tab:hover:not(.active) {
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero {
+    margin-bottom: 48px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-label::before { content: '⬡'; color: var(--accent); font-size: 14px; }
+
+  .hero-title {
+    font-size: clamp(36px, 6vw, 52px);
+    font-weight: 300;
+    color: var(--accent);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: 14px;
+    font-family: var(--mono);
+    font-weight: 300;
+  }
+
+  .date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 36px;
+  }
+
+  .date-badge span { color: var(--accent); }
+
+  .block {
+    margin-bottom: 24px;
+    padding: 28px 32px;
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-border), transparent);
+  }
+
+  .block-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .block-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--accent-border);
+  }
+
+  .block p {
+    color: rgba(232,232,240,0.85);
+    font-size: 16px;
+    line-height: 1.85;
+    margin-bottom: 14px;
+    font-weight: 300;
+  }
+
+  .block p:last-child { margin-bottom: 0; }
+
+  .legal-list {
+    list-style: none;
+    margin: 12px 0 14px;
+  }
+
+  .legal-list li {
+    font-size: 16px;
+    color: rgba(232,232,240,0.8);
+    font-weight: 300;
+    padding: 5px 0 5px 22px;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .legal-list li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 7px;
+    top: 11px;
+  }
+
+  .highlight {
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 15px;
+    color: rgba(232,232,240,0.85);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .highlight strong { color: var(--accent-light); font-weight: 400; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 24px 0;
+  }
+
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-border); transition: border-color 0.2s; }
+  a:hover { border-color: var(--accent); }
+
+  .contact-block {
+    background: var(--bg2);
+    border: 1px solid var(--accent-border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .contact-block p {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .contact-email {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-border);
+    white-space: nowrap;
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 28px 24px;
+  }
+
+  .footer-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy, .footer-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .footer-date { opacity: 0.5; }
+
+  @media (max-width: 600px) {
+    .nav-inner { flex-direction: column; align-items: flex-start; }
+    .nav-tabs { width: 100%; }
+    .nav-tab { flex: 1; text-align: center; }
+    main { padding: 40px 16px 60px; }
+    .block { padding: 20px 18px; }
+    .contact-block { flex-direction: column; }
+  }
+
+  html[data-lang="en"] [data-l="cs"] { display: none !important; }
+  html[data-lang="cs"] [data-l="en"] { display: none !important; }
+  .nav-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .nav-lang .nav-tab { padding: 6px 12px; }
+  .block ul.legal-list a, .block p a { word-break: break-word; }
+  @media (max-width: 600px) { .nav-right { width: 100%; } .nav-right .nav-tabs { flex: 1; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">
+      <span class="nav-logo">⬡</span>
+      <span class="nav-name">EMBER FAJRUM</span>
+    </a>
+    <div class="nav-right">
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-sec="privacy" onclick="showSection('privacy')"><span data-l="en">Privacy Policy</span><span data-l="cs">Ochrana soukromí</span></button>
+        <button class="nav-tab" data-sec="terms" onclick="showSection('terms')"><span data-l="en">Terms &amp; Conditions</span><span data-l="cs">Podmínky</span></button>
+      </div>
+      <div class="nav-tabs nav-lang">
+        <button class="nav-tab active" data-lang-btn="en" onclick="setLang('en')">EN</button>
+        <button class="nav-tab" data-lang-btn="cs" onclick="setLang('cs')">CS</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- PRIVACY POLICY -->
+  <section class="section active" id="privacy">
+    <div class="hero">
+      <div class="hero-label">Legal</div>
+      <h1 class="hero-title"><span data-l="en">Privacy Policy</span><span data-l="cs">Zásady ochrany soukromí</span></h1>
+      <p class="hero-sub"><span data-l="en">Ember Fajrum · Historical glassworks strategy game for Android · Free</span><span data-l="cs">Ember Fajrum · Historická budovatelská hra o sklárně pro Android · Zdarma</span></p>
+    </div>
+
+    <div class="date-badge"><span data-l="en" style="color:inherit">Effective as of <span>2026-10-26</span></span><span data-l="cs" style="color:inherit">Platné od <span>26. 10. 2026</span></span></div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Overview</div>
+      <p>This privacy policy applies to the Ember Fajrum – Glassworks game (the "Application") for Android, published by Ondřej Panuška, Ember PA (the "Service Provider", <a href="https://www.ember-pa.cz" target="_blank" rel="noopener">www.ember-pa.cz</a>). The Application is provided as a free service and is intended for use "AS IS".</p>
+      <div class="highlight"><strong>🔒 Our commitment:</strong> Ember Fajrum has no accounts, no servers of its own, no analytics and no advertising. It works offline. Your game progress and settings are stored only on your device and the Service Provider never receives them.</div>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Information Stored on Your Device</div>
+      <p>To let you continue playing, the Application stores the following data locally, in its private storage on your device:</p>
+      <ul class="legal-list"><li>Game progress: the name of your glassworks, workers, stock, production, finances, forest and building state, the current round and year, and your chronicle and journal entries</li><li>Game settings: language, difficulty, sound and music preferences and volume, and display options</li><li>Results of your game sessions (the leaderboard is kept on your device and is not shared with anyone)</li></ul>
+      <p>All of this stays on your device. The Application does not transmit it to the Service Provider or to any third party.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">What Is Not Collected</div>
+      <ul class="legal-list"><li>No user accounts, registration or sign-in</li><li>No analytics, crash reporting or usage tracking by the Application</li><li>No advertising and no advertising identifiers</li><li>No location, contacts, camera, microphone, photos, files or other sensitive device data</li><li>No sale or sharing of data with anyone</li></ul>
+      <div class="highlight"><strong>🌐 Internet:</strong> The Application is designed to work fully offline. It does not send any data over the internet.</div>
+      <div class="highlight"><strong>🤖 AI:</strong> The Application does not use Artificial Intelligence technologies to process your data or provide features.</div>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Permissions</div>
+      <p>The Application does not request any permissions that require your approval. In particular, it does not ask for access to your location, contacts, camera, microphone, photos or storage. Sound effects and music are played locally by the Application.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Android System Backup</div>
+      <p>If you have Android backup enabled in your device settings, Android and your Google account may include the Application's data (your saved game) in the device backup, so that it can be restored on a new device. This is a feature of the Android operating system, controlled by you in your device settings and governed by Google's own Privacy Policy. The Service Provider has no access to such backups.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Third Party Services</div>
+      <p>The Application is distributed through Google Play. Google Play Services may collect certain technical and device information independently, according to Google's own Privacy Policy. The Application has no control over this data collection.</p>
+      <ul class="legal-list"><li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Play Services Privacy Policy</a></li></ul>
+      <p>Beyond Google Play Services, the Application does not integrate any third-party analytics, advertising or tracking SDKs and does not work with data brokers.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Opt-Out and Data Deletion</div>
+      <p>Everything is under your control on your device:</p>
+      <ul class="legal-list"><li>Resetting the game in the Application's settings erases your saved progress</li><li>Clearing the Application's storage in Android settings erases all of its data</li><li>Uninstalling the Application removes all data stored by it</li><li>Device backups made by Android are managed in your device and Google account settings</li></ul>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Data Retention</div>
+      <p>Your data is kept on your device until you delete it, reset the game or uninstall the Application. The Service Provider holds no copy of it.</p>
+      <p>If you have any concerns, contact us at <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Your Rights</div>
+      <p>Because the Service Provider does not collect or hold your personal data, there is nothing to access, correct, export or erase on its side; you manage all data directly in the Application and on your device. If you believe your rights under data protection law (such as the GDPR) have been affected, you can contact us at <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a> or lodge a complaint with the Czech Office for Personal Data Protection (<a href="https://www.uoou.cz" target="_blank" rel="noopener">www.uoou.cz</a>).</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Children</div>
+      <p>The Application is not directed at children under 13 and does not knowingly collect personal information from anyone, including children. It contains no advertising, no chat or communication between players and no user-generated content.</p>
+      <p>If you are a parent or guardian and have a concern, please contact us at <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Security</div>
+      <p>Data is stored in the Application's private storage on your device, which other apps cannot normally access. Protect your device with a screen lock. Because the Service Provider holds no copy of your game, it cannot restore progress lost through a reset, uninstall or device loss.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Changes</div>
+      <p>This Privacy Policy may be updated from time to time and the changes will be published on this page with a new effective date. If features that process data outside your device (for example analytics, advertising, accounts, online leaderboards or cloud saves) are ever introduced, this policy and the Data safety section in Google Play will be updated before their release. Continued use of the Application is deemed approval of all changes.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Your Consent</div>
+      <p>By using the Application, you acknowledge that Ember Fajrum stores your game data only on your device, does not collect or transmit personal data to the Service Provider, and that Google Play Services and Android system backup may independently process certain technical information as described in Google's own Privacy Policy.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Přehled</div>
+      <p>Tyto zásady ochrany soukromí se týkají hry Ember Fajrum – sklářská huť (dále „Aplikace“) pro Android, kterou vydává Ondřej Panuška, Ember PA (dále „Poskytovatel“, <a href="https://www.ember-pa.cz" target="_blank" rel="noopener">www.ember-pa.cz</a>). Aplikace je poskytována zdarma a „TAK, JAK JE“.</p>
+      <div class="highlight"><strong>🔒 Náš závazek:</strong> Ember Fajrum nemá uživatelské účty, žádné vlastní servery, analytiku ani reklamu. Funguje offline. Postup ve hře i nastavení jsou uloženy pouze ve vašem zařízení a Poskytovatel je nikdy nezíská.</div>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Údaje uložené ve vašem zařízení</div>
+      <p>Abyste mohli ve hře pokračovat, ukládá Aplikace lokálně do svého soukromého úložiště ve vašem zařízení tyto údaje:</p>
+      <ul class="legal-list"><li>Postup ve hře: název vaší sklárny, pracovníci, zásoby, výroba, finance, stav lesa a budov, aktuální kolo a rok a záznamy v kronice a deníku</li><li>Nastavení hry: jazyk, obtížnost, předvolby zvuku a hudby a hlasitost, možnosti zobrazení</li><li>Výsledky vašich herních sezón (žebříček je uložen ve vašem zařízení a s nikým se nesdílí)</li></ul>
+      <p>To vše zůstává ve vašem zařízení. Aplikace to neodesílá Poskytovateli ani žádné třetí straně.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Co se neshromažďuje</div>
+      <ul class="legal-list"><li>Žádné uživatelské účty, registrace ani přihlašování</li><li>Žádná analytika, hlášení pádů ani sledování používání ze strany Aplikace</li><li>Žádná reklama a žádné reklamní identifikátory</li><li>Žádná poloha, kontakty, fotoaparát, mikrofon, fotky, soubory ani jiné citlivé údaje zařízení</li><li>Žádný prodej ani sdílení údajů s kýmkoli</li></ul>
+      <div class="highlight"><strong>🌐 Internet:</strong> Aplikace je navržena tak, aby fungovala zcela offline. Přes internet neodesílá žádné údaje.</div>
+      <div class="highlight"><strong>🤖 AI:</strong> Aplikace nepoužívá technologie umělé inteligence ke zpracování vašich údajů ani k poskytování funkcí.</div>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Oprávnění</div>
+      <p>Aplikace nežádá o žádná oprávnění, která by vyžadovala váš souhlas. Zejména nežádá o přístup k poloze, kontaktům, fotoaparátu, mikrofonu, fotkám ani úložišti. Zvukové efekty a hudbu přehrává Aplikace lokálně.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Systémová záloha Androidu</div>
+      <p>Pokud máte v nastavení zařízení zapnutou zálohu Androidu, mohou Android a váš účet Google zahrnout data Aplikace (uloženou hru) do zálohy zařízení, aby šla obnovit na novém zařízení. Jde o funkci operačního systému Android, kterou ovládáte v nastavení zařízení a která se řídí vlastními zásadami ochrany soukromí společnosti Google. Poskytovatel k těmto zálohám nemá přístup.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Služby třetích stran</div>
+      <p>Aplikace je distribuována přes Google Play. Služby Google Play mohou nezávisle shromažďovat určité technické informace o zařízení podle vlastních zásad ochrany soukromí společnosti Google. Aplikace tento sběr dat nemůže ovlivnit.</p>
+      <ul class="legal-list"><li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Play Services Privacy Policy</a></li></ul>
+      <p>Kromě služeb Google Play Aplikace neintegruje žádné analytické, reklamní ani sledovací SDK třetích stran a nespolupracuje s obchodníky s daty.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Možnost odmítnutí a smazání údajů</div>
+      <p>Vše máte pod kontrolou ve svém zařízení:</p>
+      <ul class="legal-list"><li>Reset hry v nastavení Aplikace smaže váš uložený postup</li><li>Vymazání úložiště Aplikace v nastavení Androidu smaže všechna její data</li><li>Odinstalací Aplikace se odstraní všechna data, která uložila</li><li>Zálohy zařízení vytvořené Androidem spravujete v nastavení zařízení a účtu Google</li></ul>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Uchovávání údajů</div>
+      <p>Vaše údaje zůstávají ve vašem zařízení, dokud je nesmažete, neresetujete hru nebo Aplikaci neodinstalujete. Poskytovatel o nich nemá žádnou kopii.</p>
+      <p>V případě jakýchkoli obav nás kontaktujte na <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Vaše práva</div>
+      <p>Protože Poskytovatel vaše osobní údaje neshromažďuje ani neuchovává, nemá na své straně co zpřístupnit, opravit, exportovat ani vymazat; všechna data spravujete přímo v Aplikaci a ve svém zařízení. Pokud se domníváte, že byla dotčena vaše práva podle právních předpisů o ochraně osobních údajů (např. GDPR), můžete nás kontaktovat na <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a> nebo podat stížnost u Úřadu pro ochranu osobních údajů (<a href="https://www.uoou.cz" target="_blank" rel="noopener">www.uoou.cz</a>).</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Děti</div>
+      <p>Aplikace není určena dětem do 13 let a vědomě neshromažďuje osobní údaje od nikoho, včetně dětí. Neobsahuje reklamu, chat ani komunikaci mezi hráči a žádný obsah vytvářený uživateli.</p>
+      <p>Pokud jste rodič či zákonný zástupce a máte obavy, kontaktujte nás na <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Zabezpečení</div>
+      <p>Údaje jsou uloženy v soukromém úložišti Aplikace ve vašem zařízení, ke kterému ostatní aplikace běžně nemají přístup. Zařízení chraňte zámkem obrazovky. Protože Poskytovatel o vaší hře nemá žádnou kopii, nemůže obnovit postup ztracený resetem, odinstalací nebo ztrátou zařízení.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Změny</div>
+      <p>Tyto zásady ochrany soukromí mohou být čas od času aktualizovány a změny budou zveřejněny na této stránce s novým datem účinnosti. Pokud budou někdy zavedeny funkce zpracovávající údaje mimo vaše zařízení (například analytika, reklama, účty, online žebříčky nebo cloudové ukládání her), budou tyto zásady i sekce Zabezpečení dat v Google Play aktualizovány ještě před jejich vydáním. Pokračováním v používání Aplikace vyjadřujete souhlas se všemi změnami.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Váš souhlas</div>
+      <p>Používáním Aplikace potvrzujete, že Ember Fajrum ukládá data vaší hry pouze ve vašem zařízení, neshromažďuje ani neodesílá osobní údaje Poskytovateli a že služby Google Play a systémová záloha Androidu mohou nezávisle zpracovávat určité technické informace podle vlastních zásad ochrany soukromí společnosti Google.</p>
+    </div>
+
+    <div class="contact-block">
+      <p data-l="en">Questions regarding privacy? Contact the Service Provider:</p><p data-l="cs">Dotazy k ochraně soukromí? Kontaktujte Poskytovatele:</p>
+      <a class="contact-email" href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>
+    </div>
+  </section>
+
+  <!-- TERMS & CONDITIONS -->
+  <section class="section" id="terms">
+    <div class="hero">
+      <div class="hero-label">Legal</div>
+      <h1 class="hero-title"><span data-l="en">Terms &amp; Conditions</span><span data-l="cs">Obchodní podmínky</span></h1>
+      <p class="hero-sub"><span data-l="en">Ember Fajrum · Historical glassworks strategy game for Android · Free</span><span data-l="cs">Ember Fajrum · Historická budovatelská hra o sklárně pro Android · Zdarma</span></p>
+    </div>
+
+    <div class="date-badge"><span data-l="en" style="color:inherit">Effective as of <span>2026-10-26</span></span><span data-l="cs" style="color:inherit">Platné od <span>26. 10. 2026</span></span></div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Overview</div>
+      <p>These terms and conditions apply to the Ember Fajrum – Glassworks game (the "Application") for Android, provided as a free service by Ondřej Panuška, Ember PA (the "Service Provider"). Upon downloading or utilizing the Application, you are automatically agreeing to the following terms. Please read and understand them prior to using the Application.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Intellectual Property</div>
+      <p>Unauthorized copying or modification of the Application, any part of it, or our trademarks is strictly prohibited. The following are not permitted:</p>
+      <ul class="legal-list"><li>Extracting the source code of the Application</li><li>Copying or redistributing the Application, its name, logo, graphics, texts, music, sounds, game data or design</li><li>Creating derivative versions</li></ul>
+      <p>All trademarks, copyrights, database rights and other intellectual property rights related to the Application, including its game content and mechanics, remain the property of the Service Provider.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Historical Simulation, Not Reference or Advice</div>
+      <div class="highlight"><strong>⚠ Important:</strong> Ember Fajrum is a game set in a fictionalised Bohemian glassworks around the year 1680. Its characters, events, prices, recipes and processes are simplified for gameplay and are not a historical, scientific, technical or professional reference. Real glassmaking involves extreme temperatures and hazardous materials. Do not attempt to reproduce anything shown in the game on the basis of it.</div>
+      <p>The Application depicts everyday life of its historical period, including the use of fire, alcohol (such as beer as part of workers' provisions) and hazardous substances. This is shown for historical flavour only and is not encouragement to engage in any such activity.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Service Modifications</div>
+      <p>The Service Provider reserves the right to modify the Application or charge for their services at any time and for any reason. Any charges for the Application or its services will be clearly communicated to you.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Your Responsibilities</div>
+      <p>It is your responsibility to maintain the security of your phone and access to the Application and to keep your device and its backups safe. The Application stores your game on your device only.</p>
+      <div class="highlight"><strong>⚠ Warning:</strong> The Service Provider strongly advises against jailbreaking or rooting your phone. Such actions could expose your device to malware, compromise security features, and may result in the Application not functioning correctly or at all.</div>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Saved Games and Game Balance</div>
+      <p>Your saved game exists only on your device. It may be lost if you reset the game, clear the Application's storage, uninstall the Application, or lose or replace your device without a working Android backup. The Service Provider has no copy and cannot restore it.</p>
+      <p>The game is under ongoing development. Updates may change game rules, balance, content and prices, and in some cases may make an older saved game incompatible, in which case a new game may be required. The Service Provider does not guarantee that any particular result, rank or progress will be preserved or achievable.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Third Party Services</div>
+      <p>The Application utilizes third-party services that have their own Terms and Conditions:</p>
+      <ul class="legal-list"><li><a href="https://policies.google.com/terms" target="_blank" rel="noopener">Google Play Terms of Service</a></li></ul>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Limitations of Liability</div>
+      <p>To the extent permitted by law, the Service Provider cannot be held responsible for:</p>
+      <ul class="legal-list"><li>Loss of saved games or game progress, including through updates, device resets, lost or damaged devices or failed backups</li><li>Device battery running out, overheating or performance issues caused by running the Application on your device</li><li>Mobile network charges or other third-party charges incurred in connection with downloading or updating the Application</li><li>Any loss, direct or indirect, from relying on information shown in the Application as if it were a factual, historical, technical or professional source</li><li>Any in-game losses, failures, accidents or outcomes, which are part of the game</li></ul>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Updates and Termination</div>
+      <p>The Service Provider may update the Application at any point. OS requirements may change, and updates may be required to continue using the Application. You agree to always accept updates when offered.</p>
+      <p>The Service Provider may cease providing the Application and terminate its use at any time without notice. Upon termination, the rights and licenses granted to you will end, and you must cease using and delete the Application from your device.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Governing Law</div>
+      <p>These terms are governed by the laws of the Czech Republic. Mandatory consumer protection rights that apply to you under the law of your country of residence are not affected.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Changes to Terms</div>
+      <p>The Service Provider may periodically update these Terms and Conditions. You are advised to review this page regularly. The Service Provider will notify you of any changes by posting the new Terms on this page.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Přehled</div>
+      <p>Tyto obchodní podmínky se vztahují na hru Ember Fajrum – sklářská huť (dále „Aplikace“) pro Android, kterou zdarma poskytuje Ondřej Panuška, Ember PA (dále „Poskytovatel“). Stažením nebo používáním Aplikace automaticky souhlasíte s následujícími podmínkami. Před použitím Aplikace si je prosím pozorně přečtěte.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Duševní vlastnictví</div>
+      <p>Neoprávněné kopírování nebo úpravy Aplikace, jakékoli její části či našich ochranných známek je přísně zakázáno. Nepřípustné je zejména:</p>
+      <ul class="legal-list"><li>Získávání zdrojového kódu Aplikace</li><li>Kopírování nebo další šíření Aplikace, jejího názvu, loga, grafiky, textů, hudby, zvuků, herních dat či vzhledu</li><li>Vytváření odvozených verzí</li></ul>
+      <p>Všechny ochranné známky, autorská práva, práva k databázím a další práva duševního vlastnictví související s Aplikací, včetně jejího herního obsahu a mechanik, zůstávají majetkem Poskytovatele.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Historická simulace, nikoli odborný zdroj ani rada</div>
+      <div class="highlight"><strong>⚠ Důležité:</strong> Ember Fajrum je hra zasazená do smyšlené české sklárny kolem roku 1680. Postavy, události, ceny, receptury i postupy jsou pro potřeby hry zjednodušeny a nejsou historickým, vědeckým, technickým ani odborným zdrojem. Skutečná výroba skla zahrnuje extrémní teploty a nebezpečné látky. Nic z toho, co hra zobrazuje, se nepokoušejte podle ní napodobovat.</div>
+      <p>Aplikace zobrazuje běžný život dané historické doby, včetně práce s ohněm, alkoholu (např. piva jako součásti zaopatření dělníků) a nebezpečných látek. Děje se tak pouze kvůli historickému koloritu a nejde o vybízení k jakékoli takové činnosti.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Změny služby</div>
+      <p>Poskytovatel si vyhrazuje právo kdykoli a z jakéhokoli důvodu Aplikaci upravit nebo za své služby účtovat poplatky. Případné poplatky za Aplikaci či její služby vám budou jasně sděleny.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Vaše odpovědnost</div>
+      <p>Odpovídáte za zabezpečení svého telefonu a přístupu k Aplikaci a za bezpečné uchování svého zařízení a jeho záloh. Aplikace ukládá vaši hru pouze ve vašem zařízení.</p>
+      <div class="highlight"><strong>⚠ Upozornění:</strong> Poskytovatel důrazně nedoporučuje jailbreak ani root telefonu. Takové zásahy mohou vystavit zařízení malwaru, narušit bezpečnostní funkce a způsobit, že Aplikace nebude fungovat správně, nebo vůbec.</div>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Uložené hry a vyvážení hry</div>
+      <p>Vaše uložená hra existuje pouze ve vašem zařízení. Může být ztracena, pokud hru resetujete, vymažete úložiště Aplikace, Aplikaci odinstalujete nebo zařízení ztratíte či vyměníte bez funkční zálohy Androidu. Poskytovatel žádnou kopii nemá a nemůže ji obnovit.</p>
+      <p>Hra se průběžně vyvíjí. Aktualizace mohou měnit pravidla, vyvážení, obsah i ceny a v některých případech mohou učinit starší uloženou hru nekompatibilní, takže může být nutné začít novou hru. Poskytovatel nezaručuje, že jakýkoli konkrétní výsledek, hodnost či postup bude zachován nebo dosažitelný.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Služby třetích stran</div>
+      <p>Aplikace využívá služby třetích stran, které mají vlastní podmínky:</p>
+      <ul class="legal-list"><li><a href="https://policies.google.com/terms" target="_blank" rel="noopener">Google Play Terms of Service</a></li></ul>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Omezení odpovědnosti</div>
+      <p>V rozsahu povoleném právními předpisy Poskytovatel nenese odpovědnost za:</p>
+      <ul class="legal-list"><li>Ztrátu uložených her či postupu ve hře, včetně ztráty způsobené aktualizacemi, resetem zařízení, ztraceným či poškozeným zařízením nebo selhanou zálohou</li><li>Vybitou baterii, přehřátí nebo problémy s výkonem způsobené během provozu Aplikace na vašem zařízení</li><li>Poplatky mobilního operátora či jiné poplatky třetích stran související se stažením nebo aktualizací Aplikace</li><li>Jakoukoli přímou či nepřímou ztrátu vzniklou tím, že budete informace zobrazené v Aplikaci považovat za faktický, historický, technický či odborný zdroj</li><li>Jakékoli herní ztráty, neúspěchy, nehody či výsledky, které jsou součástí hry</li></ul>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Aktualizace a ukončení</div>
+      <p>Poskytovatel může Aplikaci kdykoli aktualizovat. Požadavky na operační systém se mohou měnit a k dalšímu používání Aplikace mohou být aktualizace nutné. Souhlasíte, že nabízené aktualizace vždy přijmete.</p>
+      <p>Poskytovatel může kdykoli bez upozornění přestat Aplikaci poskytovat a ukončit její používání. Ukončením zanikají práva a licence, které vám byly uděleny, a Aplikaci musíte přestat používat a odstranit ze svého zařízení.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Rozhodné právo</div>
+      <p>Tyto podmínky se řídí právem České republiky. Závazná práva spotřebitele, která vám náleží podle práva země vašeho bydliště, tím nejsou dotčena.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Změny podmínek</div>
+      <p>Poskytovatel může tyto obchodní podmínky průběžně aktualizovat. Doporučujeme tuto stránku pravidelně kontrolovat. O změnách vás Poskytovatel informuje zveřejněním nových podmínek na této stránce.</p>
+    </div>
+
+    <div class="contact-block">
+      <p data-l="en">Questions or suggestions about the Terms? Contact the Service Provider:</p><p data-l="cs">Dotazy nebo návrhy k podmínkám? Kontaktujte Poskytovatele:</p>
+      <a class="contact-email" href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">⬡ Ember Fajrum · © 2026 Ember PA · <span data-l="en">All rights reserved</span><span data-l="cs">Všechna práva vyhrazena</span></span>
+    <span class="footer-date"><span data-l="en">Effective 2026-10-26</span><span data-l="cs">Platné od 26. 10. 2026</span></span>
+  </div>
+</footer>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.classList.toggle('active', s.id === id));
+    document.querySelectorAll('.nav-tab[data-sec]').forEach(t => t.classList.toggle('active', t.dataset.sec === id));
+    if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function setLang(l) {
+    document.documentElement.setAttribute('data-lang', l);
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-lang-btn]').forEach(b => b.classList.toggle('active', b.dataset.langBtn === l));
+  }
+  (function init() {
+    var q = new URLSearchParams(location.search).get('lang');
+    var l = (q === 'cs' || q === 'en') ? q : ((navigator.language || 'en').toLowerCase().indexOf('cs') === 0 ? 'cs' : 'en');
+    setLang(l);
+    if (location.hash === '#terms') showSection('terms');
+  })();
+</script>
+
+</body>
+</html>
