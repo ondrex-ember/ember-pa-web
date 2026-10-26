@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ember Game Miner — Privacy Policy</title>
+<meta name="description" content="Privacy Policy of the Ember Game Miner Android app. / Zásady ochrany soukromí aplikace Ember Game Miner pro Android.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --accent: #6fa8dc;
+    --accent-light: #a9cdf0;
+    --accent-dim: rgba(111,168,220,0.10);
+    --accent-border: rgba(111,168,220,0.22);
+    --bg: #0a0a14;
+    --bg2: #12121f;
+    --surface: #1e1e3a;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --border: rgba(255,255,255,0.06);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.75;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(111,168,220,0.04) 0%, transparent 65%);
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,20,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    border-bottom: none;
+  }
+
+  .nav-logo { font-size: 20px; color: var(--accent); }
+
+  .nav-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 3px;
+    font-weight: 400;
+  }
+
+  .nav-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 4px;
+  }
+
+  .nav-tab {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--muted);
+    padding: 6px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .nav-tab.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+
+  .nav-tab:hover:not(.active) {
+    color: var(--text);
+    background: rgba(255,255,255,0.04);
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero {
+    margin-bottom: 48px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-label::before { content: '⬡'; color: var(--accent); font-size: 14px; }
+
+  .hero-title {
+    font-size: clamp(36px, 6vw, 52px);
+    font-weight: 300;
+    color: var(--accent);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: 14px;
+    font-family: var(--mono);
+    font-weight: 300;
+  }
+
+  .date-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 36px;
+  }
+
+  .date-badge span { color: var(--accent); }
+
+  .block {
+    margin-bottom: 24px;
+    padding: 28px 32px;
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .block::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-border), transparent);
+  }
+
+  .block-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .block-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--accent-border);
+  }
+
+  .block p {
+    color: rgba(232,232,240,0.85);
+    font-size: 16px;
+    line-height: 1.85;
+    margin-bottom: 14px;
+    font-weight: 300;
+  }
+
+  .block p:last-child { margin-bottom: 0; }
+
+  .legal-list {
+    list-style: none;
+    margin: 12px 0 14px;
+  }
+
+  .legal-list li {
+    font-size: 16px;
+    color: rgba(232,232,240,0.8);
+    font-weight: 300;
+    padding: 5px 0 5px 22px;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .legal-list li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 7px;
+    top: 11px;
+  }
+
+  .highlight {
+    background: var(--accent-dim);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 15px;
+    color: rgba(232,232,240,0.85);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .highlight strong { color: var(--accent-light); font-weight: 400; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 24px 0;
+  }
+
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-border); transition: border-color 0.2s; }
+  a:hover { border-color: var(--accent); }
+
+  .contact-block {
+    background: var(--bg2);
+    border: 1px solid var(--accent-border);
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .contact-block p {
+    font-size: 15px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .contact-email {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent-border);
+    white-space: nowrap;
+  }
+
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 28px 24px;
+  }
+
+  .footer-inner {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy, .footer-date {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .footer-date { opacity: 0.5; }
+
+  @media (max-width: 600px) {
+    .nav-inner { flex-direction: column; align-items: flex-start; }
+    .nav-tabs { width: 100%; }
+    .nav-tab { flex: 1; text-align: center; }
+    main { padding: 40px 16px 60px; }
+    .block { padding: 20px 18px; }
+    .contact-block { flex-direction: column; }
+  }
+
+  html[data-lang="en"] [data-l="cs"] { display: none !important; }
+  html[data-lang="cs"] [data-l="en"] { display: none !important; }
+  .nav-right { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .nav-lang .nav-tab { padding: 6px 12px; }
+  .block ul.legal-list a, .block p a { word-break: break-word; }
+  @media (max-width: 600px) { .nav-right { width: 100%; } .nav-right .nav-tabs { flex: 1; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="#">
+      <span class="nav-logo">⬡</span>
+      <span class="nav-name">EMBER GAME MINER</span>
+    </a>
+    <div class="nav-right">
+      <div class="nav-tabs nav-lang">
+        <button class="nav-tab active" data-lang-btn="en" onclick="setLang('en')">EN</button>
+        <button class="nav-tab" data-lang-btn="cs" onclick="setLang('cs')">CS</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- PRIVACY POLICY -->
+  <section class="section active" id="privacy">
+    <div class="hero">
+      <div class="hero-label">Legal</div>
+      <h1 class="hero-title"><span data-l="en">Privacy Policy</span><span data-l="cs">Zásady ochrany soukromí</span></h1>
+      <p class="hero-sub"><span data-l="en">Ember Game Miner · Family tasks &amp; rewards app for Android · Free</span><span data-l="cs">Ember Game Miner · Rodinná aplikace pro úkoly a odměny pro Android · Zdarma</span></p>
+    </div>
+
+    <div class="date-badge"><span data-l="en" style="color:inherit">Effective as of <span>2026-10-26</span></span><span data-l="cs" style="color:inherit">Platné od <span>26. 10. 2026</span></span></div>
+
+    <!-- ===== EN ===== -->
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Overview</div>
+      <p>This privacy policy applies to the Ember Game Miner app (the "Application") for Android, published by Ondřej Panuška, Ember PA (the "Service Provider", <a href="https://www.ember-pa.cz" target="_blank" rel="noopener">www.ember-pa.cz</a>). The Application helps families motivate children: children earn credits by completing real-world tasks and spend them on rewards agreed with their parents. The Application is provided as a free service and is intended for use "AS IS".</p>
+      <div class="highlight"><strong>🔒 Our commitment:</strong> Ember Game Miner has no accounts, no servers of its own, no analytics and no advertising. Your tasks, rewards, credits, history and settings are stored only on your device and the Service Provider never receives them.</div>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Information Stored on Your Device</div>
+      <p>To work, the Application stores the following data locally, in its private storage on your device:</p>
+      <ul class="legal-list"><li>Tasks (activities that earn credits) and rewards (items that spend credits): names, descriptions, icons, rates, daily limits, costs, maximum times and the alarm sound you chose</li><li>Credit balance and the history of completed tasks and redeemed rewards</li><li>The state of running timers (their start times), so that a timer keeps counting when the Application is closed</li><li>App preferences: theme, language and display settings</li></ul>
+      <p>The Application does not ask for any personal information such as a name, e-mail address or date of birth. Texts you type yourself (for example the names of tasks and rewards) are stored exactly as you entered them. All of this stays on your device. The Application does not transmit it to the Service Provider or to any third party.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">What Is Not Collected</div>
+      <ul class="legal-list"><li>No user accounts or registration</li><li>No analytics, crash reporting or usage tracking by the Application</li><li>No advertising and no advertising identifiers</li><li>No location, contacts, microphone or other sensitive device data</li><li>No sale or sharing of data with anyone</li></ul>
+      <div class="highlight"><strong>🌐 Internet:</strong> The Application does not need an internet connection to work and does not connect to the Service Provider's or any third-party server.</div>
+      <div class="highlight"><strong>📍 Location:</strong> The Application does not request or use your location.</div>
+      <div class="highlight"><strong>🤖 AI:</strong> The Application does not use Artificial Intelligence technologies to process your data or provide features.</div>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Permissions</div>
+      <p>The Application may ask for the following permissions, each only for the purpose described:</p>
+      <ul class="legal-list"><li>Notifications (Android 13+): to show a notification when a countdown or timer ends. Notifications are created locally on your device; there is no push server</li><li>Alarms and reminders (exact alarms): so that a countdown can ring at the exact moment it ends, even when the device is idle or the Application is closed. The alarm is scheduled locally by Android, and no data leaves your device. If you revoke this permission in Android settings, timers may end later or without an alarm</li><li>Sounds: the Application plays an alarm sound from the sounds available on your device. Only a reference to the sound you selected is stored; the Application does not read or copy your audio files</li></ul>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Children and Families</div>
+      <p>The Application is designed for families. Children use it together with a parent or guardian, who sets up and manages the tasks and rewards and is responsible for the content entered.</p>
+      <p>The Application does not collect personal information from anyone, including children. It has no accounts, no advertising, no analytics and no social or sharing features, and no data about children leaves the device through the Application.</p>
+      <p>If you are a parent or guardian and have a concern, please contact us at <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Third Party Services</div>
+      <p>The Application is distributed through Google Play. Google Play Services may collect certain technical and device information independently, according to Google's own Privacy Policy. The Application has no control over this data collection.</p>
+      <ul class="legal-list"><li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Play Services Privacy Policy</a></li></ul>
+      <p>Beyond Google Play Services, the Application does not integrate any third-party analytics, advertising or tracking SDKs and does not work with data brokers.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Device Backup</div>
+      <p>If the system backup is enabled on your device, Android may include the Application's data in your device backup stored in your Google account. This is handled by Android and Google under your device settings and Google's Privacy Policy. The Service Provider has no access to such backups. You can turn the system backup off in Android settings.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Opt-Out and Data Deletion</div>
+      <p>Everything is under your control on your device:</p>
+      <ul class="legal-list"><li>Resetting the Application in its settings erases your tasks, rewards, credits and history</li><li>Clearing the Application's data in Android settings, or uninstalling the Application, removes all data stored by it</li><li>Notifications and alarms can be switched off at any time in Android settings</li></ul>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Data Retention</div>
+      <p>Your data is kept on your device until you delete it, reset the Application or uninstall it. The Service Provider holds no copy of it.</p>
+      <p>If you have any concerns, contact us at <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Your Rights</div>
+      <p>Because the Service Provider does not collect or hold your personal data, there is nothing to access, correct, export or erase on its side; you manage all data directly in the Application. If you believe your rights under data protection law (such as the GDPR) have been affected, you can contact us at <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a> or lodge a complaint with the Czech Office for Personal Data Protection (<a href="https://www.uoou.cz" target="_blank" rel="noopener">www.uoou.cz</a>).</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Security</div>
+      <p>Data is stored in the Application's private storage on your device. Protect your device with a screen lock and keep it away from unsupervised use if you do not want others to change tasks and rewards. Because the Service Provider holds no copy of your data, it cannot recover data from a lost, damaged or reset device.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Changes</div>
+      <p>This Privacy Policy may be updated from time to time and the changes will be published on this page with a new effective date. If features that process data outside your device (for example advertising, accounts or cloud sync) are ever introduced, or if new features change what the Application stores on your device, this policy and the Data safety section in Google Play will be updated before their release. Continued use of the Application is deemed approval of all changes.</p>
+    </div>
+
+    <div class="block" data-l="en" lang="en">
+      <div class="block-title">Your Consent</div>
+      <p>By using the Application, you acknowledge that Ember Game Miner stores your data only on your device, does not collect or transmit personal data to the Service Provider, and that Google Play Services may independently collect certain technical information as described in Google's own Privacy Policy.</p>
+    </div>
+
+    <!-- ===== CS ===== -->
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Přehled</div>
+      <p>Tyto zásady ochrany soukromí se týkají aplikace Ember Game Miner (dále „Aplikace“) pro Android, kterou vydává Ondřej Panuška, Ember PA (dále „Poskytovatel“, <a href="https://www.ember-pa.cz" target="_blank" rel="noopener">www.ember-pa.cz</a>). Aplikace pomáhá rodinám motivovat děti: děti získávají kredity za splněné úkoly ze skutečného života a utrácejí je za odměny dohodnuté s rodiči. Aplikace je poskytována zdarma a „TAK, JAK JE“.</p>
+      <div class="highlight"><strong>🔒 Náš závazek:</strong> Ember Game Miner nemá uživatelské účty, žádné vlastní servery, analytiku ani reklamu. Úkoly, odměny, kredity, historie i nastavení jsou uloženy pouze ve vašem zařízení a Poskytovatel je nikdy nezíská.</div>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Údaje uložené ve vašem zařízení</div>
+      <p>Aby mohla fungovat, ukládá Aplikace lokálně do svého soukromého úložiště ve vašem zařízení tyto údaje:</p>
+      <ul class="legal-list"><li>Úkoly (činnosti, za které se získávají kredity) a odměny (položky, za které se kredity utrácejí): názvy, popisy, ikony, sazby, denní limity, ceny, maximální časy a vámi zvolený zvuk alarmu</li><li>Zůstatek kreditů a historie splněných úkolů a vybraných odměn</li><li>Stav běžících časovačů (jejich okamžik startu), aby časovač běžel dál i po zavření Aplikace</li><li>Nastavení aplikace: vzhled, jazyk a nastavení zobrazení</li></ul>
+      <p>Aplikace nežádá žádné osobní údaje, jako je jméno, e-mailová adresa nebo datum narození. Texty, které sami zadáte (například názvy úkolů a odměn), se ukládají přesně tak, jak je napíšete. To vše zůstává ve vašem zařízení. Aplikace to neodesílá Poskytovateli ani žádné třetí straně.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Co se neshromažďuje</div>
+      <ul class="legal-list"><li>Žádné uživatelské účty ani registrace</li><li>Žádná analytika, hlášení pádů ani sledování používání ze strany Aplikace</li><li>Žádná reklama a žádné reklamní identifikátory</li><li>Žádná poloha, kontakty, mikrofon ani jiné citlivé údaje zařízení</li><li>Žádný prodej ani sdílení údajů s kýmkoli</li></ul>
+      <div class="highlight"><strong>🌐 Internet:</strong> Aplikace ke své funkci nepotřebuje připojení k internetu a nepřipojuje se k serveru Poskytovatele ani žádné třetí strany.</div>
+      <div class="highlight"><strong>📍 Poloha:</strong> Aplikace nežádá o polohu ani ji nepoužívá.</div>
+      <div class="highlight"><strong>🤖 AI:</strong> Aplikace nepoužívá technologie umělé inteligence ke zpracování vašich údajů ani k poskytování funkcí.</div>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Oprávnění</div>
+      <p>Aplikace může požádat o následující oprávnění, vždy jen pro popsaný účel:</p>
+      <ul class="legal-list"><li>Oznámení (Android 13+): k zobrazení oznámení, když skončí odpočet nebo časovač. Oznámení vznikají přímo ve vašem zařízení, žádný push server neexistuje</li><li>Budíky a připomenutí (přesné alarmy): aby odpočet mohl zazvonit přesně ve chvíli, kdy skončí, i když je zařízení v úsporném režimu nebo je Aplikace zavřená. Alarm plánuje lokálně Android a žádná data neopouštějí vaše zařízení. Pokud toto oprávnění v nastavení Androidu odeberete, mohou časovače skončit později nebo bez alarmu</li><li>Zvuky: Aplikace přehrává zvuk alarmu z těch, které jsou ve vašem zařízení k dispozici. Ukládá se pouze odkaz na vámi vybraný zvuk; Aplikace vaše zvukové soubory nečte ani nekopíruje</li></ul>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Děti a rodiny</div>
+      <p>Aplikace je určena rodinám. Děti ji používají společně s rodičem nebo zákonným zástupcem, který úkoly a odměny nastavuje a spravuje a odpovídá za zadaný obsah.</p>
+      <p>Aplikace neshromažďuje osobní údaje od nikoho, včetně dětí. Nemá účty, reklamu, analytiku ani sociální či sdílecí funkce a prostřednictvím Aplikace neodcházejí ze zařízení žádné údaje o dětech.</p>
+      <p>Pokud jste rodič či zákonný zástupce a máte obavy, kontaktujte nás na <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Služby třetích stran</div>
+      <p>Aplikace je distribuována přes Google Play. Služby Google Play mohou nezávisle shromažďovat určité technické informace o zařízení podle vlastních zásad ochrany soukromí společnosti Google. Aplikace tento sběr dat nemůže ovlivnit.</p>
+      <ul class="legal-list"><li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Play Services Privacy Policy</a></li></ul>
+      <p>Kromě služeb Google Play Aplikace neintegruje žádné analytické, reklamní ani sledovací SDK třetích stran a nespolupracuje s obchodníky s daty.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Záloha zařízení</div>
+      <p>Pokud je ve vašem zařízení zapnuta systémová záloha, může Android zahrnout data Aplikace do zálohy zařízení uložené ve vašem účtu Google. Zajišťuje ji Android a Google podle nastavení vašeho zařízení a zásad ochrany soukromí společnosti Google. Poskytovatel k takovým zálohám nemá přístup. Systémovou zálohu můžete vypnout v nastavení Androidu.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Možnost odmítnutí a smazání údajů</div>
+      <p>Vše máte pod kontrolou ve svém zařízení:</p>
+      <ul class="legal-list"><li>Resetem Aplikace v jejím nastavení se smažou vaše úkoly, odměny, kredity a historie</li><li>Vymazáním dat Aplikace v nastavení Androidu nebo odinstalací Aplikace se odstraní všechna data, která uložila</li><li>Oznámení a alarmy můžete kdykoli vypnout v nastavení Androidu</li></ul>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Uchovávání údajů</div>
+      <p>Vaše údaje zůstávají ve vašem zařízení, dokud je nesmažete, neresetujete Aplikaci nebo ji neodinstalujete. Poskytovatel o nich nemá žádnou kopii.</p>
+      <p>V případě jakýchkoli obav nás kontaktujte na <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Vaše práva</div>
+      <p>Protože Poskytovatel vaše osobní údaje neshromažďuje ani neuchovává, nemá na své straně co zpřístupnit, opravit, exportovat ani vymazat; všechna data spravujete přímo v Aplikaci. Pokud se domníváte, že byla dotčena vaše práva podle právních předpisů o ochraně osobních údajů (např. GDPR), můžete nás kontaktovat na <a href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a> nebo podat stížnost u Úřadu pro ochranu osobních údajů (<a href="https://www.uoou.cz" target="_blank" rel="noopener">www.uoou.cz</a>).</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Zabezpečení</div>
+      <p>Údaje jsou uloženy v soukromém úložišti Aplikace ve vašem zařízení. Zařízení chraňte zámkem obrazovky a nenechávejte je bez dohledu, pokud nechcete, aby někdo jiný měnil úkoly a odměny. Protože Poskytovatel o vašich datech nemá žádnou kopii, nemůže data obnovit ze ztraceného, poškozeného či resetovaného zařízení.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Změny</div>
+      <p>Tyto zásady ochrany soukromí mohou být čas od času aktualizovány a změny budou zveřejněny na této stránce s novým datem účinnosti. Pokud budou někdy zavedeny funkce zpracovávající údaje mimo vaše zařízení (například reklama, účty nebo cloudová synchronizace) nebo pokud nové funkce změní, co Aplikace ukládá ve vašem zařízení, budou tyto zásady i sekce Zabezpečení dat v Google Play aktualizovány ještě před jejich vydáním. Pokračováním v používání Aplikace vyjadřujete souhlas se všemi změnami.</p>
+    </div>
+
+    <div class="block" data-l="cs" lang="cs">
+      <div class="block-title">Váš souhlas</div>
+      <p>Používáním Aplikace potvrzujete, že Ember Game Miner ukládá vaše údaje pouze ve vašem zařízení, neshromažďuje ani neodesílá osobní údaje Poskytovateli a že služby Google Play mohou nezávisle shromažďovat určité technické informace podle vlastních zásad ochrany soukromí společnosti Google.</p>
+    </div>
+
+    <div class="contact-block">
+      <p data-l="en">Questions regarding privacy? Contact the Service Provider:</p><p data-l="cs">Dotazy k ochraně soukromí? Kontaktujte Poskytovatele:</p>
+      <a class="contact-email" href="mailto:ember@ember-pa.cz">ember@ember-pa.cz</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-copy">⬡ Ember Game Miner · © 2026 Ember PA · <span data-l="en">All rights reserved</span><span data-l="cs">Všechna práva vyhrazena</span></span>
+    <span class="footer-date"><span data-l="en">Effective 2026-10-26</span><span data-l="cs">Platné od 26. 10. 2026</span></span>
+  </div>
+</footer>
+
+<script>
+  function setLang(l) {
+    document.documentElement.setAttribute('data-lang', l);
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-lang-btn]').forEach(function (b) { b.classList.toggle('active', b.dataset.langBtn === l); });
+  }
+  (function init() {
+    var q = new URLSearchParams(location.search).get('lang');
+    var l = (q === 'cs' || q === 'en') ? q : ((navigator.language || 'en').toLowerCase().indexOf('cs') === 0 ? 'cs' : 'en');
+    setLang(l);
+  })();
+</script>
+
+</body>
+</html>
